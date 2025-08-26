@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Recource_Collection
 {
 
-     public enum Names
+     public enum Items
     {
         banana,
         sword,
@@ -15,16 +16,37 @@ namespace Recource_Collection
         coin,
         twigs
     }
+
+
     public static class CollectableItems
     {
-        public static Dictionary<Names, int> Weight = new Dictionary<Names, int>()
+        public static Dictionary<Items, int> Weight = new Dictionary<Items, int>()
         {
-            {Names.banana,1 },
-            {Names.sword , 10 },
-            {Names.healthPotion ,2},
-            {Names.coin , 0 },
-            {Names.twigs, 1 }
+            {Items.banana,1 },
+            {Items.sword , 10 },
+            {Items.healthPotion ,2},
+            {Items.coin , 0 },
+            {Items.twigs, 1 }
 
         };
+        public static Dictionary<Items, Texture2D> itemTextures = new Dictionary<Items, Texture2D>();
+
+
+        public static void inportTextures(Texture2D Texture , Items items)
+        {
+            if(itemTextures.ContainsKey(items))
+            {
+                itemTextures[items] = Texture;
+            }
+            else
+            {
+                itemTextures.Add(items, Texture);
+            }
+        }
+        
+            
+        
     }
+
+
 }

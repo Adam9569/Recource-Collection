@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System;
+using Microsoft.Xna.Framework.Input;
 
 
 
@@ -18,7 +19,7 @@ namespace Recource_Collection
         public Rectangle HitBox { get; private set; }
         public int Weight { get; set; }
         public int MaxWeight = 100;
-        public Dictionary<string, int> Inventory { get; set; } = new Dictionary<string, int>(); 
+        public Dictionary<Items, int> Inventory { get; set; } = new Dictionary<Items, int>(); 
 
 
         public Hero(Texture2D texture, Vector2 position) : base(texture, position)
@@ -34,11 +35,11 @@ namespace Recource_Collection
 
         public void Update()
         {
+            var keyboardState = Keyboard.GetState();
             Velocity = SPEED * InputManager.Direction;
             Position += new Vector2(Velocity.X, Velocity.Y) * Globals.Time;
             HitBox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
 
-           
 
         }
 
