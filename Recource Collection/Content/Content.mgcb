@@ -25,6 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:coin.png
 
+#begin Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font.spritefont
+
 #begin healthPotion.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -14,11 +14,13 @@ namespace Recource_Collection
         private SpriteBatch _spriteBatch;
         // stuff the items need - size maybe for an animation?
 
-        public Item(Items ItemType ,Vector2 position, Vector2 size) 
+        public Item(Items itemType ,Vector2 position, Vector2 size) 
         {
             
             Position = position;
             Size = size;
+            ItemType = itemType;
+            
 
             Texture = CollectableItems.itemTextures[ItemType];
         }

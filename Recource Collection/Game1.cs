@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -19,6 +20,8 @@ namespace Recource_Collection
         public Texture2D healthPotTexture;
         Rectangle twigHitbox;
         private List<Item> worldItems;
+        private SpriteFont font;
+        
 
 
 
@@ -48,6 +51,7 @@ namespace Recource_Collection
             // TODO: use this.Content to load your game content here
 
             Globals.SpriteBatch = _spriteBatch;
+            font = Content.Load<SpriteFont>("Font");
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(heroTexture, new Vector2(100, 100));
             twigTexture = Content.Load<Texture2D>("twig");
@@ -110,6 +114,15 @@ namespace Recource_Collection
             {
                 item.Draw(_spriteBatch);
             }
+            int i = 0;
+            foreach (var item in _hero.Inventory)
+            {
+                _spriteBatch.DrawString(font, item.Key + ": " + item.Value, new Vector2(i * 70, 10), Color.Black);
+                i++;
+            }
+               
+            
+
             _hero.Draw();
             _spriteBatch.End();
             base.Draw(gameTime);
