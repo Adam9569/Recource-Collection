@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Recource_Collection;
+using static AnimationManager;
 
 namespace Recource_Collection
 {
@@ -13,11 +14,8 @@ namespace Recource_Collection
         private SpriteBatch _spriteBatch;
         public Texture2D heroTexture;
         private Hero _hero;
+        public Boss _boss;
         Texture2D spriteSheet;
-
-        int counter;
-        int activeFrame;
-        int numFrames;
 
 
         public Game1()
@@ -46,15 +44,12 @@ namespace Recource_Collection
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            activeFrame = 0;
-            numFrames = 2;
-            counter = 0;
-
 
             spriteSheet = Content.Load<Texture2D>("treeantSpriteSheet1");
             Globals.SpriteBatch = _spriteBatch;
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(heroTexture, new Vector2(100, 100));
+            _boss = new Boss(spriteSheet, new Vector2(200, 200),300);
         }
 
         protected override void Update(GameTime gameTime)
@@ -66,27 +61,19 @@ namespace Recource_Collection
             TranslationCalc();
             InputManager.Update();
             _hero.Update();
+            _boss.Update();
             base.Update(gameTime);
 
-            counter++;
-            if(counter > 29)
-            {
-                counter = 0;
-                activeFrame++;
 
-                if(activeFrame == numFrames)
-                {
-                    activeFrame = 0;
-                }
-            }
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin(transformMatrix: _translation);
-            _spriteBatch.Draw(spriteSheet, new Rectangle(100,100,200,200),new Rectangle((activeFrame*32),33,32,32),Color.White);
+
             _hero.Draw();
+            _boss.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
