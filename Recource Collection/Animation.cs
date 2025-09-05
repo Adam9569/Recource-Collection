@@ -11,7 +11,7 @@ namespace Recource_Collection
         public Vector2 Size { get; set; }
 
         public int counter;
-
+        public bool IsFinished => ActiveFrame >= NumFrames - 1;
         public Animation(int numFrames, int interval,int row , Vector2 size)
         {
             NumFrames = numFrames;
@@ -28,7 +28,7 @@ namespace Recource_Collection
             if (counter >= Interval)
             {
                 counter = 0;
-                ActiveFrame++;
+                ActiveFrame = (++ActiveFrame) % NumFrames;
 
                 if (ActiveFrame >= NumFrames)
                     ActiveFrame = 0;
@@ -40,9 +40,6 @@ namespace Recource_Collection
             counter = 0;
         }
 
-        public Rectangle GetSourceRectangle(int frameWidth, int frameHeight)
-        {
-            return new Rectangle(ActiveFrame * frameWidth,frameHeight * Row, frameWidth, frameHeight);
-        }
+        public Rectangle GetSourceRectangle(int frameWidth, int frameHeight) => new Rectangle(ActiveFrame* frameWidth, frameHeight* Row, frameWidth, frameHeight);
     }
 }

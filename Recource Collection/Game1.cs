@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,6 +17,8 @@ namespace Recource_Collection
         private Hero _hero;
         public Boss _boss;
         Texture2D spriteSheet;
+        private SpriteFont bossFont;
+        public Texture2D pixel;
 
 
         public Game1()
@@ -48,8 +51,12 @@ namespace Recource_Collection
             spriteSheet = Content.Load<Texture2D>("treeantSpriteSheet1");
             Globals.SpriteBatch = _spriteBatch;
             heroTexture = Content.Load<Texture2D>("hero");
+            bossFont = Content.Load<SpriteFont>("Fonts/bossHp");
             _hero = new Hero(100, heroTexture, new Vector2(100, 100));
             _boss = new Boss(spriteSheet, new Vector2(200, 200),300);
+
+            pixel = new Texture2D(GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.White });
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,19 +71,32 @@ namespace Recource_Collection
             _boss.Update();
 
             Debug.WriteLine(_hero.CurrentHealth);
+            //Debug.WriteLine(_boss.Health);
+
             base.Update(gameTime);
 
-
+            if (_boss.AnimationManager.current == AnimationManager.BossAnimations.smashAttack && _hero.HitBox.Intersects(_boss.Hitbox) && _hero.CurrentHealth > 0)
+            {
+                _hero.TakeDamage(_boss.Damage);
+            }
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin(transformMatrix: _translation);
-
+            _spriteBatch.DrawString(bossFont, "EVIL TREEANT HEALTH : " + _boss.Health, new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
             _hero.Draw();
+            _hero.DealDamage(_boss);
             _boss.Draw(_spriteBatch);
+
+            if (_hero.IsAttacking)
+            {
+                _spriteBatch.Draw(pixel, _hero.AttackHitbox, Color.Red * 0.5f);
+            }
+
             _spriteBatch.End();
+
 
             base.Draw(gameTime);
         }

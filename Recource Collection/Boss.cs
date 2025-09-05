@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,6 +14,9 @@ namespace Recource_Collection
         public Vector2 Position { get; set; }
         public AnimationManager AnimationManager { get; private set; }
 
+        
+        public int Damage = 25;
+
         int counter;
         int smashCooldown = 240;
 
@@ -23,27 +27,35 @@ namespace Recource_Collection
             Position = position;
             counter = 0;
 
-            var bossAnimations = new Dictionary<AnimationManager.AnimationName, Animation>
+            var bossAnimations = new Dictionary<AnimationManager.BossAnimations, Animation>
             {
-                { AnimationManager.AnimationName.idle, new Animation(2, 30, 1, new Vector2(128, 128)) },
-                { AnimationManager.AnimationName.smashAttack, new Animation(8, 20, 0, new Vector2(256, 256)) } 
+                { AnimationManager.BossAnimations.idle, new Animation(2, 30, 1, new Vector2(128, 128)) },
+                { AnimationManager.BossAnimations.smashAttack, new Animation(8, 20, 0, new Vector2(256,256)) } 
             };
 
             AnimationManager = new AnimationManager(bossAnimations);
         }
-
+        public Rectangle Hitbox
+        {
+            get
+            { 
+                Vector2 size = AnimationManager.GetSize();
+                return new Rectangle((int)Position.X,(int)Position.Y,(int)size.X,(int)size.Y);
+            }
+        }
         public void Update()
         {
             counter++;
             if (counter >= smashCooldown)
             {
-                AnimationManager.Play(AnimationManager.AnimationName.smashAttack);
+                AnimationManager.Play(AnimationManager.BossAnimations.smashAttack);
                 counter = 0;
             }
-            else if (AnimationManager.current != AnimationManager.AnimationName.smashAttack)
+            else if (AnimationManager.current == AnimationManager.BossAnimations.smashAttack && AnimationManager.finishedAnimation)
             {
-                AnimationManager.Play(AnimationManager.AnimationName.idle);
+                AnimationManager.Play(AnimationManager.BossAnimations.idle);
             }
+
             AnimationManager.Update();
             
         }
@@ -52,7 +64,7 @@ namespace Recource_Collection
         {
             Rectangle sourceRectangle = AnimationManager.GetSourceRect(33, 33);
             Vector2 size = AnimationManager.GetSize(); 
-            Rectangle destRectangle = new Rectangle((int)Position.X,(int)Position.Y,(int)size.X,(int)size.Y);
+            Rectangle destRectangle = new Rectangle((int)(Position.X - size.X /2 ),(int)(Position.Y - size.Y /2),(int)size.X,(int)size.Y);
             spriteBatch.Draw(SpriteSheet, destRectangle, sourceRectangle, Color.White);
         }
     }

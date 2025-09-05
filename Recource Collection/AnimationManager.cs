@@ -6,43 +6,39 @@ using System.Linq;
 
 public class AnimationManager
 {
-    public enum AnimationName
+    public enum BossAnimations
     {
         idle,
         smashAttack
     }
 
 
-    private Dictionary<AnimationName, Animation> animations;
-    public AnimationName current;
-
-    public AnimationManager(Dictionary<AnimationName, Animation> animations)
+    private Dictionary<BossAnimations, Animation> animations;
+    public BossAnimations current;
+    public bool finishedAnimation => animations[current].IsFinished;
+    public AnimationManager(Dictionary<BossAnimations, Animation> animations)
     {
         this.animations = animations;
         current = animations.Keys.First();
     }
 
-    public void Play(AnimationName name)
+    public void Play(BossAnimations name)
     {
         if (current != name)
         {
             current = name;
             animations[current].Reset();
+
+
         }
     }
+    
 
     public void Update()
     {
         animations[current].Update();
     }
 
-    public Rectangle GetSourceRect(int frameWidth, int frameHeight)
-    {
-        return animations[current].GetSourceRectangle(frameWidth, frameHeight);
-    }
-
-    public Vector2 GetSize()
-    {
-        return animations[current].Size;
-    }
+    public Rectangle GetSourceRect(int frameWidth, int frameHeight) => animations[current].GetSourceRectangle(frameWidth, frameHeight);
+    public Vector2 GetSize() => animations[current].Size;
 }
