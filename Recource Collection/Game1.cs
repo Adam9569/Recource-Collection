@@ -48,7 +48,7 @@ namespace Recource_Collection
             spriteSheet = Content.Load<Texture2D>("treeantSpriteSheet1");
             Globals.SpriteBatch = _spriteBatch;
             heroTexture = Content.Load<Texture2D>("hero");
-            _hero = new Hero(heroTexture, new Vector2(100, 100));
+            _hero = new Hero(100, heroTexture, new Vector2(100, 100));
             _boss = new Boss(spriteSheet, new Vector2(200, 200),300);
         }
 
@@ -62,6 +62,8 @@ namespace Recource_Collection
             InputManager.Update();
             _hero.Update();
             _boss.Update();
+
+            Debug.WriteLine(_hero.CurrentHealth);
             base.Update(gameTime);
 
 

@@ -14,7 +14,7 @@ public class AnimationManager
 
 
     private Dictionary<AnimationName, Animation> animations;
-    private AnimationName current;
+    public AnimationName current;
 
     public AnimationManager(Dictionary<AnimationName, Animation> animations)
     {

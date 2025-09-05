@@ -42,7 +42,7 @@ namespace Recource_Collection
 
         public Rectangle GetSourceRectangle(int frameWidth, int frameHeight)
         {
-            return new Rectangle(ActiveFrame * frameWidth,frameHeight * Row +1, frameWidth, frameHeight);
+            return new Rectangle(ActiveFrame * frameWidth,frameHeight * Row, frameWidth, frameHeight);
         }
     }
 }
