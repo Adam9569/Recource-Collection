@@ -17,8 +17,8 @@ namespace health_management
         public int MaxHealth { get; set; } = 100;
         public int CurrentHealth { get; private set; }
 
-        public Rectangle HitBox { get; private set; }
-        
+        public Rectangle HitBox => new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
+
 
 
         public Hero(int maxhealth ,Texture2D texture, Vector2 position) : base(texture, position)
@@ -27,7 +27,6 @@ namespace health_management
             Texture = texture;
             Position = position;
             CurrentHealth = maxhealth;
-            HitBox = new Rectangle((int)position.X, (int)position.Y, Texture.Width, Texture.Height);
         }
 
         public void TakeDamage(int damageDealt)
@@ -47,7 +46,7 @@ namespace health_management
         {
             Velocity = SPEED * InputManager.Direction;
             Position += new Vector2(Velocity.X, Velocity.Y) * Globals.Time;
-            HitBox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
+            
 
            
 

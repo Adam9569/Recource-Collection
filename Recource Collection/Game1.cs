@@ -43,11 +43,11 @@ namespace Recource_Collection
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             heroTexture = Content.Load<Texture2D>("hero");
             _font = Content.Load<SpriteFont>("font");
+            _questionsManager = new QuestionManager();
 
             _questions = _questionsManager.LoadQuestions("Content/Data/questionsANDanswers.json");
             _currentQuestion = _questions[0];
 
-            _questionsManager = new QuestionManager();
             _hero = new Hero(100, heroTexture, new Vector2(100, 100));
             List<Question> questions = _questionsManager.LoadQuestions("Content/Data/questionsANDanswers.json");
 
