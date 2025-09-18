@@ -9,5 +9,6 @@ namespace Recource_Collection
     {
         public string QuestionsTxt { get; set; }
         public string AnswerTxt { get; set; }
+
     }
 }

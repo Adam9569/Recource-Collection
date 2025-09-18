@@ -4,12 +4,14 @@ using System.Text.Json;
 
 namespace Recource_Collection
 {
-    public class QuestionManager
+    public static class QuestionManager
     {
-        public List<Question> LoadQuestions(string path)
+        public static List<Question> LoadQuestions(string path) => JsonSerializer.Deserialize<List<Question>>(File.ReadAllText(path));
+
+        public static void SaveQuestions(List<Question> questions, string path)
         {
-            string jsonString = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<List<Question>>(jsonString);
+            string json = JsonSerializer.Serialize(questions, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(path, json);
         }
     }
 }

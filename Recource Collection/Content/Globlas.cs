@@ -11,6 +11,7 @@ namespace health_management
         public static ContentManager Content { get; set; }
         public static SpriteBatch SpriteBatch { get; set; }
         public static Point WindowSize { get; set; }
+        public const ushort MaxChars = 30;
 
         public static void Update(GameTime gt)
         {

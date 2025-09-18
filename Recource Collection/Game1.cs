@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using health_management;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Text;
+using System.Diagnostics;
+
 
 namespace Recource_Collection
 {
@@ -13,6 +15,8 @@ namespace Recource_Collection
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
+        private Texture2D textBox;
+        public Texture2D _cursorTexture;
 
         public List<Question> _questions;
         public Question _currentQuestion;
@@ -24,6 +28,11 @@ namespace Recource_Collection
         public Texture2D heroTexture;
         private Hero _hero;
         public Random rnd = new Random();
+
+        public static GameWindow gw;
+        public static MouseState mouseState;
+        private QuestionCreator _questionCreator;
+        private int qOffset = 50;
 
         public Game1()
         {
@@ -38,27 +47,34 @@ namespace Recource_Collection
             _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
             _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             _graphics.ApplyChanges();
-            
+            gw = Window;
            
 
 
             base.Initialize();
         }
 
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
             heroTexture = Content.Load<Texture2D>("hero");
+            _hero = new Hero(100, heroTexture, new Vector2(Globals.WindowSize.X /2 , Globals.WindowSize.Y /2));
+
+
             _font = Content.Load<SpriteFont>("font");
-            _questionsManager = new QuestionManager();
+            _cursorTexture = Content.Load<Texture2D>("Cursor");
+            textBox = Content.Load<Texture2D>("Textbox");
 
-
+            _questionCreator = new QuestionCreator(Window, textBox, _font, new Rectangle((int)_hero.Position.X - textBox.Width, (int)_hero.Position.Y + 100, 300, 50), _cursorTexture, new Vector2(_hero.Position.X - textBox.Width + _questionCreator.HandleCursorPos(), _hero.Position.Y + 130));
             _questions = new List<Question>();
             _questions = QuestionManager.LoadQuestions("Content/Data/questions.json");
 
-            _hero = new Hero(100, heroTexture, new Vector2(100, 100));
 
+
+
+            
         }
         
 
@@ -70,18 +86,7 @@ namespace Recource_Collection
                 Exit();
             _hero.Update();
             InputManager.Update();
-
-            if (WasKeyPressed(Keys.Space))
-            {
-
-                int _random = rnd.Next(4);
-
-
-                CurrentQuestionIndex = _random;
-            }
-
-            previousState = currentState;
-            currentState = Keyboard.GetState();
+            _questionCreator.Update();
             
             //if(WasKeyPressed(Keys.A))
             //{
@@ -98,16 +103,13 @@ namespace Recource_Collection
             base.Update(gameTime);
         }
 
-        public bool WasKeyPressed(Keys key) => !previousState.IsKeyDown(key) && currentState.IsKeyDown(key);
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             _spriteBatch.Begin();
             _hero.Draw();
+            _questionCreator.Draw(_spriteBatch);
 
-            _spriteBatch.DrawString(_font, _questions[CurrentQuestionIndex].QuestionsTxt, Vector2.Zero, Color.Red);
-            _spriteBatch.DrawString(_font, _questions[CurrentQuestionIndex].AnswerTxt.ToString(), new Vector2(0, _font.MeasureString(_questions[0].QuestionsTxt).Y), Color.Red);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
