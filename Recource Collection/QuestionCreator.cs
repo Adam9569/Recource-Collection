@@ -17,6 +17,7 @@ namespace Recource_Collection
         private SpriteFont _font;
         private Rectangle _textBoxRect;
         private StringBuilder _inputBuilder = new StringBuilder();
+        private int offset = 10;
 
         private bool _hasFocus = false;
         private static GameWindow _window;
@@ -61,6 +62,7 @@ namespace Recource_Collection
         }
 
         public int HandleCursorPos() => (int)_font.MeasureString(_inputBuilder.ToString()).X;
+        
 
         private void OnTextInput(object sender, TextInputEventArgs e)
         {
@@ -90,9 +92,9 @@ namespace Recource_Collection
                 HandleClick(mouseState.Position);
             }
 
+
             _previousMouseState = mouseState;
             HandleLength();
-            HandleCursorPos();
         }
 
 
@@ -100,7 +102,7 @@ namespace Recource_Collection
         {
             spriteBatch.Draw(_textBoxTexture, _textBoxRect, Color.White);
             spriteBatch.DrawString(_font, $"Focus: {_hasFocus}", new Vector2(_textBoxRect.X, _textBoxRect.Y - 30), Color.Yellow);
-            spriteBatch.Draw(_cursorTexture, new Rectangle((int)_cursorPostion.X, (int)_cursorPostion.Y, 4, 30), Color.Black);
+            spriteBatch.Draw(_cursorTexture, new Rectangle((int)HandleCursorPos() + _textBoxRect.X + offset, (int)_cursorPostion.Y, 4, 30), Color.Black);
             spriteBatch.DrawString(_font, _inputBuilder.ToString(), new Vector2(_textBoxRect.X + 10, _textBoxRect.Y + 10), Color.Red);
         }
 

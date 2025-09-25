@@ -48,6 +48,7 @@ namespace Recource_Collection
             _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             _graphics.ApplyChanges();
             gw = Window;
+
            
 
 
@@ -66,15 +67,12 @@ namespace Recource_Collection
             _font = Content.Load<SpriteFont>("font");
             _cursorTexture = Content.Load<Texture2D>("Cursor");
             textBox = Content.Load<Texture2D>("Textbox");
+            _questionCreator = new QuestionCreator(Window,textBox,_font,new Rectangle((int)_hero.Position.X - textBox.Width, (int)_hero.Position.Y + 100, 300, 50),_cursorTexture, new Vector2((int)_hero.Position.X - textBox.Width, (int)_hero.Position.Y + 100));
 
-            _questionCreator = new QuestionCreator(Window, textBox, _font, new Rectangle((int)_hero.Position.X - textBox.Width, (int)_hero.Position.Y + 100, 300, 50), _cursorTexture, new Vector2(_hero.Position.X - textBox.Width + _questionCreator.HandleCursorPos(), _hero.Position.Y + 130));
             _questions = new List<Question>();
             _questions = QuestionManager.LoadQuestions("Content/Data/questions.json");
 
 
-
-
-            
         }
         
 
@@ -87,6 +85,7 @@ namespace Recource_Collection
             _hero.Update();
             InputManager.Update();
             _questionCreator.Update();
+
             
             //if(WasKeyPressed(Keys.A))
             //{
