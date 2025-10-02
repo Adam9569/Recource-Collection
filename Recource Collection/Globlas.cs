@@ -11,7 +11,7 @@ namespace Recource_Collection
         public static ContentManager Content { get; set; }
         public static SpriteBatch SpriteBatch { get; set; }
         public static Point WindowSize { get; set; }
-
+        public  static int MaxChars = 32;
         public static void Update(GameTime gt)
         {
             Time = (float)gt.ElapsedGameTime.TotalSeconds;
