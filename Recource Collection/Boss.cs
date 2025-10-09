@@ -20,7 +20,7 @@ namespace Recource_Collection
 
         int counter;
         int smashCooldown = 240;
-        //public BossProjectiles _bossProjectiles = new BossProjectiles();
+        public BossProjectiles _bossProjectiles;
         public List<BossProjectiles> Projectiles = new List<BossProjectiles>();
         public Texture2D projectileTexture;
 
@@ -55,8 +55,8 @@ namespace Recource_Collection
 
             for (int i = 1; i < 10; i++)
             {
-                BossProjectiles _BossProjectile = new BossProjectiles(projectileTexture, _bossProjectiles.Origin);
-                Projectiles.Add(_BossProjectile);
+                _bossProjectiles = new BossProjectiles(projectileTexture, new Vector2(0, 0));
+                Projectiles.Add(_bossProjectiles);
             }
         }
         public void Update()
@@ -75,7 +75,11 @@ namespace Recource_Collection
             }
 
             AnimationManager.Update();
-            //_bossProjectiles.Update();
+            foreach (var projectile in Projectiles)
+            {
+                projectile.Update();
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -84,6 +88,7 @@ namespace Recource_Collection
             Vector2 size = AnimationManager.GetSize(); 
             Rectangle destRectangle = new Rectangle((int)(Position.X - size.X /2 ),(int)(Position.Y - size.Y /2),(int)size.X,(int)size.Y);
             spriteBatch.Draw(SpriteSheet, destRectangle, sourceRectangle, Color.White);
+
 
 
         }
