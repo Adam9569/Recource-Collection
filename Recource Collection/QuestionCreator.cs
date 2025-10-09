@@ -18,6 +18,7 @@ namespace Recource_Collection
         private Rectangle _textBoxRect;
         private StringBuilder _inputBuilder = new StringBuilder();
         private int offset = 10;
+        private string answer;
 
         private bool _hasFocus = false;
         private static GameWindow _window;
