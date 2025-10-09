@@ -71,7 +71,7 @@ namespace Recource_Collection
             _boss.Update();
 
             Debug.WriteLine(_hero.CurrentHealth);
-            //Debug.WriteLine(_boss.Health);
+
 
             base.Update(gameTime);
 

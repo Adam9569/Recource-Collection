@@ -14,8 +14,8 @@ namespace Recource_Collection
         }
         public static Texture2D Texture { get; set; }
         private static Color Color;
-        public Vector2 Position { get; protected set; }
-        public Vector2 Origin { get; protected set; }
+        public Vector2 Position { get;  set; }
+        public Vector2 Origin { get;  set; }
 
         
         public void Draw()

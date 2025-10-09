@@ -73,12 +73,9 @@ namespace Recource_Collection
             var keyboardState = Keyboard.GetState();
             Position += new Vector2(Velocity.X, Velocity.Y) * Globals.Time;
             IsAttacking = false;
+            damageTimer++;
 
-
-            if (damageTimer < damageCooldown)
-            {
-                damageTimer++;
-            }
+           
             if (keyboardState.IsKeyDown(Keys.Space))
             {
                 IsAttacking = true;
@@ -89,7 +86,7 @@ namespace Recource_Collection
 
                 AttackHitbox = new Rectangle(attackX, attackY, attackRadius, attackRadius);
 
-            }// this took way too long =( pls help
+            }
         }
 
 

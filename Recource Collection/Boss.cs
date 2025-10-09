@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Recource_Collection
@@ -19,6 +20,10 @@ namespace Recource_Collection
 
         int counter;
         int smashCooldown = 240;
+        //public BossProjectiles _bossProjectiles = new BossProjectiles();
+        public List<BossProjectiles> Projectiles = new List<BossProjectiles>();
+        public Texture2D projectileTexture;
+
 
         public Boss(Texture2D spriteSheet, Vector2 position, int health)
         {
@@ -43,8 +48,21 @@ namespace Recource_Collection
                 return new Rectangle((int)Position.X,(int)Position.Y,(int)size.X,(int)size.Y);
             }
         }
+
+        public void LoadContent(ContentManager Content)
+        {
+            projectileTexture = Content.Load<Texture2D>("WoodenSword");
+
+            for (int i = 1; i < 10; i++)
+            {
+                BossProjectiles _BossProjectile = new BossProjectiles(projectileTexture, _bossProjectiles.Origin);
+                Projectiles.Add(_BossProjectile);
+            }
+        }
         public void Update()
         {
+           
+
             counter++;
             if (counter >= smashCooldown)
             {
@@ -57,7 +75,7 @@ namespace Recource_Collection
             }
 
             AnimationManager.Update();
-            
+            //_bossProjectiles.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -66,6 +84,8 @@ namespace Recource_Collection
             Vector2 size = AnimationManager.GetSize(); 
             Rectangle destRectangle = new Rectangle((int)(Position.X - size.X /2 ),(int)(Position.Y - size.Y /2),(int)size.X,(int)size.Y);
             spriteBatch.Draw(SpriteSheet, destRectangle, sourceRectangle, Color.White);
+
+
         }
     }
 }
