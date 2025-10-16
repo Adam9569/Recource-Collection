@@ -75,7 +75,7 @@ namespace Recource_Collection
 
             base.Update(gameTime);
 
-            if (_boss.AnimationManager.current == AnimationManager.BossAnimations.smashAttack && _hero.HitBox.Intersects(_boss.Hitbox) && _hero.CurrentHealth > 0)
+            if (_boss.Health != 0 && _boss.AnimationManager.current == AnimationManager.BossAnimations.smashAttack && _hero.HitBox.Intersects(_boss.Hitbox) && _hero.CurrentHealth > 0)
             {
                 _hero.TakeDamage(_boss.Damage);
             }
@@ -85,10 +85,19 @@ namespace Recource_Collection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin(transformMatrix: _translation);
-            _spriteBatch.DrawString(bossFont, "EVIL TREEANT HEALTH : " + _boss.Health, new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
+            if (_boss.Health > 0)
+            {
+                _spriteBatch.DrawString(bossFont, "EVIL TREEANT HEALTH : " + _boss.Health, new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
+                _hero.DealDamage(_boss);
+                _boss.Draw(_spriteBatch);
+            }
+            else
+            {
+                _spriteBatch.DrawString(bossFont,"Evil sigma is dead !", new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
+                
+            }
             _hero.Draw();
-            _hero.DealDamage(_boss);
-            _boss.Draw(_spriteBatch);
+
 
             if (_hero.IsAttacking)
             {

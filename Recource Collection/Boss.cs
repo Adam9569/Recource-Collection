@@ -79,7 +79,7 @@ namespace Recource_Collection
             {
                 projectile.Update();
             }
-
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
