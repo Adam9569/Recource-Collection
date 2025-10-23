@@ -55,6 +55,7 @@ namespace Recource_Collection
             _hero = new Hero(100, heroTexture, new Vector2(100, 100));
             _boss = new Boss(spriteSheet, new Vector2(200, 200),300);
 
+
             pixel = new Texture2D(GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
         }

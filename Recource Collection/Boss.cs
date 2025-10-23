@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,6 +20,8 @@ namespace Recource_Collection
         public BossProjectiles _bossProjectiles;
         public List<BossProjectiles> Projectiles = new List<BossProjectiles>();
         public Texture2D projectileTexture;
+       
+        
 
 
         public Boss(Texture2D spriteSheet, Vector2 position, int health)
@@ -58,6 +57,7 @@ namespace Recource_Collection
                 _bossProjectiles = new BossProjectiles(projectileTexture, new Vector2(0, 0));
                 Projectiles.Add(_bossProjectiles);
             }
+            
         }
         public void Update()
         {
@@ -75,10 +75,11 @@ namespace Recource_Collection
             }
 
             AnimationManager.Update();
-            foreach (var projectile in Projectiles)
+            foreach (BossProjectiles projectile in Projectiles)
             {
                 projectile.Update();
             }
+           
             
         }
 
@@ -88,6 +89,18 @@ namespace Recource_Collection
             Vector2 size = AnimationManager.GetSize(); 
             Rectangle destRectangle = new Rectangle((int)(Position.X - size.X /2 ),(int)(Position.Y - size.Y /2),(int)size.X,(int)size.Y);
             spriteBatch.Draw(SpriteSheet, destRectangle, sourceRectangle, Color.White);
+            foreach (BossProjectiles projectile in Projectiles)
+            {
+                float rotation = 0f;
+                spriteBatch.Draw(projectileTexture,
+                    new Rectangle((int)projectile.Position.X, (int)projectile.Position.Y, projectileTexture.Width, projectileTexture.Height), 
+                    null, 
+                    Color.White, 
+                    rotation, 
+                    new Vector2(projectileTexture.Width / 2, projectileTexture.Height / 2), 
+                    SpriteEffects.None, 
+                    1.0f);
+            }
 
 
 
