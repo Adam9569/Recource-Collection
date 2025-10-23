@@ -32,6 +32,7 @@ namespace Recource_Collection
         public static GameWindow gw;
         public static MouseState mouseState;
         private QuestionCreator _questionCreator;
+        
         private int qOffset = 50;
 
         public Game1()
@@ -60,7 +61,7 @@ namespace Recource_Collection
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
-            _questions = QuestionManager.LoadQuestions("Content/Data/questions.json");
+            
 
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(100, heroTexture, new Vector2(Globals.WindowSize.X /2 , Globals.WindowSize.Y /2));
@@ -71,14 +72,7 @@ namespace Recource_Collection
             textBox = Content.Load<Texture2D>("Textbox");
             _questionCreator = new QuestionCreator(Window,textBox,_font,new Rectangle((int)_hero.Position.X - textBox.Width, (int)_hero.Position.Y + 100, 300, 50),_cursorTexture, new Vector2((int)_hero.Position.X - textBox.Width, (int)_hero.Position.Y + 100));
 
-            _questions = new List<Question>();
-            if (_questions.Count > 0)
-            {
-                _currentQuestion = _questions[0];
-            }
-           
-            
-
+ 
 
         }
         

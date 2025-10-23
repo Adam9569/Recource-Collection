@@ -27,6 +27,7 @@ namespace Recource_Collection
 
         public List<Question> _questions;
 
+
         public Question _currentQuestion;
         public int CurrentQuestionIndex = 0;
         private Random rnd = new Random();
@@ -46,6 +47,20 @@ namespace Recource_Collection
             _textBoxRect = textBoxRect;
             _cursorPostion = cursorPosition;
             _cursorTexture = cursorTexture;
+
+            _questions = new List<Question>();
+        }
+
+        public void LoadContent()
+        {
+            _questions = new List<Question>();
+            _questions = QuestionManager.LoadQuestions("Content/Data/questions.json");
+
+
+            if (_questions.Count > 0)
+            {
+                _currentQuestion = _questions[0];
+            }
         }
         private void HandleClick(Point mouseClick)
         {
@@ -68,6 +83,11 @@ namespace Recource_Collection
         }
         public void NextQuestion()
         {
+            if(_questions == null || _questions.Count == 0)
+            {
+                return;
+            }
+            
             CurrentQuestionIndex++;
             if (CurrentQuestionIndex >= _questions.Count)
             {
@@ -140,7 +160,7 @@ namespace Recource_Collection
                 drawQuestionBox = !drawQuestionBox;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Space) && !previousKeyBoardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.Q) && !previousKeyBoardState.IsKeyDown(Keys.Q))
             {
                 if (_questions.Count > 0)
                 {
