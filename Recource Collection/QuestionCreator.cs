@@ -168,6 +168,7 @@ namespace Recource_Collection
                     _currentQuestion = _questions[randomIndex];          
                 }
             }
+            LoadContent();
 
             previousKeyBoardState = keyboardState;
             _previousMouseState = mouseState;
