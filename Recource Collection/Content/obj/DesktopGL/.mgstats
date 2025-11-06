@@ -1,0 +1,5 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Fonts/bossHp.spritefont","C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/Fonts/bossHp.xnb","FontDescriptionProcessor","SpriteFontContent",2068,70687,0.1813433
+"C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/hero.png","C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/hero.xnb","TextureProcessor","Texture2DContent",7977,27245,0.0196615
+"C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/treeantSpriteSheet1.png","C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/treeantSpriteSheet1.xnb","TextureProcessor","Texture2DContent",6800,190165,0.0069987
+"C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/WoodenSword.png","C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/WoodenSword.xnb","TextureProcessor","Texture2DContent",6946,1245541,0.043936
