@@ -14,13 +14,9 @@ namespace Recource_Collection
         private SpriteBatch _spriteBatch;
         public Texture2D heroTexture;
         private Hero _hero;
-        public Texture2D twigTexture;
-        public Texture2D swordTexture;
-        public Texture2D coinTexture;
-        public Texture2D healthPotTexture;
-        private List<Item> worldItems;
         private SpriteFont font;
-        
+        private WorldItems _worldItems;
+
 
 
 
@@ -38,6 +34,7 @@ namespace Recource_Collection
             _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
             _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             _graphics.ApplyChanges();
+          
 
             base.Initialize();
 
@@ -46,31 +43,18 @@ namespace Recource_Collection
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Globals.SpriteBatch = _spriteBatch;
+
+
+            font = Content.Load<SpriteFont>("Font");
+            _worldItems = new WorldItems(_spriteBatch);
+            _worldItems.LoadContent(Content);
 
             // TODO: use this.Content to load your game content here
 
-            Globals.SpriteBatch = _spriteBatch;
-            font = Content.Load<SpriteFont>("Font");
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(heroTexture, new Vector2(100, 100));
-            twigTexture = Content.Load<Texture2D>("twig");
-            healthPotTexture = Content.Load<Texture2D>("healthPotion");
-            coinTexture = Content.Load<Texture2D>("coin");
-            swordTexture = Content.Load<Texture2D>("sword");
-            twigHitbox = new Rectangle(200, 100, twigTexture.Width, twigTexture.Height);
-            CollectableItems.inportTextures(twigTexture, Items.twigs);
-            CollectableItems.inportTextures(healthPotTexture, Items.healthPotion);
-            CollectableItems.inportTextures(swordTexture, Items.sword);
-            CollectableItems.inportTextures(coinTexture, Items.coin);
 
-
-        worldItems = new List<Item>
-        {
-            new Item(Items.twigs, new Vector2(200, 100), new Vector2(48, 48)),
-            new Item(Items.sword, new Vector2(400, 200), new Vector2(64, 64)),
-            new Item(Items.coin, new Vector2(100, 500), new Vector2(32, 32)),
-            new Item(Items.healthPotion, new Vector2(250, 400), new Vector2(32, 32))
-        };
     }
 
         protected override void Update(GameTime gameTime)
@@ -80,49 +64,27 @@ namespace Recource_Collection
             Globals.Update(gameTime);
             var keyboardState = Keyboard.GetState();
             _hero.Update();
-            InputManager.Update();
+            _worldItems.Update(_hero);
+
 
             base.Update(gameTime);
-
-
-            for (int i = worldItems.Count - 1; i >= 0; i--)
-            {
-                Item item = worldItems[i];
-
-                float distance = Vector2.Distance(_hero.Position, item.Position);
-
-                if (distance < 60 && keyboardState.IsKeyDown(Keys.E) && _hero.Weight != _hero.MaxWeight)
-                {
-                    if (_hero.Inventory.ContainsKey(item.ItemType))
-                        _hero.Inventory[item.ItemType] += 1;
-                    else
-                        _hero.Inventory[item.ItemType] = 1;
-
-                    _hero.Weight += CollectableItems.Weight[item.ItemType];
-                    worldItems.RemoveAt(i);
-                }
-            }
-
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            foreach (var item in worldItems)
-            {
-                item.Draw(_spriteBatch);
-            }
+            _worldItems.Draw();
+            _hero.Draw();
+            InputManager.Update();
+
             int i = 0;
             foreach (var item in _hero.Inventory)
             {
                 _spriteBatch.DrawString(font, item.Key + ": " + item.Value, new Vector2(i * 70, 10), Color.Black);
                 i++;
             }
-               
-            
 
-            _hero.Draw();
             _spriteBatch.End();
             base.Draw(gameTime);
         }

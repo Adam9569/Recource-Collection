@@ -12,7 +12,7 @@ namespace Recource_Collection
 
         Vector2 Size { get; set; }
         private SpriteBatch _spriteBatch;
-        // stuff the items need - size maybe for an animation?
+
 
         public Item(Items itemType ,Vector2 position, Vector2 size) 
         {
@@ -34,7 +34,7 @@ namespace Recource_Collection
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Draw the texture stretched/scaled to fit the "Size"
+  
             spriteBatch.Draw(Texture,new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y),Color.White);
         }
 
