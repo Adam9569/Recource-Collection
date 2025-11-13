@@ -18,7 +18,6 @@ namespace Recource_Collection
         public Texture2D swordTexture;
         public Texture2D coinTexture;
         public Texture2D healthPotTexture;
-        Rectangle twigHitbox;
         private List<Item> worldItems;
         private SpriteFont font;
         
