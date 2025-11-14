@@ -103,6 +103,8 @@ namespace Recource_Collection
             _hero.Draw();
             _questionCreator.Draw(_spriteBatch);
 
+            InputManager.Update();
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

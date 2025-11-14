@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Textbox.png</SourceFile>
-  <SourceTime>2025-11-13T09:11:26.6782795+00:00</SourceTime>
+  <SourceTime>2025-11-14T10:04:50.4605754+00:00</SourceTime>
   <DestFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/Content/Textbox.xnb</DestFile>
-  <DestTime>2025-11-13T09:13:05.8732207+00:00</DestTime>
+  <DestTime>2025-11-14T10:05:04.8273797+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
