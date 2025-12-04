@@ -16,8 +16,16 @@ namespace Recource_Collection
         private static Color Color;
         public Vector2 Position { get; protected set; }
         public Vector2 Origin { get; protected set; }
+        public float Speed { get; set; } = 0f;
+        public float Scale { get; set; } = 1f;
+        public Vector2 Velocity { get; set; } = Vector2.Zero;
 
-        
+        public virtual void Update()
+        {
+            Position += Velocity * Speed;
+        }
+
+
         public void Draw()
         {
 

@@ -13,6 +13,8 @@ namespace Recource_Collection
         public Texture2D swordTexture;
         public Texture2D coinTexture;
         public Texture2D healthPotTexture;
+        public Texture2D appleTexture;
+        public Texture2D waterBottleTexture;
         private List<Item> worldItems;
         private SpriteFont font;
         private SpriteBatch _spriteBatch;
@@ -50,10 +52,14 @@ namespace Recource_Collection
             healthPotTexture = content.Load<Texture2D>("healthPotion");
             coinTexture = content.Load<Texture2D>("coin");
             swordTexture = content.Load<Texture2D>("sword");
+            appleTexture = content.Load<Texture2D>("apple");
+            waterBottleTexture = content.Load<Texture2D>("waterBottle");
             CollectableItems.inportTextures(twigTexture, Items.twigs);
             CollectableItems.inportTextures(healthPotTexture, Items.healthPotion);
             CollectableItems.inportTextures(swordTexture, Items.sword);
             CollectableItems.inportTextures(coinTexture, Items.coin);
+            CollectableItems.inportTextures(appleTexture, Items.apple);
+            CollectableItems.inportTextures(waterBottleTexture, Items.waterBottle);
 
             font = content.Load<SpriteFont>("Font");
 
@@ -61,8 +67,10 @@ namespace Recource_Collection
         {
             new Item(Items.twigs, new Vector2(200, 100), new Vector2(48, 48)),
             new Item(Items.sword, new Vector2(400, 200), new Vector2(64, 64)),
-            new Item(Items.coin, new Vector2(100, 500), new Vector2(32, 32)),
-            new Item(Items.healthPotion, new Vector2(250, 400), new Vector2(32, 32))
+            new Item(Items.coin, new Vector2(100, 500), new Vector2(24, 24)),
+            new Item(Items.healthPotion, new Vector2(250, 400), new Vector2(48, 48)),
+            new Item(Items.apple,new Vector2(350 , 400), new Vector2(48,48)),
+            new Item(Items.waterBottle,new Vector2(500,500),new Vector2(64,64))
         };
         }
 

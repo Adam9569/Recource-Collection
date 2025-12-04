@@ -14,7 +14,9 @@ namespace Recource_Collection
         sword,
         healthPotion,
         coin,
-        twigs
+        twigs,
+        apple,
+        waterBottle
     }
 
 
@@ -26,8 +28,19 @@ namespace Recource_Collection
             {Items.sword , 10 },
             {Items.healthPotion ,2},
             {Items.coin , 0 },
-            {Items.twigs, 1 }
+            {Items.twigs, 1 },
+            {Items.apple, 1},
+            {Items.waterBottle ,2 }
 
+        };
+        public static Dictionary<Items, int> Food = new Dictionary<Items, int>()
+        {
+            {Items.banana , 4 },
+            {Items.apple , 3}
+        };
+        public static Dictionary<Items, int> Drink = new Dictionary<Items, int>()
+        {
+            {Items.waterBottle , 25}
         };
         public static Dictionary<Items, Texture2D> itemTextures = new Dictionary<Items, Texture2D>();
 
