@@ -16,6 +16,7 @@ namespace Recource_Collection
         private Hero _hero;
         private SpriteFont font;
         private WorldItems _worldItems;
+        private Dictionary<string, Texture2D> Assets;
 
 
 
@@ -50,7 +51,13 @@ namespace Recource_Collection
             _worldItems = new WorldItems(_spriteBatch);
             _worldItems.LoadContent(Content);
 
-            // TODO: use this.Content to load your game content here
+            Assets.Add("grass", Content.Load<Texture2D>("grass"));
+            Assets.Add("rock", Content.Load<Texture2D>("rock"));
+            Assets.Add("enemy", Content.Load<Texture2D>("enemy"));
+            Assets.Add("bush", Content.Load<Texture2D>("bush"));
+            Assets.Add("tree1", Content.Load<Texture2D>("tree1"));
+            Assets.Add("tree2", Content.Load<Texture2D>("tree2"));
+
 
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(heroTexture, new Vector2(100, 100));
