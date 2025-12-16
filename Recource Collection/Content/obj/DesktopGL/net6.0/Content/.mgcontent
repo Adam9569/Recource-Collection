@@ -7,13 +7,21 @@
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/apple.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/coin.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Font.spritefont</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/grass.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/healthPotion.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/hero.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/rock.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/sword.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/tree1.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/tree2.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/twig.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/water.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -53,11 +53,16 @@ namespace Recource_Collection
 
             Assets.Add("grass", Content.Load<Texture2D>("grass"));
             Assets.Add("rock", Content.Load<Texture2D>("rock"));
+            Assets.Add("rock1", Content.Load<Texture2D>("rock1"));
+            Assets.Add("rock2", Content.Load<Texture2D>("rock2"));
             Assets.Add("enemy", Content.Load<Texture2D>("enemy"));
             Assets.Add("bush", Content.Load<Texture2D>("bush"));
             Assets.Add("tree1", Content.Load<Texture2D>("tree1"));
             Assets.Add("tree2", Content.Load<Texture2D>("tree2"));
-
+            Assets.Add("twig", Content.Load<Texture2D>("twig"));
+            Assets.Add("water1", Content.Load<Texture2D>("water1"));
+            Assets.Add("water2", Content.Load<Texture2D>("water2"));
+            Assets.Add("water", Content.Load<Texture2D>("water"));
 
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(heroTexture, new Vector2(100, 100));
