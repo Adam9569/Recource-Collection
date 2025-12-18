@@ -50,6 +50,7 @@ namespace Recource_Collection
             font = Content.Load<SpriteFont>("Font");
             _worldItems = new WorldItems(_spriteBatch);
             _worldItems.LoadContent(Content);
+            Assets = new Dictionary<string, Texture2D>();
 
             Assets.Add("grass", Content.Load<Texture2D>("grass"));
             Assets.Add("rock", Content.Load<Texture2D>("rock"));

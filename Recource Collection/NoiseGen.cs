@@ -48,20 +48,41 @@ namespace Recource_Collection
 
         private float Perlin(float x, float y)
         {
-            int X = (int)MathF.Floor(x) & 255; int Y = (int)MathF.Floor(y) & 255; x -= MathF.Floor(x);
-            y -= MathF.Floor(y); float u = Fade(x);
-            float v = Fade(y);
-            int A = (Permutation[X] + Y) & 255;
-            int B = (Permutation[X + 1] + Y) & 255;
-            float res = Lerp(v, Lerp(u, Grad(Permutation[A], x, y), Grad(Permutation[B], x - 1, y)), Lerp(u, Grad(Permutation[A + 1], x, y - 1), Grad(Permutation[B + 1], x - 1, y - 1)));
-            return (res + 1f) / 2f;
+            int xCoord = (int)MathF.Floor(x) & 31;
+            int yCoord = (int)MathF.Floor(y) & 31;
+
+            float RemX = MathF.Floor(x);
+            float RemY = MathF.Floor(y);
+
+            float u = fade(RemX);
+            float v = fade(RemY);
+
+            int tL = Permutation[(Permutation[xCoord] + yCoord) & 31];
+            int tR = Permutation[(Permutation[xCoord] + yCoord + 1) & 31];
+            int bL = Permutation[(Permutation[xCoord + 1 & 31] + yCoord) & 31];
+            int bR = Permutation[(Permutation[xCoord + 1 & 31] + yCoord + 1) & 31];
+
+            float x1 = Lerp(
+                Grad(tL, RemX, RemY),
+                Grad(tR, RemX - 1, RemY),
+                u);
+            float x2 = Lerp(
+                Grad(bL, RemX, RemY - 1),
+                Grad(bR, RemX, RemY - 1),
+                u);
+            return Lerp(x1, x2,v);
+
+
+        }
+        float fade(float t)
+        {
+            return t * t * t * (t * (t * 6 - 15) + 10);
+        }
+        private float Lerp(float a, float b, float t)
+        {
+            return a + t * (b - a);
         }
 
-        private float Fade(float t) 
-        { return t * t * t * (t * (t * 6 - 15) + 10); }
-
-        private float Lerp(float t, float a, float b) 
-        { return a + t * (b - a); }
         private float Grad(int hash, float x, float y)
         {
             int h = hash & 7; 
