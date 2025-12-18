@@ -92,7 +92,7 @@ namespace Recource_Collection
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(transformMatrix: _translation);
             
             _worldItems.Draw();
             _hero.Draw();
