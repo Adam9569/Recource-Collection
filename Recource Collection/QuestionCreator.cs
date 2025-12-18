@@ -56,38 +56,19 @@ namespace Recource_Collection
             _questions = new List<Question>();
             _questions = QuestionManager.LoadQuestions("Content/Data/questions.json");
 
-
             if (_questions.Count > 0)
             {
                 _currentQuestion = _questions[0];
             }
         }
-        private void HandleClick(Point mouseClick)
-        {
-            if (_textBoxRect.Contains(mouseClick))
-            {
-                _hasFocus = !_hasFocus;
-                if (_hasFocus)
-                    RegisterTextInput(OnTextInput);
-                else
-                    UnRegisterTextInput(OnTextInput);
-            }
-            else
-            {
-                if (_hasFocus)
-                {
-                    _hasFocus = false;
-                    UnRegisterTextInput(OnTextInput);
-                }
-            }
-        }
+        
         public void NextQuestion()
         {
             if(_questions == null || _questions.Count == 0)
             {
                 return;
             }
-            
+
             CurrentQuestionIndex++;
             if (CurrentQuestionIndex >= _questions.Count)
             {
@@ -144,6 +125,25 @@ namespace Recource_Collection
 
             }
         }
+        private void HandleClick(Point mouseClick)
+        {
+            if (_textBoxRect.Contains(mouseClick))
+            {
+                _hasFocus = !_hasFocus;
+                if (_hasFocus)
+                    RegisterTextInput(OnTextInput);
+                else
+                    UnRegisterTextInput(OnTextInput);
+            }
+            else
+            {
+                if (_hasFocus)
+                {
+                    _hasFocus = false;
+                    UnRegisterTextInput(OnTextInput);
+                }
+            }
+        }
 
 
         public void Update()
@@ -168,7 +168,7 @@ namespace Recource_Collection
                     _currentQuestion = _questions[randomIndex];          
                 }
             }
-            LoadContent();
+            
 
             previousKeyBoardState = keyboardState;
             _previousMouseState = mouseState;
