@@ -9,7 +9,7 @@ namespace Recource_Collection
 {
     public class Game1 : Game
     {
-
+        private Matrix _translation;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public Texture2D heroTexture;
@@ -69,6 +69,11 @@ namespace Recource_Collection
             _hero = new Hero(heroTexture, new Vector2(100, 100));
 
     }
+        private void TranslationCalc()
+        {
+            _translation = Matrix.CreateTranslation(-_hero.Position.X + Globals.WindowSize.X / 2, -_hero.Position.Y + Globals.WindowSize.Y / 2, 0f);
+
+        }
 
         protected override void Update(GameTime gameTime)
         {
@@ -77,6 +82,7 @@ namespace Recource_Collection
             Globals.Update(gameTime);
             var keyboardState = Keyboard.GetState();
             _hero.Update();
+            TranslationCalc();
             _worldItems.Update(_hero);
 
 
@@ -87,6 +93,7 @@ namespace Recource_Collection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
+            
             _worldItems.Draw();
             _hero.Draw();
             InputManager.Update();
