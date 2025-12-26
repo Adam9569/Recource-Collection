@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using static Recource_Collection.TileMap;
 
 namespace Recource_Collection
 {
@@ -17,7 +18,8 @@ namespace Recource_Collection
         private SpriteFont font;
         private WorldItems _worldItems;
         private Dictionary<string, Texture2D> Assets;
-
+        NoiseGen noise;
+        TileMap tileMap;
 
 
 
@@ -45,13 +47,14 @@ namespace Recource_Collection
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
-
+            
+            noise = new NoiseGen(seed:1234);
 
             font = Content.Load<SpriteFont>("Font");
             _worldItems = new WorldItems(_spriteBatch);
             _worldItems.LoadContent(Content);
-            Assets = new Dictionary<string, Texture2D>();
 
+            Assets = new Dictionary<string, Texture2D>();
             Assets.Add("grass", Content.Load<Texture2D>("grass"));
             Assets.Add("rock", Content.Load<Texture2D>("rock"));
             Assets.Add("rock1", Content.Load<Texture2D>("rock1"));
@@ -64,15 +67,45 @@ namespace Recource_Collection
             Assets.Add("water1", Content.Load<Texture2D>("water1"));
             Assets.Add("water2", Content.Load<Texture2D>("water2"));
             Assets.Add("water", Content.Load<Texture2D>("water"));
+            var tileTextures = new Dictionary<TileType, Texture2D>
+            {
+                {TileType.grass, Assets["grass"]},
+                {TileType.Rock1, Assets["rock1"]},
+                {TileType.Rock2, Assets["rock2"]},
+                {TileType.Tree1, Assets["tree1"]},
+                {TileType.Tree2, Assets["tree2"]},
+                {TileType.Water1, Assets["water1"]},
+                {TileType.Water2, Assets["water2"]}
+            };
+            tileMap = new TileMap(tileTextures);
 
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(heroTexture, new Vector2(100, 100));
-
+            WorldGen();
     }
         private void TranslationCalc()
         {
             _translation = Matrix.CreateTranslation(-_hero.Position.X + Globals.WindowSize.X / 2, -_hero.Position.Y + Globals.WindowSize.Y / 2, 0f);
 
+        }
+        void WorldGen()
+        {
+            for (int x = 0; x < TileMap.Width; x++)
+            {
+                for (int y = 0; y < TileMap.Height; y++)
+                {
+                    float n = noise.Sample(x, y);
+
+                    if (n < 0.3f)
+                        tileMap.SetTile($"{x};{y}", TileType.Water1);
+                    else if (n < 0.45f)
+                        tileMap.SetTile($"{x};{y}", TileType.Rock1);
+                    else if (n < 0.7f)
+                        tileMap.SetTile($"{x};{y}", TileType.grass);
+                    else
+                        tileMap.SetTile($"{x};{y}", TileType.Tree1);
+                }
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -95,8 +128,28 @@ namespace Recource_Collection
             _spriteBatch.Begin(transformMatrix: _translation);
             
             _worldItems.Draw();
-            _hero.Draw();
+            
             InputManager.Update();
+
+
+            for (int x = 0; x < TileMap.Width; x++)
+            {
+                for (int y = 0; y < TileMap.Height; y++)
+                {
+                    string pos = $"{x};{y}";
+                    TileType type = tileMap.GetTile(pos);
+
+                    // get the texture for that tile type
+                    Texture2D tex = tileMap.Assets[type];
+
+                    _spriteBatch.Draw(
+                        tex,
+                        new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),
+                        Color.White
+                    );
+                }
+            }
+            _hero.Draw();
 
             int i = 0;
             foreach (var item in _hero.Inventory)

@@ -16,6 +16,7 @@
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/tree1.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/tree2.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/twig.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Void.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/water.png</File>
   </SourceFiles>
   <DestFiles>
@@ -28,6 +29,7 @@
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File>bush.png</File>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

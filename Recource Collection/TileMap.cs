@@ -5,18 +5,47 @@ using Microsoft.Xna.Framework;
 
 namespace Recource_Collection
 {
-    internal class TileMap
+    public class TileMap
     {
-        public Dictionary<string, string> Map = new Dictionary<string, string>();
-        public const int tilesize = 64;
+
+        public enum TileType
+        {
+            Water1,
+            Water2,
+            Tree1,
+            Tree2,
+            Rock1,
+            Rock2,
+            grass,
+            bush,
+            Void,
+        }
+
         public const int Chunksize = 320;
-        public HashSet<string> SolidTiles = new HashSet<string>();
-        public Dictionary<string, Texture2D> Assets { get; set; }
+        public const int tilesize = 64;
         public const int Width = 128;
         public const int Height = 128;
+
+        public HashSet<TileType> SolidTiles = new HashSet<TileType>();
+        public Dictionary<string, TileType> Tiles = new Dictionary<string, TileType>();
+        public Dictionary<TileType, Texture2D> Assets;
+        public TileMap(Dictionary<TileType, Texture2D> assets)
+        {
+            Assets = assets;
+
+            SolidTiles.Add(TileType.Water1);
+            SolidTiles.Add(TileType.bush);
+        }
         public bool InTileMap(string key)
         {
-            return Map.ContainsKey(key);
+            string[] p = key.Split(';');
+            int x = int.Parse(p[0]);    
+            int y = int.Parse(p[1]);
+
+            if (x < 0 || y < 0) return false;
+            if (x >= Width || y >= Height) return false;
+
+            return true;
         }
         public string VectorToPosition(Vector2 position)
         {
@@ -30,14 +59,21 @@ namespace Recource_Collection
             int[] coords = Array.ConvertAll(pos.Split(';'), int.Parse);
             return new Vector2(coords[0] * tilesize, coords[1] * tilesize);
         }
-        public string this[string key]
+        public TileType GetTile(string pos)
         {
-            get => Map[key];
-            set => Map.Add(key, value);
+            if (!Tiles.ContainsKey(pos))
+                return TileType.Void;
+            return Tiles[pos];
         }
-        public TileMap(Dictionary<string, Texture2D> assets)
+        public void SetTile(string pos, TileType type)
         {
-            Assets = assets;
+            if (InTileMap(pos))
+                Tiles[pos] = type;
         }
+        public bool IsWalkable(string pos)
+        {
+            return !SolidTiles.Contains(GetTile(pos));
+        }
+
     }
 }

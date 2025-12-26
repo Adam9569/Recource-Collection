@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Recource_Collection
 {
-    internal class NoiseGen
+    public class NoiseGen
     {
         private int Seed;
         private float Scale;
@@ -32,6 +32,7 @@ namespace Recource_Collection
             float noiseHeight = 0f;
             float maxAmplitude = 0f;
 
+
             for (int i = 0; i < Octaves; i++)
             {
                 float sampleX = (x*Scale*frequency) + Seed;
@@ -41,6 +42,7 @@ namespace Recource_Collection
                 maxAmplitude += amplitude;
                 amplitude *= Persistence;
                 frequency *= Sharpness;
+                noiseHeight += perlinValue * amplitude;
             }
             float normalized = (noiseHeight / maxAmplitude + 1f) / 2f;
             return Math.Clamp(normalized, 0f, 1f);
@@ -51,8 +53,8 @@ namespace Recource_Collection
             int xCoord = (int)MathF.Floor(x) & 31;
             int yCoord = (int)MathF.Floor(y) & 31;
 
-            float RemX = MathF.Floor(x);
-            float RemY = MathF.Floor(y);
+            float RemX = x - MathF.Floor(x);
+            float RemY = y - MathF.Floor(y);
 
             float u = fade(RemX);
             float v = fade(RemY);

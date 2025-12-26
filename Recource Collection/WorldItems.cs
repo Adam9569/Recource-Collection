@@ -64,15 +64,6 @@ namespace Recource_Collection
             appleTexture = content.Load<Texture2D>("apple");
             waterBottleTexture = content.Load<Texture2D>("water");
 
-            tree1Tex = content.Load<Texture2D>("tree1");
-            tree2Tex = content.Load<Texture2D>("tree2");
-            rock1Tex = content.Load<Texture2D>("rock1");
-            rock2Tex = content.Load<Texture2D>("rock2");
-            grassTex = content.Load<Texture2D>("grass");
-            water1Tex = content.Load<Texture2D>("water1");
-            water2Tex = content.Load<Texture2D>("water2");
-
-
             CollectableItems.inportTextures(twigTexture, Items.twigs);
             CollectableItems.inportTextures(healthPotTexture, Items.healthPotion);
             CollectableItems.inportTextures(swordTexture, Items.sword);
