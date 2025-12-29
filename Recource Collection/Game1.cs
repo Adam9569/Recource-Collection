@@ -126,8 +126,8 @@ namespace Recource_Collection
                     if (tileMap.GetTile(pos) == TileType.grass)
                     {
                         float r = noise.Sample(x + 2000, y + 2000);
-                        r = MathF.Pow(r, 1.2f);
-                        if (r > 0.88f)
+                        r = MathF.Pow(r, 0.6f);
+                        if (r > 0.60f)
                             tileMap.SetTile(pos, TileType.Rock1);
                     }
                 }

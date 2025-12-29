@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace Recource_Collection
                 {
                     float n = noise.Sample(x, y);
                     n = Math.Clamp(n, 0f, 1f);
+
                     n = MathF.Pow(n, 0.7f);
 
                     if (n < 0.12f)
