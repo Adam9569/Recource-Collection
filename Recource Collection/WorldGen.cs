@@ -16,16 +16,19 @@ namespace Recource_Collection
                 for (int y = 0; y < TileMap.Height; y++)
                 {
                     float n = noise.Sample(x, y);
-                    string pos = $"{x};{y}";
+                    n = Math.Clamp(n, 0f, 1f);
+                    n = MathF.Pow(n, 0.7f);
 
-                    if (n < 0.3f)
-                        map.SetTile(pos, TileType.Water1);
-                    else if (n < 0.45f)
-                        map.SetTile(pos, TileType.Rock1);
-                    else if (n < 0.7f)
-                        map.SetTile(pos, TileType.grass);
+                    if (n < 0.12f)
+                        map.SetTile($"{x};{y}", TileType.Water1);
+                    else if (n < 0.20f)
+                        map.SetTile($"{x};{y}", TileType.sand1);
+                    else if (n < 0.55f)
+                        map.SetTile($"{x};{y}", TileType.grass);
+                    else if (n < 0.78f)
+                        map.SetTile($"{x};{y}", TileType.Tree1);
                     else
-                        map.SetTile(pos, TileType.Tree1);
+                        map.SetTile($"{x};{y}", TileType.Rock1);
                 }
             }
         }

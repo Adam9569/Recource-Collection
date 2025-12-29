@@ -15,7 +15,7 @@ namespace Recource_Collection
         private float Persistence;
         private float Sharpness;
 
-        public NoiseGen(int seed, float scale = 0.05f, int octaves = 3, float persistence = 0.5f, float sharpness = 2.0f)
+        public NoiseGen(int seed, float scale = 0.02f, int octaves = 3, float persistence = 0.5f, float sharpness = 2.0f)
         {
             Seed = seed;
             Scale = scale;

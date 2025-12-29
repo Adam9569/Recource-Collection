@@ -33,7 +33,7 @@ namespace Recource_Collection
 
         protected override void Initialize()
         {
-            Globals.WindowSize = new(1024, 768);
+            Globals.WindowSize = new(1600, 1600);
             _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
             _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             _graphics.ApplyChanges();
@@ -60,13 +60,15 @@ namespace Recource_Collection
             Assets.Add("rock1", Content.Load<Texture2D>("rock1"));
             Assets.Add("rock2", Content.Load<Texture2D>("rock2"));
             Assets.Add("enemy", Content.Load<Texture2D>("enemy"));
-            Assets.Add("bush", Content.Load<Texture2D>("bush"));
+            Assets.Add("bush1", Content.Load<Texture2D>("bush1"));
             Assets.Add("tree1", Content.Load<Texture2D>("tree1"));
             Assets.Add("tree2", Content.Load<Texture2D>("tree2"));
             Assets.Add("twig", Content.Load<Texture2D>("twig"));
             Assets.Add("water1", Content.Load<Texture2D>("water1"));
             Assets.Add("water2", Content.Load<Texture2D>("water2"));
             Assets.Add("water", Content.Load<Texture2D>("water"));
+            Assets.Add("sand1", Content.Load<Texture2D>("sand"));
+
             var tileTextures = new Dictionary<TileType, Texture2D>
             {
                 {TileType.grass, Assets["grass"]},
@@ -75,7 +77,9 @@ namespace Recource_Collection
                 {TileType.Tree1, Assets["tree1"]},
                 {TileType.Tree2, Assets["tree2"]},
                 {TileType.Water1, Assets["water1"]},
-                {TileType.Water2, Assets["water2"]}
+                {TileType.Water2, Assets["water2"]},
+                {TileType.sand1, Assets["sand1"]},
+                {TileType.bush1, Assets["bush1"] }
             };
             tileMap = new TileMap(tileTextures);
 
@@ -94,19 +98,69 @@ namespace Recource_Collection
             {
                 for (int y = 0; y < TileMap.Height; y++)
                 {
-                    float n = noise.Sample(x, y);
+                    string pos = $"{x};{y}";
 
-                    if (n < 0.3f)
-                        tileMap.SetTile($"{x};{y}", TileType.Water1);
-                    else if (n < 0.45f)
-                        tileMap.SetTile($"{x};{y}", TileType.Rock1);
-                    else if (n < 0.7f)
-                        tileMap.SetTile($"{x};{y}", TileType.grass);
+                    float n = noise.Sample(x, y);
+                    n = MathF.Pow(n, 0.75f);
+                    if (n < 0.10f)
+                        tileMap.SetTile(pos, TileType.Water1);
                     else
-                        tileMap.SetTile($"{x};{y}", TileType.Tree1);
+                        tileMap.SetTile(pos, TileType.grass);
+                }
+            }
+            for (int x = 1; x < TileMap.Width - 1; x++)
+            {
+                for (int y = 1; y < TileMap.Height - 1; y++)
+                {
+                    string pos = $"{x};{y}";
+
+                    if (tileMap.GetTile(pos) == TileType.grass && nearWater(x, y))
+                        tileMap.SetTile(pos, TileType.sand1);
+                }
+            }
+            for (int x = 0; x < TileMap.Width; x++)
+            {
+                for (int y = 0; y < TileMap.Height; y++)
+                {
+                    string pos = $"{x};{y}";
+                    if (tileMap.GetTile(pos) == TileType.grass)
+                    {
+                        float r = noise.Sample(x + 2000, y + 2000);
+                        r = MathF.Pow(r, 1.2f);
+                        if (r > 0.88f)
+                            tileMap.SetTile(pos, TileType.Rock1);
+                    }
+                }
+            }
+            for (int x = 0; x < TileMap.Width; x++)
+            {
+                for (int y = 0; y < TileMap.Height; y++)
+                {
+                    string pos = $"{x};{y}";
+                    if (tileMap.GetTile(pos) == TileType.grass)
+                    {
+                        float f = noise.Sample(x + 1000, y + 1000);
+                        f = MathF.Pow(f, 0.65f);
+                        if (f > 0.48f)
+                            tileMap.SetTile(pos, TileType.Tree1);
+                    }
                 }
             }
         }
+
+        bool nearWater(int x, int y)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    if (tileMap.GetTile($"{x + dx};{y + dy}") == TileType.Water1)
+                        return true;
+                }
+            }
+            return false;
+        }
+
 
         protected override void Update(GameTime gameTime)
         {

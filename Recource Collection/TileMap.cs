@@ -17,7 +17,8 @@ namespace Recource_Collection
             Rock1,
             Rock2,
             grass,
-            bush,
+            bush1,
+            sand1,
             Void,
         }
 
@@ -34,7 +35,7 @@ namespace Recource_Collection
             Assets = assets;
 
             SolidTiles.Add(TileType.Water1);
-            SolidTiles.Add(TileType.bush);
+            SolidTiles.Add(TileType.bush1);
         }
         public bool InTileMap(string key)
         {

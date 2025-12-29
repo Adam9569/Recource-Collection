@@ -27,7 +27,7 @@ namespace Recource_Collection
         public Hero(Texture2D texture, Vector2 position) : base(texture, position)
         {
             HitBox = new Rectangle((int)position.X, (int)position.Y, Texture.Width, Texture.Height);
-            Speed = 500;
+            Speed = 2500;
         }
 
         public void addToInv(Items itemtype)
