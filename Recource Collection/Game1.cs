@@ -48,7 +48,7 @@ namespace Recource_Collection
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
             
-            noise = new NoiseGen(seed:1234);
+            noise = new NoiseGen(seed:44321);
 
             font = Content.Load<SpriteFont>("Font");
             _worldItems = new WorldItems(_spriteBatch);
@@ -85,80 +85,12 @@ namespace Recource_Collection
 
             heroTexture = Content.Load<Texture2D>("hero");
             _hero = new Hero(heroTexture, new Vector2(100, 100));
-            WorldGen();
-    }
+            WorldGen.MapCreation(tileMap, noise);
+        }
         private void TranslationCalc()
         {
             _translation = Matrix.CreateTranslation(-_hero.Position.X + Globals.WindowSize.X / 2, -_hero.Position.Y + Globals.WindowSize.Y / 2, 0f);
 
-        }
-        void WorldGen()
-        {
-            for (int x = 0; x < TileMap.Width; x++)
-            {
-                for (int y = 0; y < TileMap.Height; y++)
-                {
-                    string pos = $"{x};{y}";
-
-                    float n = noise.Sample(x, y);
-                    n = MathF.Pow(n, 0.75f);
-                    if (n < 0.10f)
-                        tileMap.SetTile(pos, TileType.Water1);
-                    else
-                        tileMap.SetTile(pos, TileType.grass);
-                }
-            }
-            for (int x = 1; x < TileMap.Width - 1; x++)
-            {
-                for (int y = 1; y < TileMap.Height - 1; y++)
-                {
-                    string pos = $"{x};{y}";
-
-                    if (tileMap.GetTile(pos) == TileType.grass && nearWater(x, y))
-                        tileMap.SetTile(pos, TileType.sand1);
-                }
-            }
-            for (int x = 0; x < TileMap.Width; x++)
-            {
-                for (int y = 0; y < TileMap.Height; y++)
-                {
-                    string pos = $"{x};{y}";
-                    if (tileMap.GetTile(pos) == TileType.grass)
-                    {
-                        float r = noise.Sample(x + 2000, y + 2000);
-                        r = MathF.Pow(r, 0.6f);
-                        if (r > 0.60f)
-                            tileMap.SetTile(pos, TileType.Rock1);
-                    }
-                }
-            }
-            for (int x = 0; x < TileMap.Width; x++)
-            {
-                for (int y = 0; y < TileMap.Height; y++)
-                {
-                    string pos = $"{x};{y}";
-                    if (tileMap.GetTile(pos) == TileType.grass)
-                    {
-                        float f = noise.Sample(x + 1000, y + 1000);
-                        f = MathF.Pow(f, 0.65f);
-                        if (f > 0.48f)
-                            tileMap.SetTile(pos, TileType.Tree1);
-                    }
-                }
-            }
-        }
-
-        bool nearWater(int x, int y)
-        {
-            for (int dx = -1; dx <= 1; dx++)
-            {
-                for (int dy = -1; dy <= 1; dy++)
-                {
-                    if (tileMap.GetTile($"{x + dx};{y + dy}") == TileType.Water1)
-                        return true;
-                }
-            }
-            return false;
         }
 
 
@@ -192,8 +124,6 @@ namespace Recource_Collection
                 {
                     string pos = $"{x};{y}";
                     TileType type = tileMap.GetTile(pos);
-
-                    // get the texture for that tile type
                     Texture2D tex = tileMap.Assets[type];
 
                     _spriteBatch.Draw(

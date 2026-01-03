@@ -35,14 +35,14 @@ namespace Recource_Collection
 
             for (int i = 0; i < Octaves; i++)
             {
-                float sampleX = (x*Scale*frequency) + Seed;
+                float sampleX = (x * Scale * frequency) + Seed;
                 float sampleY = (y * Scale * frequency) + Seed;
-                float perlinValue = (Perlin(sampleX, sampleY) * 2F) - 1f;
+                float perlinValue = Perlin(sampleX, sampleY);
 
+                noiseHeight += perlinValue * amplitude;
                 maxAmplitude += amplitude;
                 amplitude *= Persistence;
                 frequency *= Sharpness;
-                noiseHeight += perlinValue * amplitude;
             }
             float normalized = (noiseHeight / maxAmplitude + 1f) / 2f;
             return Math.Clamp(normalized, 0f, 1f);
@@ -70,7 +70,7 @@ namespace Recource_Collection
                 u);
             float x2 = Lerp(
                 Grad(bL, RemX, RemY - 1),
-                Grad(bR, RemX, RemY - 1),
+                Grad(bR, RemX - 1, RemY - 1),
                 u);
             return Lerp(x1, x2,v);
 
