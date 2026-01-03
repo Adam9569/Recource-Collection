@@ -6,11 +6,13 @@
   <SourceFiles>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/../../../../../Downloads/bush1.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/apple.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/berry.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/coin.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Font.spritefont</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/grass.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/healthPotion.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/hero.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/pebble.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/rock.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/sand.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/sword.png</File>
@@ -22,6 +24,8 @@
   </SourceFiles>
   <DestFiles>
     <File>bush1.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

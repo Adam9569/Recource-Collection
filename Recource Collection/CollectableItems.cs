@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Recource_Collection
@@ -16,7 +13,9 @@ namespace Recource_Collection
         coin,
         twigs,
         apple,
-        waterBottle
+        waterBottle,
+        berry,
+        pebble
     }
 
 
@@ -24,19 +23,22 @@ namespace Recource_Collection
     {
         public static Dictionary<Items, int> Weight = new Dictionary<Items, int>()
         {
-            {Items.banana,1 },
+            {Items.banana,2 },
             {Items.sword , 10 },
             {Items.healthPotion ,2},
             {Items.coin , 0 },
             {Items.twigs, 1 },
             {Items.apple, 1},
-            {Items.waterBottle ,2 }
+            {Items.waterBottle ,2 },
+            {Items.berry,1 },
+            {Items.pebble,3 }
 
         };
         public static Dictionary<Items, int> Food = new Dictionary<Items, int>()
         {
             {Items.banana , 4 },
-            {Items.apple , 3}
+            {Items.apple , 3},
+            {Items.berry , 1 }
         };
         public static Dictionary<Items, int> Drink = new Dictionary<Items, int>()
         {

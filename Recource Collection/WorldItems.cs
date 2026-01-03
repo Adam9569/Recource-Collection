@@ -15,6 +15,8 @@ namespace Recource_Collection
         public Texture2D healthPotTexture;
         public Texture2D appleTexture;
         public Texture2D waterBottleTexture;
+        public Texture2D berryTexture;
+        public Texture2D pebbleTexture;
 
 
         public Texture2D tree1Tex;
@@ -63,6 +65,8 @@ namespace Recource_Collection
             swordTexture = content.Load<Texture2D>("sword");
             appleTexture = content.Load<Texture2D>("apple");
             waterBottleTexture = content.Load<Texture2D>("water");
+            berryTexture = content.Load<Texture2D>("berry");
+            pebbleTexture = content.Load<Texture2D>("pebble");
 
             CollectableItems.inportTextures(twigTexture, Items.twigs);
             CollectableItems.inportTextures(healthPotTexture, Items.healthPotion);
@@ -70,6 +74,8 @@ namespace Recource_Collection
             CollectableItems.inportTextures(coinTexture, Items.coin);
             CollectableItems.inportTextures(appleTexture, Items.apple);
             CollectableItems.inportTextures(waterBottleTexture, Items.waterBottle);
+            CollectableItems.inportTextures(berryTexture, Items.berry);
+            CollectableItems.inportTextures(pebbleTexture, Items.pebble);
 
             font = content.Load<SpriteFont>("Font");
 

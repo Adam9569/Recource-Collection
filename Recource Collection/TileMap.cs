@@ -28,6 +28,13 @@ namespace Recource_Collection
         public const int Height = 512;
 
         public HashSet<TileType> SolidTiles = new HashSet<TileType>();
+        public HashSet<TileType> FarmableTiles = new HashSet<TileType>
+        {
+            TileType.Tree1 , TileType.Tree2, TileType.Rock1 , TileType.Rock2 , TileType.bush1
+        };
+        public Dictionary<TileType, float> FarmTime = new Dictionary<TileType, float>();
+        public Dictionary<TileType, Items> FarmDrops = new Dictionary<TileType, Items>();
+        public Dictionary<TileType, int> DropAmount = new Dictionary<TileType, int>();
         public Dictionary<string, TileType> Tiles = new Dictionary<string, TileType>();
         public Dictionary<TileType, Texture2D> Assets;
         public TileMap(Dictionary<TileType, Texture2D> assets)
@@ -36,6 +43,24 @@ namespace Recource_Collection
 
             SolidTiles.Add(TileType.Water1);
             SolidTiles.Add(TileType.bush1);
+
+            FarmTime[TileType.bush1] = 1f;
+            FarmTime[TileType.Tree1] = 3f;
+            FarmTime[TileType.Tree2] = 3f;
+            FarmTime[TileType.Rock1] = 7f;
+            FarmTime[TileType.Rock2] = 7f;
+
+            FarmDrops[TileType.bush1] = Items.berry;
+            DropAmount[TileType.bush1] = 6;
+            FarmDrops[TileType.Tree1] = Items.twigs;
+            DropAmount[TileType.Tree1] = 2;
+            FarmDrops[TileType.Tree2] = Items.twigs;
+            DropAmount[TileType.Tree2] = 2;
+            FarmDrops[TileType.Rock1] = Items.pebble;
+            DropAmount[TileType.Rock1] = 4;
+            FarmDrops[TileType.Rock2] = Items.pebble;
+            DropAmount[TileType.Rock2] = 4;
+
         }
         public bool InTileMap(string key)
         {

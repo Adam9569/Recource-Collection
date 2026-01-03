@@ -20,6 +20,7 @@ namespace Recource_Collection
         private Dictionary<string, Texture2D> Assets;
         NoiseGen noise;
         TileMap tileMap;
+        private Texture2D pixel;
 
 
 
@@ -84,8 +85,11 @@ namespace Recource_Collection
             tileMap = new TileMap(tileTextures);
 
             heroTexture = Content.Load<Texture2D>("hero");
-            _hero = new Hero(heroTexture, new Vector2(100, 100));
+            _hero = new Hero(heroTexture, new Vector2(1000, 1000));
             WorldGen.MapCreation(tileMap, noise);
+
+            pixel = new Texture2D(GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.White });
         }
         private void TranslationCalc()
         {
@@ -100,7 +104,7 @@ namespace Recource_Collection
                 Exit();
             Globals.Update(gameTime);
             var keyboardState = Keyboard.GetState();
-            _hero.Update();
+            _hero.Update(tileMap);
             TranslationCalc();
             _worldItems.Update(_hero);
 
@@ -138,7 +142,7 @@ namespace Recource_Collection
             int i = 0;
             foreach (var item in _hero.Inventory)
             {
-                _spriteBatch.DrawString(font, item.Key + ": " + item.Value, new Vector2(i * 70, 10), Color.Black);
+                _spriteBatch.DrawString(font, item.Key + ": " + item.Value, new Vector2(_hero.Position.X + i * 70 -200, _hero.Position.Y + 100), Color.Black);
                 i++;
             }
             _spriteBatch.Draw(pixel, _hero.HitBox, Color.Red * 0.5f);
