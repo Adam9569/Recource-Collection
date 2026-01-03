@@ -141,6 +141,7 @@ namespace Recource_Collection
                 _spriteBatch.DrawString(font, item.Key + ": " + item.Value, new Vector2(i * 70, 10), Color.Black);
                 i++;
             }
+            _spriteBatch.Draw(pixel, _hero.HitBox, Color.Red * 0.5f);
 
             _spriteBatch.End();
             base.Draw(gameTime);
