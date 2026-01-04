@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Recource_Collection.Scenes;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 
 namespace Recource_Collection
 {
@@ -12,7 +12,7 @@ namespace Recource_Collection
         Game,
         Inventory,
         CharacterSelection,
-        Settings
+        Settings,
     }
 
     public static class SceneManager
@@ -31,6 +31,7 @@ namespace Recource_Collection
             Scenes.Add(SceneName.Game, new GameScene(Content));
             Scenes.Add(SceneName.MainMenu, new MainMenuScene(Content));
             Scenes.Add(SceneName.Settings, new Settigns(Content));
+            Scenes.Add(SceneName.CharacterSelection, new CharacterSelectionScene(Content));
 
             CurrentSceneName = SceneName.MainMenu;
             CurrentScene.OnSwitch();

@@ -13,10 +13,9 @@ namespace Recource_Collection
         private TileMap _tileMap;
         private WorldItems _worldItems;
         private NoiseGen _noise;
-
         private Texture2D heroTexture;
         private SpriteBatch _spriteBatch;
-
+        private ContentManager _content;
         private Matrix _camera;
         private SpriteFont _font;
 
@@ -36,11 +35,12 @@ namespace Recource_Collection
                 {TileMap.TileType.sand1, content.Load<Texture2D>("sand")},
                 {TileMap.TileType.bush1, content.Load<Texture2D>("bush1")},
             };
+            _content = content;
 
             _tileMap = new TileMap(tileTextures);
             WorldGen.MapCreation(_tileMap, _noise);
 
-            heroTexture = content.Load<Texture2D>("hero");
+            heroTexture = content.Load<Texture2D>(Globals.selectedHero);
             _hero = new Hero(heroTexture, new Vector2(100, 100));
 
             _worldItems = new WorldItems(Globals.SpriteBatch);
@@ -49,6 +49,8 @@ namespace Recource_Collection
 
         public override void OnSwitch()
         {
+            Texture2D newTexture = _content.Load<Texture2D>(Globals.selectedHero);
+            _hero.Texture = newTexture;
         }
         public override void Update()
         {

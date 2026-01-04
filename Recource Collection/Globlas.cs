@@ -12,6 +12,7 @@ namespace Recource_Collection
         public static SpriteBatch SpriteBatch { get; set; }
         public static Point WindowSize { get; set; }
 
+        public static string selectedHero = "Hero2";
         public static void Update(GameTime gt)
         {
             Time = (float)gt.ElapsedGameTime.TotalSeconds;

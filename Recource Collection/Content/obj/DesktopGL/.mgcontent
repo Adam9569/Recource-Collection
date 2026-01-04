@@ -12,6 +12,8 @@
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/grass.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/healthPotion.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/hero.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Hero2.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/hero3.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/pebble.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/rock.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/sand.png</File>
@@ -24,6 +26,8 @@
   </SourceFiles>
   <DestFiles>
     <File>bush1.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -12,7 +12,7 @@ namespace Recource_Collection
             Position = position;
             Origin = new Vector2(texture.Width / 2, texture.Height / 2);
         }
-        public static Texture2D Texture { get; set; }
+        public Texture2D Texture { get; set; }
         private static Color Color;
         public Vector2 Position { get; protected set; }
         public Vector2 Origin { get; protected set; }

@@ -16,6 +16,7 @@ namespace Recource_Collection
         private string[] _buttons =
         {
             "Main Menu",
+            "Character Selection"
 
         };
         private int buttonSelected = 0;
@@ -65,8 +66,7 @@ namespace Recource_Collection
                     break;
 
                 case 1:
-                    // SceneManager.SwitchScene(SceneName.Settings);
-                    Console.WriteLine("Settings selected");
+                    SceneManager.SwitchScene(SceneName.CharacterSelection);
                     break;
 
                 case 2:
