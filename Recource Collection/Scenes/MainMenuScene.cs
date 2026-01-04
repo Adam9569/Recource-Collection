@@ -40,6 +40,7 @@ namespace Recource_Collection.Scenes
             bool upPressed = keyboardState.IsKeyDown(Keys.Up) && !previousState.IsKeyDown(Keys.Up);
             bool downPressed = keyboardState.IsKeyDown(Keys.Down) && !previousState.IsKeyDown(Keys.Down);
             bool enterPressed = keyboardState.IsKeyDown(Keys.Enter) && !previousState.IsKeyDown(Keys.Enter);
+            
 
             if (enterPressed)
             {

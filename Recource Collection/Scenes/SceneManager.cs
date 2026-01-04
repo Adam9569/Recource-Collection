@@ -10,7 +10,7 @@ namespace Recource_Collection
     {
         MainMenu,
         Game,
-        Inventory,
+        CraftingAndInv,
         CharacterSelection,
         Settings,
     }
@@ -32,6 +32,7 @@ namespace Recource_Collection
             Scenes.Add(SceneName.MainMenu, new MainMenuScene(Content));
             Scenes.Add(SceneName.Settings, new Settigns(Content));
             Scenes.Add(SceneName.CharacterSelection, new CharacterSelectionScene(Content));
+            Scenes.Add(SceneName.CraftingAndInv, new CraftingScene(Content, Globals.hero));
 
             CurrentSceneName = SceneName.MainMenu;
             CurrentScene.OnSwitch();

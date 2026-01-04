@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Recource_Collection
 {
@@ -18,6 +19,7 @@ namespace Recource_Collection
         private ContentManager _content;
         private Matrix _camera;
         private SpriteFont _font;
+        private KeyboardState previousState;
 
         public GameScene(ContentManager content)
         {
@@ -42,6 +44,7 @@ namespace Recource_Collection
 
             heroTexture = content.Load<Texture2D>(Globals.selectedHero);
             _hero = new Hero(heroTexture, new Vector2(100, 100));
+            Globals.hero = _hero;
 
             _worldItems = new WorldItems(Globals.SpriteBatch);
             _worldItems.LoadContent(content);
@@ -56,6 +59,8 @@ namespace Recource_Collection
         {
             _hero.Update(_tileMap);
             _worldItems.Update(_hero);
+            previousState = Keyboard.GetState();
+            OpenInventory();
 
             _camera = Matrix.CreateTranslation(
                 -_hero.Position.X + Globals.WindowSize.X / 2,
@@ -68,6 +73,13 @@ namespace Recource_Collection
                 SceneManager.SwitchScene(SceneName.MainMenu);
             }
                 
+        }
+        public void OpenInventory()
+        {
+            if(Keyboard.GetState().IsKeyDown(Keys.P) && previousState.IsKeyDown(Keys.P))
+            {
+                SceneManager.SwitchScene(SceneName.CraftingAndInv);
+            }
         }
         public override void Draw()
         {
@@ -86,7 +98,7 @@ namespace Recource_Collection
                     _spriteBatch.Draw(tex,new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),Color.White);
                 }
             }
-
+            
             _worldItems.Draw();
             _hero.Draw();
 
