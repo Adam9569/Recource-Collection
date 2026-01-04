@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
+
+namespace Recource_Collection
+{
+    internal class GameScene : Scene
+    {
+        private Hero _hero;
+        private TileMap _tileMap;
+        private WorldItems _worldItems;
+        private NoiseGen _noise;
+
+        private Texture2D heroTexture;
+        private SpriteBatch _spriteBatch;
+
+        private Matrix _camera;
+        private SpriteFont _font;
+
+        public GameScene(ContentManager content)
+        {
+            _font = content.Load<SpriteFont>("Font");
+            _noise = new NoiseGen(seed: 44321);
+            var tileTextures = new Dictionary<TileMap.TileType, Texture2D>
+            {
+                {TileMap.TileType.grass, content.Load<Texture2D>("grass")},
+                {TileMap.TileType.Rock1, content.Load<Texture2D>("rock1")},
+                {TileMap.TileType.Rock2, content.Load<Texture2D>("rock2")},
+                {TileMap.TileType.Tree1, content.Load<Texture2D>("tree1")},
+                {TileMap.TileType.Tree2, content.Load<Texture2D>("tree2")},
+                {TileMap.TileType.Water1, content.Load<Texture2D>("water1")},
+                {TileMap.TileType.Water2, content.Load<Texture2D>("water2")},
+                {TileMap.TileType.sand1, content.Load<Texture2D>("sand")},
+                {TileMap.TileType.bush1, content.Load<Texture2D>("bush1")},
+            };
+
+            _tileMap = new TileMap(tileTextures);
+            WorldGen.MapCreation(_tileMap, _noise);
+
+            heroTexture = content.Load<Texture2D>("hero");
+            _hero = new Hero(heroTexture, new Vector2(100, 100));
+
+            _worldItems = new WorldItems(Globals.SpriteBatch);
+            _worldItems.LoadContent(content);
+        }
+
+        public override void OnSwitch()
+        {
+        }
+        public override void Update()
+        {
+            _hero.Update(_tileMap);
+            _worldItems.Update(_hero);
+
+            _camera = Matrix.CreateTranslation(
+                -_hero.Position.X + Globals.WindowSize.X / 2,
+                -_hero.Position.Y + Globals.WindowSize.Y / 2,
+                0f
+            );
+
+            if (Keyboard.GetState().IsKeyDown(Keys.M))
+            {
+                SceneManager.SwitchScene(SceneName.MainMenu);
+            }
+                
+        }
+        public override void Draw()
+        {
+            _spriteBatch = Globals.SpriteBatch;
+
+            _spriteBatch.Begin(transformMatrix: _camera);
+
+            for (int x = 0; x < TileMap.Width; x++)
+            {
+                for (int y = 0; y < TileMap.Height; y++)
+                {
+                    string pos = $"{x};{y}";
+                    var type = _tileMap.GetTile(pos);
+                    var tex = _tileMap.Assets[type];
+
+                    _spriteBatch.Draw(tex,new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),Color.White);
+                }
+            }
+
+            _worldItems.Draw();
+            _hero.Draw();
+
+            int i = 0;
+            foreach (var item in _hero.Inventory)
+            {
+                _spriteBatch.DrawString(_font, $"{item.Key}: {item.Value}", new Vector2(i * 90, 10), Color.Black);
+                i++;
+            }
+
+            _spriteBatch.End();
+        }
+    }
+
+}

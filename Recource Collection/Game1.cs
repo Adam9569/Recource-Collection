@@ -1,29 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using static Recource_Collection.TileMap;
+using Recource_Collection;
 
 namespace Recource_Collection
 {
     public class Game1 : Game
     {
-        private Matrix _translation;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        public Texture2D heroTexture;
-        private Hero _hero;
-        private SpriteFont font;
-        private WorldItems _worldItems;
-        private Dictionary<string, Texture2D> Assets;
-        NoiseGen noise;
-        TileMap tileMap;
-        private Texture2D pixel;
-
-
-
 
         public Game1()
         {
@@ -34,80 +19,30 @@ namespace Recource_Collection
 
         protected override void Initialize()
         {
-            Globals.WindowSize = new(1080, 840);
+            Globals.WindowSize = new Point(1600, 1600);
             _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
             _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             _graphics.ApplyChanges();
-          
 
             base.Initialize();
-
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
-            
-            noise = new NoiseGen(seed:44321);
-
-            font = Content.Load<SpriteFont>("Font");
-            _worldItems = new WorldItems(_spriteBatch);
-            _worldItems.LoadContent(Content);
-
-            Assets = new Dictionary<string, Texture2D>();
-            Assets.Add("grass", Content.Load<Texture2D>("grass"));
-            Assets.Add("rock", Content.Load<Texture2D>("rock"));
-            Assets.Add("rock1", Content.Load<Texture2D>("rock1"));
-            Assets.Add("rock2", Content.Load<Texture2D>("rock2"));
-            Assets.Add("enemy", Content.Load<Texture2D>("enemy"));
-            Assets.Add("bush1", Content.Load<Texture2D>("bush1"));
-            Assets.Add("tree1", Content.Load<Texture2D>("tree1"));
-            Assets.Add("tree2", Content.Load<Texture2D>("tree2"));
-            Assets.Add("twig", Content.Load<Texture2D>("twig"));
-            Assets.Add("water1", Content.Load<Texture2D>("water1"));
-            Assets.Add("water2", Content.Load<Texture2D>("water2"));
-            Assets.Add("water", Content.Load<Texture2D>("water"));
-            Assets.Add("sand1", Content.Load<Texture2D>("sand"));
-
-            var tileTextures = new Dictionary<TileType, Texture2D>
-            {
-                {TileType.grass, Assets["grass"]},
-                {TileType.Rock1, Assets["rock1"]},
-                {TileType.Rock2, Assets["rock2"]},
-                {TileType.Tree1, Assets["tree1"]},
-                {TileType.Tree2, Assets["tree2"]},
-                {TileType.Water1, Assets["water1"]},
-                {TileType.Water2, Assets["water2"]},
-                {TileType.sand1, Assets["sand1"]},
-                {TileType.bush1, Assets["bush1"] }
-            };
-            tileMap = new TileMap(tileTextures);
-
-            heroTexture = Content.Load<Texture2D>("hero");
-            _hero = new Hero(heroTexture, new Vector2(1000, 1000));
-            WorldGen.MapCreation(tileMap, noise);
-
-            pixel = new Texture2D(GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.White });
+            SceneManager.LoadScenes(Content);
+            SceneManager.SwitchScene(SceneName.MainMenu);
         }
-        private void TranslationCalc()
-        {
-            _translation = Matrix.CreateTranslation(-_hero.Position.X + Globals.WindowSize.X / 2, -_hero.Position.Y + Globals.WindowSize.Y / 2, 0f);
-
-        }
-
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
             Globals.Update(gameTime);
-            var keyboardState = Keyboard.GetState();
-            _hero.Update(tileMap);
-            TranslationCalc();
-            _worldItems.Update(_hero);
 
+            // basic exit
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+            SceneManager.Update();
 
             base.Update(gameTime);
         }
@@ -115,39 +50,9 @@ namespace Recource_Collection
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin(transformMatrix: _translation);
-            
-            _worldItems.Draw();
-            
-            InputManager.Update();
 
+            SceneManager.Draw();
 
-            for (int x = 0; x < TileMap.Width; x++)
-            {
-                for (int y = 0; y < TileMap.Height; y++)
-                {
-                    string pos = $"{x};{y}";
-                    TileType type = tileMap.GetTile(pos);
-                    Texture2D tex = tileMap.Assets[type];
-
-                    _spriteBatch.Draw(
-                        tex,
-                        new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),
-                        Color.White
-                    );
-                }
-            }
-            _hero.Draw();
-
-            int i = 0;
-            foreach (var item in _hero.Inventory)
-            {
-                _spriteBatch.DrawString(font, item.Key + ": " + item.Value, new Vector2(_hero.Position.X + i * 70 -200, _hero.Position.Y + 100), Color.Black);
-                i++;
-            }
-            _spriteBatch.Draw(pixel, _hero.HitBox, Color.Red * 0.5f);
-
-            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
