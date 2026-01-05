@@ -17,7 +17,9 @@ namespace Recource_Collection.Scenes
         {
             "Load Game",
             "Settings",
-            "stats"
+            "stats",
+            "Recipies",
+            "Quit"
         };
         private int buttonSelected = 0;
 
@@ -74,6 +76,12 @@ namespace Recource_Collection.Scenes
                 case 2:
                     // SceneManager.SwitchScene(SceneName.Stats);
                     Console.WriteLine("Stats selected");
+                    break;
+                case 3:
+                    SceneManager.SwitchScene(SceneName.Recipies);
+                    break;
+                case 4:
+                    Globals.QuitGame.Invoke();
                     break;
             }
         }

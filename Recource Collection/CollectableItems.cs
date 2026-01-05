@@ -15,7 +15,11 @@ namespace Recource_Collection
         apple,
         waterBottle,
         berry,
-        pebble
+        pebble,
+        Rock,
+        RockPickaxe,
+        BerryBundle,
+        TwigPickaxe,
     }
 
 
@@ -31,18 +35,23 @@ namespace Recource_Collection
             {Items.apple, 1},
             {Items.waterBottle ,2 },
             {Items.berry,1 },
-            {Items.pebble,3 }
+            {Items.pebble,2 },
+            {Items.BerryBundle,5},
+            {Items.TwigPickaxe,5 },
+            {Items.RockPickaxe,8 }
 
         };
         public static Dictionary<Items, int> Food = new Dictionary<Items, int>()
         {
             {Items.banana , 4 },
             {Items.apple , 3},
-            {Items.berry , 1 }
+            {Items.berry , 1 },
+            {Items.BerryBundle,9 }
         };
         public static Dictionary<Items, int> Drink = new Dictionary<Items, int>()
         {
-            {Items.waterBottle , 25}
+            {Items.waterBottle , 25},
+            {Items.berry , 1 }
         };
         public static Dictionary<Items, Texture2D> itemTextures = new Dictionary<Items, Texture2D>();
 

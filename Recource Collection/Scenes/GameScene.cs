@@ -61,6 +61,7 @@ namespace Recource_Collection
             _worldItems.Update(_hero);
             previousState = Keyboard.GetState();
             OpenInventory();
+            OpenMenu();
 
             _camera = Matrix.CreateTranslation(
                 -_hero.Position.X + Globals.WindowSize.X / 2,
@@ -81,6 +82,15 @@ namespace Recource_Collection
                 SceneManager.SwitchScene(SceneName.CraftingAndInv);
             }
         }
+        public void OpenMenu()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && previousState.IsKeyDown(Keys.Escape))
+            {
+                SceneManager.SwitchScene(SceneName.MainMenu);
+            }
+        }
+
+
         public override void Draw()
         {
             _spriteBatch = Globals.SpriteBatch;

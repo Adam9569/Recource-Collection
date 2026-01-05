@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,6 +15,7 @@ namespace Recource_Collection
 
         public static string selectedHero = "Hero2";
         public static Hero hero;
+        public static Action QuitGame;
         public static void Update(GameTime gt)
         {
             Time = (float)gt.ElapsedGameTime.TotalSeconds;

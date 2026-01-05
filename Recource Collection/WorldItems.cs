@@ -17,6 +17,10 @@ namespace Recource_Collection
         public Texture2D waterBottleTexture;
         public Texture2D berryTexture;
         public Texture2D pebbleTexture;
+        public Texture2D BerryBundleTexture;
+        public Texture2D TwigPickaxeTexture;
+        public Texture2D RockPickaxeTexture;
+        public Texture2D RockTexture;
 
 
         public Texture2D tree1Tex;
@@ -67,6 +71,11 @@ namespace Recource_Collection
             waterBottleTexture = content.Load<Texture2D>("water");
             berryTexture = content.Load<Texture2D>("berry");
             pebbleTexture = content.Load<Texture2D>("pebble");
+            BerryBundleTexture = content.Load<Texture2D>("BerryBundle");
+            TwigPickaxeTexture = content.Load<Texture2D>("TwigPickaxe");
+            RockPickaxeTexture = content.Load<Texture2D>("RockPickaxe");
+            RockTexture = content.Load<Texture2D>("CraftRock");
+
 
             CollectableItems.inportTextures(twigTexture, Items.twigs);
             CollectableItems.inportTextures(healthPotTexture, Items.healthPotion);
@@ -76,6 +85,10 @@ namespace Recource_Collection
             CollectableItems.inportTextures(waterBottleTexture, Items.waterBottle);
             CollectableItems.inportTextures(berryTexture, Items.berry);
             CollectableItems.inportTextures(pebbleTexture, Items.pebble);
+            CollectableItems.inportTextures(RockTexture,Items.Rock);
+            CollectableItems.inportTextures(TwigPickaxeTexture, Items.TwigPickaxe);
+            CollectableItems.inportTextures(RockPickaxeTexture, Items.RockPickaxe);
+            CollectableItems.inportTextures(BerryBundleTexture, Items.BerryBundle);
 
             font = content.Load<SpriteFont>("Font");
 

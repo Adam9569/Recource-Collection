@@ -19,8 +19,12 @@ namespace Recource_Collection
         private List<(Items item, int count)> invView = new List<(Items item, int count)>();
         private Rectangle[] craftSlots = new Rectangle[9];
         private int selectedInvNum = -1;
-        private Items?[] _craftItems = new Items?[9];
-        private Items? _selectedItem = null;
+        private Items?[] craftItems = new Items?[9];
+        private Items? selectedItem = null;
+
+        private Rectangle CraftViewBox;
+        private Items? CraftViewItem = null;
+
         private KeyboardState previousKeyboardState;
         private MouseState previousMouseState;
 
@@ -34,7 +38,7 @@ namespace Recource_Collection
             _pixel = new Texture2D(Globals.SpriteBatch.GraphicsDevice, 1, 1);
             _pixel.SetData(new[] { Color.White });
 
-            BuildLayout();
+            Layout();
             RefreshInventoryView();
         }
 
@@ -45,7 +49,9 @@ namespace Recource_Collection
             previousMouseState = Mouse.GetState();
 
             RefreshInventoryView();
+            Layout();
             ValidateSelection();
+            UpdateOutput();
         }
         public void CloseInventory()
         {
@@ -65,6 +71,7 @@ namespace Recource_Collection
             Point m = mouse.Position;
             CloseInventory();
             RefreshInventoryView();
+            UpdateOutput();
 
             bool escPressed = keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape);
             if (escPressed)
@@ -81,6 +88,11 @@ namespace Recource_Collection
                 ClearCraftTable(returnItemsToInventory: true);
             }
 
+            bool enterPressed = keyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter);
+            if (enterPressed)
+            {
+                CraftOutput();
+            }
             bool leftClickPressed = mouse.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released;
 
             if (leftClickPressed)
@@ -113,17 +125,30 @@ namespace Recource_Collection
             _spriteBatch.Draw(_pixel, new Rectangle(0, 0, Globals.WindowSize.X, Globals.WindowSize.Y), Color.Black * 0.75f);
             _spriteBatch.DrawString(_font, "CRAFTING", new Vector2(40, 20), Color.White);
             _spriteBatch.DrawString(_font, "c = place in crafting table , q = drop item from inv", new Vector2(40, 90), Color.White);
-            _spriteBatch.DrawString(_font, "Selected: " + (_selectedItem?.ToString() ?? "None"), new Vector2(40, 120), Color.White);
+            _spriteBatch.DrawString(_font, "Selected: " + (selectedItem?.ToString() ?? "None"), new Vector2(40, 120), Color.White);
 
             DrawInventoryPanel(_spriteBatch);
             DrawCraftGrid(_spriteBatch);
+            DrawOutputBox(_spriteBatch);
 
             _spriteBatch.End();
+        }
+        private void DrawOutputBox(SpriteBatch _spritebatch)
+        {
+            _spritebatch.DrawString(_font, "Output", new Vector2(CraftViewBox.X, CraftViewBox.Y - 30), Color.White);
+
+            _spritebatch.Draw(_pixel, CraftViewBox, Color.Black);
+
+            if (CraftViewItem.HasValue)
+            {
+                Texture2D icon = CollectableItems.itemTextures[CraftViewItem.Value];
+                _spritebatch.Draw(icon, new Rectangle(CraftViewBox.X + 10, CraftViewBox.Y + 10, CraftViewBox.Width - 20, CraftViewBox.Height - 20), Color.White);
+            }
         }
 
 
 
-        private void BuildLayout()
+        private void Layout()
         {
             invBoxes.Clear();
 
@@ -132,6 +157,16 @@ namespace Recource_Collection
             int boxW = 300;
             int boxH = 58;
             int gap = 8;
+
+            int outSize = 90;
+            int gap2 = 14;
+
+            int gridLeft = craftSlots[0].X;
+            int gridRight = craftSlots[2].Right;
+            int gridBottom = craftSlots[8].Bottom;
+            int outX = gridLeft + ((gridRight - gridLeft) / 2) - (outSize / 2);
+            int outY = gridBottom + gap2;
+            CraftViewBox = new Rectangle(outX, outY, outSize, outSize);
 
             int rows = 12;
             for (int i = 0; i < rows; i++)
@@ -151,6 +186,67 @@ namespace Recource_Collection
             }
         }
 
+        private void UpdateOutput()
+        {
+            int twigCount = 0;
+            int pebbleCount = 0;
+            int berryCount = 0;
+            int RockCount = 0;
+
+            for (int i = 0; i < craftItems.Length; i++)
+            {
+                if (!craftItems[i].HasValue) continue;
+
+                switch (craftItems[i].Value)
+                {
+                    case Items.twigs:
+                        twigCount++;
+                        break;
+                    case Items.pebble:
+                        pebbleCount++;
+                        break;
+                    case Items.berry:
+                        berryCount++;
+                        break;
+                    case Items.Rock:
+                        RockCount++;
+                        break;
+                }
+            }
+
+
+            if (twigCount >= 2 && pebbleCount == 3)
+            {
+                CraftViewItem = Items.RockPickaxe;
+                return;
+            }
+            if (twigCount >= 2)
+            {
+                CraftViewItem = Items.TwigPickaxe;
+                return;
+            }
+            if (berryCount >= 8)
+            {
+                CraftViewItem = Items.BerryBundle;
+                return;
+            }
+
+            CraftViewItem = null;
+        }
+
+        private void CraftOutput()
+        {
+            if (!CraftViewItem.HasValue)return;
+
+            _hero.addToInv(CraftViewItem.Value);
+
+            for (int i = 0; i < craftItems.Length; i++)
+                craftItems[i] = null;
+
+            RefreshInventoryView();
+            ValidateSelection();
+            UpdateOutput();
+        }
         private void DrawInventoryPanel(SpriteBatch _spritebatch)
         {
             _spritebatch.DrawString(_font, "Inventory", new Vector2(invBoxes[0].X, invBoxes[0].Y - 30), Color.White);
@@ -184,9 +280,9 @@ namespace Recource_Collection
                 _spritebatch.Draw(_pixel, r, Color.Black);
                 _spritebatch.DrawString(_font, (i + 1).ToString(), new Vector2(r.X + 6, r.Y + 4), Color.Gray);
 
-                if (_craftItems[i].HasValue)
+                if (craftItems[i].HasValue)
                 {
-                    Items it = _craftItems[i].Value;
+                    Items it = craftItems[i].Value;
                     Texture2D icon = CollectableItems.itemTextures[it];
                     _spritebatch.Draw(icon, new Rectangle(r.X + 18, r.Y + 18, r.Width - 36, r.Height - 36), Color.White);
                 }
@@ -204,12 +300,12 @@ namespace Recource_Collection
 
         private void ValidateSelection()
         {
-            if (!_selectedItem.HasValue) return;
+            if (!selectedItem.HasValue) return;
 
-            Items item = _selectedItem.Value;
+            Items item = selectedItem.Value;
             if (!_hero.Inventory.TryGetValue(item, out int count) || count <= 0)
             {
-                _selectedItem = null;
+                selectedItem = null;
                 selectedInvNum = -1;
             }
         }
@@ -217,14 +313,14 @@ namespace Recource_Collection
         private void SelectItem(Point mousePos)
         {
             selectedInvNum = -1;
-            _selectedItem = null;
+            selectedItem = null;
 
             for (int i = 0; i < invBoxes.Count; i++)
             {
                 if (invBoxes[i].Contains(mousePos) && i < invView.Count)
                 {
                     selectedInvNum = i;
-                    _selectedItem = invView[i].item;
+                    selectedItem = invView[i].item;
                     break;
                 }
             }
@@ -232,16 +328,15 @@ namespace Recource_Collection
 
         private void PlaceInCraftingTable()
         {
-            if (!_selectedItem.HasValue) return;
+            if (!selectedItem.HasValue) return;
 
-            Items item = _selectedItem.Value;
+            Items item = selectedItem.Value;
 
-            if (!_hero.Inventory.TryGetValue(item, out int count) || count <= 0)
-                return;
-            int slot = Array.FindIndex(_craftItems, s => !s.HasValue);
+            if (!_hero.Inventory.TryGetValue(item, out int count) || count <= 0) return;
+            int slot = Array.FindIndex(craftItems, s => !s.HasValue);
             if (slot == -1) return;
             _hero.removeFromInv(item);
-            _craftItems[slot] = item;
+            craftItems[slot] = item;
 
             RefreshInventoryView();
             ValidateSelection();
@@ -249,12 +344,11 @@ namespace Recource_Collection
 
         private void DropSelectedFromInventory()
         {
-            if (!_selectedItem.HasValue) return;
+            if (!selectedItem.HasValue) return;
 
-            Items item = _selectedItem.Value;
+            Items item = selectedItem.Value;
 
-            if (!_hero.Inventory.TryGetValue(item, out int count) || count <= 0)
-                return;
+            if (!_hero.Inventory.TryGetValue(item, out int count) || count <= 0) return;
 
             // spawn in world in lil bit
             _hero.removeFromInv(item);
@@ -263,19 +357,26 @@ namespace Recource_Collection
             ValidateSelection();
         }
 
+
         private void ClearCraftTable(bool returnItemsToInventory)
         {
             if (returnItemsToInventory)
             {
                 for (int i = 0; i < 9; i++)
                 {
-                    if (_craftItems[i].HasValue)
-                        _hero.addToInv(_craftItems[i].Value);
+                    if (craftItems[i].HasValue)
+                    {
+                        _hero.addToInv(craftItems[i].Value);
+                    }
+                        
                 }
             }
 
             for (int i = 0; i < 9; i++)
-                _craftItems[i] = null;
+            {
+                craftItems[i] = null;
+            }
+                
 
             RefreshInventoryView();
             ValidateSelection();

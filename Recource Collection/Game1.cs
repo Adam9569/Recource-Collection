@@ -23,6 +23,7 @@ namespace Recource_Collection
             _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
             _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             _graphics.ApplyChanges();
+            Globals.QuitGame = Exit;
 
             base.Initialize();
         }
@@ -38,10 +39,6 @@ namespace Recource_Collection
         protected override void Update(GameTime gameTime)
         {
             Globals.Update(gameTime);
-
-            // basic exit
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
             SceneManager.Update();
 
             base.Update(gameTime);

@@ -42,7 +42,9 @@ namespace Recource_Collection
             Assets = assets;
 
             SolidTiles.Add(TileType.Water1);
-            SolidTiles.Add(TileType.bush1);
+            SolidTiles.Add(TileType.Rock1);
+            SolidTiles.Add(TileType.Water2);
+            SolidTiles.Add(TileType.Rock2);
 
             FarmTime[TileType.bush1] = 1f;
             FarmTime[TileType.Tree1] = 3f;
@@ -51,13 +53,17 @@ namespace Recource_Collection
             FarmTime[TileType.Rock2] = 7f;
 
             FarmDrops[TileType.bush1] = Items.berry;
-            DropAmount[TileType.bush1] = 6;
+            DropAmount[TileType.bush1] = 4;
+
             FarmDrops[TileType.Tree1] = Items.twigs;
             DropAmount[TileType.Tree1] = 2;
+            
             FarmDrops[TileType.Tree2] = Items.twigs;
             DropAmount[TileType.Tree2] = 2;
+            
             FarmDrops[TileType.Rock1] = Items.pebble;
             DropAmount[TileType.Rock1] = 4;
+            
             FarmDrops[TileType.Rock2] = Items.pebble;
             DropAmount[TileType.Rock2] = 4;
 

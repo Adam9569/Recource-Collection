@@ -46,13 +46,19 @@ namespace Recource_Collection
                 SceneManager.SwitchScene(SceneName.Game);
             }
             if (upPressed)
+            {
                 buttonSelected = Math.Max(0, buttonSelected - 1);
+            }
 
             if (downPressed)
+            {
                 buttonSelected = Math.Min(_buttons.Length - 1, buttonSelected + 1);
+            }
 
             if (enterPressed)
+            {
                 ActivateButton();
+            }
 
             previousState = keyboardState;
         }
