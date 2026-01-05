@@ -21,6 +21,10 @@ namespace Recource_Collection
         private SpriteFont _font;
         private KeyboardState previousState;
 
+        private List<Enemy> enemies = new List<Enemy>();
+        private SpawningEnemies _spawningEnemies;
+        private Texture2D enemyTexture;
+
         public GameScene(ContentManager content)
         {
             _font = content.Load<SpriteFont>("Font");
@@ -48,6 +52,10 @@ namespace Recource_Collection
 
             _worldItems = new WorldItems(Globals.SpriteBatch);
             _worldItems.LoadContent(content);
+
+            enemyTexture = content.Load<Texture2D>("FinalEnemy");
+            _spawningEnemies = new SpawningEnemies(enemyTexture);
+            _spawningEnemies.Difficulty = Difficulty.Hard;
         }
 
         public override void OnSwitch()
@@ -62,6 +70,11 @@ namespace Recource_Collection
             previousState = Keyboard.GetState();
             OpenInventory();
             OpenMenu();
+            _spawningEnemies.Update(_tileMap, _hero, enemies);
+            for(int i = 0; i < enemies.Count; i++)
+            {
+                enemies[i].Update(_tileMap, _hero);
+            }
 
             _camera = Matrix.CreateTranslation(
                 -_hero.Position.X + Globals.WindowSize.X / 2,
@@ -111,7 +124,10 @@ namespace Recource_Collection
             
             _worldItems.Draw();
             _hero.Draw();
-
+            for (int j = 0; j < enemies.Count; j++)
+            {
+                enemies[j].Draw();
+            }
             int i = 0;
             foreach (var item in _hero.Inventory)
             {

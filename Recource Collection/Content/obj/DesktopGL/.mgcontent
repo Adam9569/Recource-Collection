@@ -10,6 +10,7 @@
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/BerryBundle.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/coin.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/CraftRock.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/FinalEnemy.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Font.spritefont</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/grass.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/healthPotion.png</File>
@@ -30,6 +31,7 @@
   </SourceFiles>
   <DestFiles>
     <File>bush1.png</File>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -27,6 +27,7 @@ namespace Recource_Collection
         public const int Width = 128;
         public const int Height = 128;
 
+
         public HashSet<TileType> SolidTiles = new HashSet<TileType>();
         public HashSet<TileType> FarmableTiles = new HashSet<TileType>
         {
@@ -94,7 +95,10 @@ namespace Recource_Collection
         public TileType GetTile(string pos)
         {
             if (!Tiles.ContainsKey(pos))
+            {
                 return TileType.Void;
+            }
+                
             return Tiles[pos];
         }
         public void SetTile(string pos, TileType type)
@@ -104,8 +108,61 @@ namespace Recource_Collection
         }
         public bool IsWalkable(string pos)
         {
+            if (!InTileMap(pos)) return false;
             return !SolidTiles.Contains(GetTile(pos));
         }
 
+        public List<string> GetNeighbours(string pos, bool hideNonTraversables)
+        {
+            int[] coords = Array.ConvertAll(pos.Split(';'), int.Parse);
+            List<string> neighbours = new List<string>();
+            List<string> cardinal = new List<string>()
+            {
+                {$"{coords[0]};{coords[1]-1}"},
+                {$"{coords[0]+1};{coords[1]}"},
+                {$"{coords[0]};{coords[1]+1}"},
+                {$"{coords[0]-1};{coords[1]}"}
+
+            };
+
+            List<string> notCardinal = new List<string>()
+            {
+                {$"{coords[0]-1};{coords[1]-1}"},
+                {$"{coords[0]+1};{coords[1]-1}"},
+                {$"{coords[0]-1};{coords[1]+1}"},
+                {$"{coords[0]+1};{coords[1]+1}"}
+            };
+
+            foreach (string neighour in cardinal)
+            {
+                if (InTileMap(neighour))
+                {
+                    if (!(hideNonTraversables && SolidTiles.Contains(GetTile(neighour))))
+                    {
+                        neighbours.Add(neighour);
+                    }
+                        
+                }
+            }
+            foreach (string neighbour in notCardinal)
+            {
+                if (InTileMap(neighbour))
+                {
+                    if (!(hideNonTraversables && SolidTiles.Contains(GetTile(neighbour))))
+                    {
+                        neighbours.Add(neighbour);
+                    }
+                        
+                }
+            }
+
+
+            return neighbours;
+        }
+        public TileType this[string key]
+        {
+            get => GetTile(key);
+            set => SetTile(key, value);
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace Recource_Collection
         public int MaxThirst = 100;
         public int ThirstCounter = 0;
 
+        
+
         public bool Isfarming { get; set; }
         List<string> FarmingTiles = new List<string>();
 
@@ -37,7 +39,7 @@ namespace Recource_Collection
         public Hero(Texture2D texture, Vector2 position) : base(texture, position)
         {
             HitBox = new Rectangle((int)position.X - Texture.Width /2 , (int)position.Y - Texture.Height /2 , Texture.Width, Texture.Height);
-            Speed = 2500;
+            Speed = 500;
         }
 
         public void addToInv(Items itemtype)

@@ -17,7 +17,10 @@ namespace Recource_Collection
 
         public override void OnSwitch() { }
 
-        public override void Update() { }
+        public override void Update() 
+        {
+            ReturnToMenu();
+        }
 
         public void ReturnToMenu()
         {
