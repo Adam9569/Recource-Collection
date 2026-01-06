@@ -78,7 +78,7 @@ namespace Recource_Collection.Scenes
                     Console.WriteLine("Stats selected");
                     break;
                 case 3:
-                    SceneManager.SwitchScene(SceneName.Recipies);
+                    SceneManager.SwitchScene(SceneName.Recipes);
                     break;
                 case 4:
                     Globals.QuitGame.Invoke();

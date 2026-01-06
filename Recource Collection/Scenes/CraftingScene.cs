@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Recource_Collection
 {
@@ -215,19 +216,29 @@ namespace Recource_Collection
             }
 
 
-            if (twigCount >= 2 && pebbleCount == 3)
+            if (twigCount == 2 && pebbleCount == 3)
             {
                 CraftViewItem = Items.RockPickaxe;
                 return;
             }
-            if (twigCount >= 2)
+            if (twigCount == 5)
             {
                 CraftViewItem = Items.TwigPickaxe;
                 return;
             }
-            if (berryCount >= 8)
+            if (berryCount == 8)
             {
                 CraftViewItem = Items.BerryBundle;
+                return;
+            }
+            if(pebbleCount == 4)
+            {
+                CraftViewItem = Items.Rock;
+                return;
+            }
+            if(RockCount == 3 && twigCount == 2)
+            {
+                CraftViewItem = Items.RockPickaxe;
                 return;
             }
 

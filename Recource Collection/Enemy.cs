@@ -8,24 +8,46 @@ namespace Recource_Collection
 {
     public class Enemy : Sprite
     {
-        public float AggroRangePixels = TileMap.tilesize * 12f;
+        public float AggroRange = TileMap.tilesize * 12f;
         public bool IsAggro { get; private set; }
 
         private int pathCounter;
         private List<string> Path = new List<string>();
         private int Counter = 0;
-        private int damage = 10;
+        private int DamageTimer = 0;
 
-        public Enemy(Texture2D texture, Vector2 position) : base(texture, position)
+        public int MaxHealth { get; set; } = 50;
+        public int CurrentHealth { get; set; }
+        public Rectangle enemyHitBox { get; set; }
+        private int DamageCooldown = 60;
+
+
+        public Enemy(int MaxHealth,Texture2D texture, Vector2 position) : base(texture, position)
         {
             Scale = 2f;
             Speed = 20;
+            CurrentHealth = MaxHealth;
         }
 
         public void Update(TileMap tileMap, Hero hero)
         {
             float dist = Vector2.Distance(Position, hero.Position);
-            IsAggro = dist <= AggroRangePixels;
+            enemyHitBox = new Rectangle((int)Position.X - Texture.Width / 2, (int)Position.Y - Texture.Height / 2, Texture.Width, Texture.Height);
+            IsAggro = dist <= AggroRange;
+
+            if(enemyHitBox.Intersects(hero.HitBox))
+            {
+                DamageTimer++;
+            }
+            else
+                DamageTimer = 0;
+
+
+            if(DamageTimer >= DamageCooldown)
+            {
+                hero.TakeDamage(10);
+                DamageTimer = 0;
+            }
 
             if (!IsAggro)
             {
@@ -53,10 +75,6 @@ namespace Recource_Collection
                 Counter = 0;
                 Path = Pathfind(tileMap, hero);
             }
-        }
-        public void InputDamage(Hero hero)
-        {
-            
         }
 
         public List<string> Pathfind(TileMap tileMap, Hero hero)

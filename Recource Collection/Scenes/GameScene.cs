@@ -47,7 +47,7 @@ namespace Recource_Collection
             WorldGen.MapCreation(_tileMap, _noise);
 
             heroTexture = content.Load<Texture2D>(Globals.selectedHero);
-            _hero = new Hero(heroTexture, new Vector2(100, 100));
+            _hero = new Hero(100,heroTexture, new Vector2(100, 100));
             Globals.hero = _hero;
 
             _worldItems = new WorldItems(Globals.SpriteBatch);

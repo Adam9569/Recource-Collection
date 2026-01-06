@@ -38,7 +38,8 @@ namespace Recource_Collection
             {Items.pebble,2 },
             {Items.BerryBundle,5},
             {Items.TwigPickaxe,5 },
-            {Items.RockPickaxe,8 }
+            {Items.RockPickaxe,8 },
+            {Items.Rock,4 }
 
         };
         public static Dictionary<Items, int> Food = new Dictionary<Items, int>()

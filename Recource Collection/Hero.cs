@@ -13,6 +13,7 @@ namespace Recource_Collection
     {
  
         public Rectangle HitBox { get; private set; }
+        public Rectangle AttackHitBox { get; private set; }
         public int Weight { get; set; }
         public int CurrentHunger = 50;
         public int CurrentThirst = 50;
@@ -23,7 +24,8 @@ namespace Recource_Collection
         public int MaxThirst = 100;
         public int ThirstCounter = 0;
 
-        
+        public int MaxHealth { get; set; } = 100;
+        public int CurrentHealth { get; private set; }
 
         public bool Isfarming { get; set; }
         List<string> FarmingTiles = new List<string>();
@@ -36,10 +38,12 @@ namespace Recource_Collection
 
         public Dictionary<Items, int> Inventory { get; set; } = new Dictionary<Items, int>();
 
-        public Hero(Texture2D texture, Vector2 position) : base(texture, position)
+        public Hero(int MaxHealth, Texture2D texture, Vector2 position) : base(texture, position)
         {
             HitBox = new Rectangle((int)position.X - Texture.Width /2 , (int)position.Y - Texture.Height /2 , Texture.Width, Texture.Height);
+            AttackHitBox = new Rectangle((int)position.X - Texture.Width / 2, (int)position.Y - Texture.Height / 2, Texture.Width * (int)1.5, Texture.Height * (int)1.5);
             Speed = 500;
+            CurrentHealth = MaxHealth;
         }
 
         public void addToInv(Items itemtype)
@@ -56,6 +60,21 @@ namespace Recource_Collection
                 }
                 Weight += CollectableItems.Weight[itemtype];
             }
+        }
+        public void TakeDamage(int damageDealt)
+        {
+            CurrentHealth = Math.Max(CurrentHealth - damageDealt, 0);
+        }
+        public void DealDamage(Enemy enemy,int damageDealt)
+        {
+            if(AttackHitBox.Intersects(enemy.enemyHitBox))
+            {
+                enemy.CurrentHealth = enemy.CurrentHealth - damageDealt;
+            }
+        }
+        public void Heal(int healAmount)
+        {
+            CurrentHealth = Math.Min(CurrentHealth + healAmount, MaxHealth);
         }
         public void PassiveNeeds()
         {
@@ -90,13 +109,13 @@ namespace Recource_Collection
         public void Eating(Items itemtype)
         {
             Weight -= CollectableItems.Weight[itemtype];
-            CurrentHunger += CollectableItems.Food[itemtype];
+            CurrentHunger = Math.Min(CollectableItems.Food[itemtype],MaxHunger);
             Inventory[itemtype]--;
         }
         public void Drinking(Items itemtype)
         {
             Weight -= CollectableItems.Weight[itemtype];
-            CurrentThirst += CollectableItems.Drink[itemtype];
+            CurrentThirst = Math.Min(CollectableItems.Drink[itemtype],MaxThirst);
             Inventory[itemtype]--;
         }
 
@@ -130,7 +149,14 @@ namespace Recource_Collection
 
             return new List<string>(set);
         }
-        private bool TryFarming(TileMap map)
+        public void Death()
+        {
+            if (CurrentHealth <= 0)
+            {
+                Globals.QuitGame();
+            }
+        }
+        private bool Farming(TileMap map)
         {
             foreach (var key in CornerTiles(map))
             {
@@ -152,6 +178,7 @@ namespace Recource_Collection
             var keyboardState = Keyboard.GetState();
             bool fDown = keyboardState.IsKeyDown(Keys.F);
             bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
+            Death();
 
             if (Isfarming)
             {
@@ -189,8 +216,9 @@ namespace Recource_Collection
 
             if (fPressed)
             {
-                TryFarming(map);
+                Farming(map);
             }
+
             Debuffs();
             PassiveNeeds();
             previousState = keyboardState;

@@ -48,10 +48,10 @@ namespace Recource_Collection
             SolidTiles.Add(TileType.Rock2);
 
             FarmTime[TileType.bush1] = 1f;
-            FarmTime[TileType.Tree1] = 3f;
-            FarmTime[TileType.Tree2] = 3f;
-            FarmTime[TileType.Rock1] = 7f;
-            FarmTime[TileType.Rock2] = 7f;
+            FarmTime[TileType.Tree1] = 1f;
+            FarmTime[TileType.Tree2] = 1f;
+            FarmTime[TileType.Rock1] = 1f;
+            FarmTime[TileType.Rock2] = 1f;
 
             FarmDrops[TileType.bush1] = Items.berry;
             DropAmount[TileType.bush1] = 4;

@@ -90,7 +90,7 @@ namespace Recource_Collection
                 if (Vector2.Distance(pos, hero.Position) < SafetyRad)
                     continue;
 
-                enemies.Add(new Enemy(_enemyTexture, pos));
+                enemies.Add(new Enemy(50,_enemyTexture, pos));
                 spawned++;
             }
         }
