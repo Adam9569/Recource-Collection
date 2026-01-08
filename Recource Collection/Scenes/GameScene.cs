@@ -124,6 +124,10 @@ namespace Recource_Collection
             
             _worldItems.Draw();
             _hero.Draw();
+            _spriteBatch.Draw(pixel, _hero.HealthBar, Color.Red);
+            _spriteBatch.Draw(pixel, _hero.HungerBar, Color.Brown * 0.9f);
+            _spriteBatch.Draw(pixel, _hero.ThirstBar, Color.Purple * 0.9f);
+
             for (int j = 0; j < enemies.Count; j++)
             {
                 enemies[j].Draw();

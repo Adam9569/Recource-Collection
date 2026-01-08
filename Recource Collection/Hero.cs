@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
+using System.Threading;
 
 
 
@@ -14,6 +15,15 @@ namespace Recource_Collection
  
         public Rectangle HitBox { get; private set; }
         public Rectangle AttackHitBox { get; private set; }
+
+
+        public int HealthBarSub;
+        public int HungerBarSub;
+        public int ThirstBarSub;
+        public int BarHeight = 30;
+        public Rectangle HealthBar;
+        public Rectangle HungerBar;
+        public Rectangle ThirstBar;
         public bool IsAttacking { get; set; }
         public int heroDamage { get; set; }
 
@@ -77,6 +87,17 @@ namespace Recource_Collection
                 damageTimer = 0;
             }
         }
+        public void UpdateEssentialBars()
+        {
+            int barX = (int)Position.X + Globals.WindowSize.X /2 - 120;
+            int barY = (int)Position.Y - Globals.WindowSize.Y / 2 + 300;
+
+            HealthBar = new Rectangle(barX,barY, (int)(float)(CurrentHealth/MaxHealth) * 100, BarHeight);
+
+            HungerBar = new Rectangle(barX,barY - 40, CurrentHunger *2, BarHeight);
+
+            ThirstBar = new Rectangle(barX,barY - 80, CurrentThirst *2, BarHeight);
+        }
         public void DealDamage(Enemy enemy)
         {
             if (IsAttacking && !attackHasHit && AttackHitBox.Intersects(enemy.enemyHitBox))
@@ -87,8 +108,7 @@ namespace Recource_Collection
             if (Keyboard.GetState().IsKeyUp(Keys.Space))
             {
                 attackHasHit = false;
-            }   
-                
+            }
         }
 
         public void Heal(int healAmount)
@@ -170,6 +190,7 @@ namespace Recource_Collection
 
             return new List<string>(set);
         }
+
         public void Death()
         {
             if (CurrentHealth <= 0)
@@ -197,10 +218,10 @@ namespace Recource_Collection
         public void Update(TileMap map)
         {
             var keyboardState = Keyboard.GetState();
-            bool fDown = keyboardState.IsKeyDown(Keys.F);
-            bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
+            bool fPressed = keyboardState.IsKeyDown(Keys.F) && !previousState.IsKeyDown(Keys.F);
             Death();
             IsAttacking = false;
+            UpdateEssentialBars();
 
             if (Isfarming)
             {
