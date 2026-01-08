@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/font.spritefont</SourceFile>
-  <SourceTime>2025-12-18T09:48:01.2785837+00:00</SourceTime>
+  <SourceTime>2026-01-08T12:28:31.0447033+00:00</SourceTime>
   <DestFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/Content/font.xnb</DestFile>
-  <DestTime>2025-12-18T09:48:04.7580223+00:00</DestTime>
+  <DestTime>2026-01-08T12:28:35.8843088+00:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>LocalizedFontProcessor</Processor>
