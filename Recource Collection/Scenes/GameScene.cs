@@ -20,6 +20,7 @@ namespace Recource_Collection
         private Matrix _camera;
         private SpriteFont _font;
         private KeyboardState previousState;
+        private Texture2D pixel;
 
         private List<Enemy> enemies = new List<Enemy>();
         private SpawningEnemies _spawningEnemies;
@@ -56,6 +57,9 @@ namespace Recource_Collection
             enemyTexture = content.Load<Texture2D>("FinalEnemy");
             _spawningEnemies = new SpawningEnemies(enemyTexture);
             _spawningEnemies.Difficulty = Difficulty.Hard;
+
+            pixel = new Texture2D(Globals.SpriteBatch.GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.White });
         }
 
         public override void OnSwitch()
@@ -133,6 +137,10 @@ namespace Recource_Collection
             {
                 _spriteBatch.DrawString(_font, $"{item.Key}: {item.Value}", new Vector2(i * 90, 10), Color.Black);
                 i++;
+            }
+            if (_hero.IsAttacking)
+            {
+                _spriteBatch.Draw(pixel, _hero.AttackHitBox, Color.Red * 0.5f);
             }
 
             _spriteBatch.End();
