@@ -86,10 +86,6 @@ namespace Recource_Collection
                 0f
             );
 
-            if (Keyboard.GetState().IsKeyDown(Keys.M))
-            {
-                SceneManager.SwitchScene(SceneName.MainMenu);
-            }
                 
         }
         public void OpenInventory()
@@ -140,7 +136,7 @@ namespace Recource_Collection
             }
             if (_hero.IsAttacking)
             {
-                _spriteBatch.Draw(pixel, _hero.AttackHitBox, Color.Red * 0.5f);
+                _spriteBatch.Draw(pixel, _hero.AttackHitBox, Color.Red * 0.2f);
             }
 
             _spriteBatch.End();

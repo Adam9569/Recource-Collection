@@ -27,10 +27,10 @@ namespace Recource_Collection
         public int MaxThirst = 100;
         public int ThirstCounter = 0;
 
-        public int attackRadius = 200;
+        private bool attackHasHit = false;
         public int damageTimer;
-        private int AttackTime = 0;
-        private bool attackHit = false;
+        public int damageCooldown = 60;
+        public int attackRadius = 200;
 
         public int MaxHealth { get; set; } = 100;
         public int CurrentHealth { get; private set; }
@@ -71,61 +71,31 @@ namespace Recource_Collection
         }
         public void TakeDamage(int damageDealt)
         {
-            CurrentHealth = Math.Max(CurrentHealth - damageDealt, 0);
+            if (damageTimer >= damageCooldown)
+            {
+                CurrentHealth -= damageDealt;
+                damageTimer = 0;
+            }
         }
-        
+        public void DealDamage(Enemy enemy)
+        {
+            if (IsAttacking && !attackHasHit && AttackHitBox.Intersects(enemy.enemyHitBox))
+            {
+                enemy.CurrentHealth -= heroDamage;
+                attackHasHit = true;
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.Space))
+            {
+                attackHasHit = false;
+            }   
+                
+        }
+
         public void Heal(int healAmount)
         {
             CurrentHealth = Math.Min(CurrentHealth + healAmount, MaxHealth);
         }
-        private void StartAttack()
-        {
-            IsAttacking = true;
-            AttackTime = 0;
-            attackHit = false;
 
-            Vector2 topLeft = Position - Origin;
-            int attackX = (int)(topLeft.X - (attackRadius - Texture.Width) / 2f);
-            int attackY = (int)(topLeft.Y - (attackRadius - Texture.Height) / 2f);
-            AttackHitBox = new Rectangle(attackX, attackY, attackRadius, attackRadius);
-        }
-        private void Attack(KeyboardState keyboardState)
-        {
-            if (damageTimer > 0)
-                damageTimer--;
-
-            bool spaceDown = keyboardState.IsKeyDown(Keys.Space);
-            bool spacePressed = spaceDown && !previousState.IsKeyDown(Keys.Space);
-
-            if (keyboardState.IsKeyDown(Keys.Space) && !previousState.IsKeyDown(Keys.Space) && damageTimer == 0)
-            {
-                StartAttack();
-            }
-
-            if (IsAttacking)
-            {
-                AttackTime++;
-
-                if (!spaceDown)
-                {
-                    IsAttacking = false;
-                    AttackHitBox = Rectangle.Empty;
-                    damageTimer = 15;
-                }
-            }
-        }
-
-        public void DealDamage(Enemy enemy)
-        {
-            if (!IsAttacking) return;
-            if (attackHit) return;
-
-            if (AttackHitBox.Intersects(enemy.enemyHitBox))
-            {
-                enemy.CurrentHealth -= heroDamage;
-                attackHit = true;
-            }
-        }
         public void PassiveNeeds()
         {
             if (CurrentHunger != 0)
@@ -230,7 +200,7 @@ namespace Recource_Collection
             bool fDown = keyboardState.IsKeyDown(Keys.F);
             bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
             Death();
-            Attack(keyboardState);
+            IsAttacking = false;
 
             if (Isfarming)
             {
@@ -269,6 +239,17 @@ namespace Recource_Collection
             if (fPressed)
             {
                 Farming(map);
+            }
+            if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                IsAttacking = true;
+                Vector2 topLeft = Position - Origin;
+
+                int attackX = (int)(topLeft.X - (attackRadius - Texture.Width) / 2f);
+                int attackY = (int)(topLeft.Y - (attackRadius - Texture.Height) / 2f);
+
+                AttackHitBox = new Rectangle(attackX, attackY, attackRadius, attackRadius);
+
             }
 
             Debuffs();
