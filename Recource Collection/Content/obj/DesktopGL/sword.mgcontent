@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/sword.png</SourceFile>
-  <SourceTime>2026-01-03T13:49:29.0885986+00:00</SourceTime>
+  <SourceTime>2026-01-08T14:07:30.0167789+00:00</SourceTime>
   <DestFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/sword.xnb</DestFile>
-  <DestTime>2026-01-05T21:25:44.8817143+00:00</DestTime>
+  <DestTime>2026-01-11T16:43:20.8298233+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

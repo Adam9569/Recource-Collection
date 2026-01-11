@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
@@ -8,7 +7,7 @@ namespace Recource_Collection
 {
     public class Enemy : Sprite
     {
-        public float AggroRange = TileMap.tilesize * 12f;
+        public float AggroRange { get; set; }
         public bool IsAggro { get; private set; }
 
         private int pathCounter;
@@ -16,17 +15,20 @@ namespace Recource_Collection
         private int Counter = 0;
         private int DamageTimer = 0;
 
-        public int MaxHealth { get; set; } = 50;
+        public int MaxHealth { get; set; } 
+        public int Damage { get; set; }
         public int CurrentHealth { get; set; }
         public Rectangle enemyHitBox { get; set; }
         private int DamageCooldown = 60;
 
 
-        public Enemy(int MaxHealth,Texture2D texture, Vector2 position) : base(texture, position)
+        public Enemy(int maxHealth, int damage, float aggroRange, Texture2D texture, Vector2 position)
+    : base(texture, position)
         {
-            Scale = 2f;
-            Speed = 20;
-            CurrentHealth = MaxHealth;
+            MaxHealth = maxHealth;
+            CurrentHealth = maxHealth;
+            Damage = damage;
+            AggroRange = aggroRange;
         }
 
         public void Update(TileMap tileMap, Hero hero)
@@ -45,7 +47,7 @@ namespace Recource_Collection
 
             if(DamageTimer >= DamageCooldown)
             {
-                hero.TakeDamage(10);
+                hero.TakeDamage(Damage);
                 DamageTimer = 0;
             }
 
@@ -158,17 +160,6 @@ namespace Recource_Collection
             }
         }
 
-        public void draw(Texture2D evilTexture)
-        {
-            foreach (string point in Path)
-            {
-                string[] coords = point.Split(';');
-                Globals.SpriteBatch.Draw(
-                    evilTexture,
-                    new Rectangle(int.Parse(coords[0]) * 128, int.Parse(coords[1]) * 128, 30, 30),
-                    Color.Red
-                );
-            }
-        }
+        public void draw(Texture2D evilTexture){}
     }
 }

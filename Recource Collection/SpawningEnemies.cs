@@ -12,62 +12,65 @@ namespace Recource_Collection
         Hard
     }
 
+    public enum EnemyType
+    { 
+        Rabbit,
+        Goblin
+    }
+
     public class SpawningEnemies
     {
+        private List<EnemyType> enemyTypes = new List<EnemyType>();
         private readonly Random random = new Random();
-        private readonly Texture2D _enemyTexture;
-        private Difficulty _difficulty = Difficulty.Easy;
-        public Difficulty Difficulty
-        {
-            get => _difficulty;
-            set
-            {
-                _difficulty = value;
+        private Texture2D goblinTexture;
+        private Texture2D rabbitTexture;
+        public Difficulty Difficulty { get; set; } = Difficulty.Easy;
 
-                switch (_difficulty)
-                {
-                    case Difficulty.Easy:
-                        MaxEnemies = 3;
-                        break;
-                    case Difficulty.Medium:
-                        MaxEnemies = 7;
-                        break;
-                    case Difficulty.Hard:
-                        MaxEnemies = 12;
-                        break;
-                }
-                hasSpawned = false;
+        private void SetDifficulty()
+        {
+            switch (Difficulty)
+            {
+                case Difficulty.Easy:
+                    MaxEnemies = 3;
+                    break;
+                case Difficulty.Medium:
+                    MaxEnemies = 7;
+                    break;
+                case Difficulty.Hard:
+                    MaxEnemies = 12;
+                    break;
             }
         }
 
         public int MaxEnemies { get; private set; } = 3;
 
-        public float SafetyRad { get; set; } = TileMap.tilesize * 8f;
+        public float Rad { get; set; } = TileMap.tilesize * 8f;
 
-        public float RespawnDelaySeconds { get; set; } = 10f;
+        //public float RespawnDelaySeconds { get; set; } = 10f;
 
         private bool hasSpawned = false;
         private float respawnTimer = 0f;
 
-        public SpawningEnemies(Texture2D enemyTexture, Difficulty difficulty = Difficulty.Easy)
+        public SpawningEnemies(Texture2D goblinTex, Texture2D rabbitTex)
         {
-            _enemyTexture = enemyTexture;
-            Difficulty = difficulty;
+            goblinTexture = goblinTex;
+            rabbitTexture = rabbitTex;
         }
-
+        public void AddType(EnemyType type)
+        {
+            enemyTypes.Add(type);
+        }
         public void Update(TileMap map, Hero hero, List<Enemy> enemies)
         {
             if (!hasSpawned)
             {
+                SetDifficulty();
                 SpawnEnemies(map, hero, enemies);
                 hasSpawned = true;
-                respawnTimer = 0f;
-                return;
             }
         }
         private void SpawnEnemies(TileMap map, Hero hero, List<Enemy> enemies)
         {
-
             int spawned = 0;
             int tries = 0;
 
@@ -87,10 +90,11 @@ namespace Recource_Collection
                     y * TileMap.tilesize + TileMap.tilesize / 2f
                 );
 
-                if (Vector2.Distance(pos, hero.Position) < SafetyRad)
+                if (Vector2.Distance(pos, hero.Position) < Rad)
                     continue;
 
-                enemies.Add(new Enemy(50,_enemyTexture, pos));
+                Enemy enemy = CreateEnemy(pos);
+                enemies.Add(enemy);
                 spawned++;
             }
         }
@@ -98,6 +102,23 @@ namespace Recource_Collection
         {
             hasSpawned = false;
             respawnTimer = 0f;
+        }
+        private Enemy CreateEnemy(Vector2 position)
+        {
+
+            EnemyType type = enemyTypes[random.Next(enemyTypes.Count)];
+
+            switch (type)
+            {
+                case EnemyType.Goblin:
+                    return new Goblins(goblinTexture, position);
+
+                case EnemyType.Rabbit:
+                    return new EvilRabbit(rabbitTexture, position);
+
+                default:
+                    return new Goblins(goblinTexture, position);
+            }
         }
     }
 }

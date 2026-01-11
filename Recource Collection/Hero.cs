@@ -15,7 +15,7 @@ namespace Recource_Collection
         public Rectangle HitBox { get; private set; }
         public Rectangle AttackHitBox { get; private set; }
         public bool IsAttacking { get; set; }
-        public int heroDamage { get; set; }
+        public int heroDamage = 100;
 
         public int Weight { get; set; }
         public int CurrentHunger = 50;
@@ -130,7 +130,7 @@ namespace Recource_Collection
         public void Eating(Items itemtype)
         {
             Weight -= CollectableItems.Weight[itemtype];
-            CurrentHunger = Math.Min(CollectableItems.Food[itemtype],MaxHunger);
+            CurrentHunger = CurrentHunger + Math.Min(CollectableItems.Food[itemtype],MaxHunger);
             Inventory[itemtype]--;
         }
         public void Drinking(Items itemtype)

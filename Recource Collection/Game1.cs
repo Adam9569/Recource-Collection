@@ -19,7 +19,7 @@ namespace Recource_Collection
 
         protected override void Initialize()
         {
-            Globals.WindowSize = new Point(1600, 1600);
+            Globals.WindowSize = new Point(1440, 1150);
             _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
             _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
             _graphics.ApplyChanges();

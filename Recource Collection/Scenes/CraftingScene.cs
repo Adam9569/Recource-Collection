@@ -65,6 +65,7 @@ namespace Recource_Collection
             }
         }
 
+
         public override void Update()
         {
             var keyboardState = Keyboard.GetState();
@@ -74,8 +75,7 @@ namespace Recource_Collection
             RefreshInventoryView();
             UpdateOutput();
 
-            bool escPressed = keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape);
-            if (escPressed)
+            if (keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape))
             {
                 SceneManager.SwitchScene(SceneName.Game);
                 previousKeyboardState = keyboardState;
@@ -83,33 +83,57 @@ namespace Recource_Collection
                 return;
             }
 
-            bool zeroPressed = keyboardState.IsKeyDown(Keys.D0) && !previousKeyboardState.IsKeyDown(Keys.D0);
-            if (zeroPressed)
+            if (keyboardState.IsKeyDown(Keys.E) && !previousKeyboardState.IsKeyDown(Keys.E) && selectedItem.HasValue && _hero.CurrentHunger != _hero.MaxHunger)
+            {
+                Items item = selectedItem.Value;
+
+                if (_hero.Inventory.TryGetValue(item, out int count) && count > 0 && CollectableItems.Food.ContainsKey(item))
+                {
+                    _hero.Eating(item);
+
+                    if (!_hero.Inventory.TryGetValue(item, out count) || count <= 0)
+                    {
+                        selectedItem = null;
+                    }
+                }
+            }
+            if (keyboardState.IsKeyDown(Keys.E) &&!previousKeyboardState.IsKeyDown(Keys.E) &&selectedItem.HasValue && _hero.CurrentThirst != _hero.MaxThirst)
+            {
+                Items item = selectedItem.Value;
+
+                if (_hero.Inventory.TryGetValue(item, out int count) &&count > 0 &&CollectableItems.Drink.ContainsKey(item))
+                {
+                    _hero.Drinking(item);
+
+                    if (!_hero.Inventory.TryGetValue(item, out count) || count <= 0)
+                    {
+                        selectedItem = null;
+                    }
+                }
+            }
+
+            if (keyboardState.IsKeyDown(Keys.D0) && !previousKeyboardState.IsKeyDown(Keys.D0))
             {
                 ClearCraftTable(returnItemsToInventory: true);
             }
 
-            bool enterPressed = keyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter);
-            if (enterPressed)
+            
+            if (keyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter))
             {
                 CraftOutput();
             }
-            bool leftClickPressed = mouse.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released;
 
-            if (leftClickPressed)
+            if (mouse.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
             {
                 SelectItem(m);
             }
 
-            bool cPressed = keyboardState.IsKeyDown(Keys.C) && !previousKeyboardState.IsKeyDown(Keys.C);
-            bool qPressed = keyboardState.IsKeyDown(Keys.Q) && !previousKeyboardState.IsKeyDown(Keys.Q);
-
-            if (cPressed)
+            if (keyboardState.IsKeyDown(Keys.C) && !previousKeyboardState.IsKeyDown(Keys.C))
             {
                 PlaceInCraftingTable();
             }
 
-            if (qPressed)
+            if (keyboardState.IsKeyDown(Keys.Q) && !previousKeyboardState.IsKeyDown(Keys.Q))
             {
                 DropSelectedFromInventory();
             }
@@ -193,6 +217,7 @@ namespace Recource_Collection
             int pebbleCount = 0;
             int berryCount = 0;
             int RockCount = 0;
+            int FleshCount = 0;
 
             for (int i = 0; i < craftItems.Length; i++)
             {
@@ -212,6 +237,10 @@ namespace Recource_Collection
                     case Items.Rock:
                         RockCount++;
                         break;
+                    case Items.RabbiFlesh:
+                        FleshCount++;
+                        break;
+
                 }
             }
 
@@ -241,7 +270,11 @@ namespace Recource_Collection
                 CraftViewItem = Items.RockPickaxe;
                 return;
             }
-
+            if(FleshCount ==1&& twigCount ==2)
+            {
+                CraftViewItem = Items.CookedRabbitFlesh;
+                return;
+            }
             CraftViewItem = null;
         }
 

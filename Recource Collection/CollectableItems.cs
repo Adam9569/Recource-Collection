@@ -20,6 +20,10 @@ namespace Recource_Collection
         RockPickaxe,
         BerryBundle,
         TwigPickaxe,
+        RabbiFlesh,
+        RabbitHide,
+        CookedRabbitFlesh
+        
     }
 
 
@@ -39,20 +43,23 @@ namespace Recource_Collection
             {Items.BerryBundle,5},
             {Items.TwigPickaxe,5 },
             {Items.RockPickaxe,8 },
-            {Items.Rock,4 }
-
+            {Items.Rock,4 },
+            { Items.RabbiFlesh,5 },
+            {Items.RabbitHide,3},
+            {Items.CookedRabbitFlesh,5 }
         };
         public static Dictionary<Items, int> Food = new Dictionary<Items, int>()
         {
             {Items.banana , 4 },
             {Items.apple , 3},
             {Items.berry , 1 },
-            {Items.BerryBundle,9 }
+            {Items.BerryBundle,9 },
+            {Items.CookedRabbitFlesh,25 }
         };
         public static Dictionary<Items, int> Drink = new Dictionary<Items, int>()
         {
             {Items.waterBottle , 25},
-            {Items.berry , 1 }
+            {Items.berry , 5 }
         };
         public static Dictionary<Items, Texture2D> itemTextures = new Dictionary<Items, Texture2D>();
 

@@ -21,6 +21,9 @@ namespace Recource_Collection
         public Texture2D TwigPickaxeTexture;
         public Texture2D RockPickaxeTexture;
         public Texture2D RockTexture;
+        public Texture2D RabbitFlesh;
+        public Texture2D CookedRabbitFlesh;
+        public Texture2D RabbitHide;
 
 
         public Texture2D tree1Tex;
@@ -75,6 +78,9 @@ namespace Recource_Collection
             TwigPickaxeTexture = content.Load<Texture2D>("TwigPickaxe");
             RockPickaxeTexture = content.Load<Texture2D>("RockPickaxe");
             RockTexture = content.Load<Texture2D>("CraftRock");
+            RabbitHide = content.Load<Texture2D>("RabbitHide");
+            RabbitFlesh = content.Load<Texture2D>("RabbitFlesh");
+            CookedRabbitFlesh = content.Load<Texture2D>("CookedRabbitFlesh");
 
 
             CollectableItems.inportTextures(twigTexture, Items.twigs);
@@ -89,6 +95,9 @@ namespace Recource_Collection
             CollectableItems.inportTextures(TwigPickaxeTexture, Items.TwigPickaxe);
             CollectableItems.inportTextures(RockPickaxeTexture, Items.RockPickaxe);
             CollectableItems.inportTextures(BerryBundleTexture, Items.BerryBundle);
+            CollectableItems.inportTextures(RabbitFlesh, Items.RabbiFlesh);
+            CollectableItems.inportTextures(RabbitHide, Items.RabbitHide);
+            CollectableItems.inportTextures(CookedRabbitFlesh, Items.CookedRabbitFlesh);
 
             font = content.Load<SpriteFont>("Font");
 
@@ -101,6 +110,11 @@ namespace Recource_Collection
             new Item(Items.apple,new Vector2(350 , 400), new Vector2(48,48)),
             new Item(Items.waterBottle,new Vector2(500,500),new Vector2(64,64))
         };
+        }
+
+        public void SpawnItem(Items type, Vector2 position, Vector2 size)
+        {
+            worldItems.Add(new Item(type, position, size));
         }
 
         public void Draw()

@@ -9,7 +9,9 @@
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/berry.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/BerryBundle.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/coin.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/CookedRabbitFlesh.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/CraftRock.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/EvilRabbit.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/FinalEnemy.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Font.spritefont</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/grass.png</File>
@@ -18,6 +20,8 @@
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Hero2.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/hero3.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/pebble.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/RabbitFlesh.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/RabbitHide.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/rock.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/RockPickaxe.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/sand.png</File>
@@ -31,6 +35,10 @@
   </SourceFiles>
   <DestFiles>
     <File>bush1.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

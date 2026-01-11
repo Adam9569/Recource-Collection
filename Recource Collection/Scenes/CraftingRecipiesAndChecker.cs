@@ -33,6 +33,18 @@ namespace Recource_Collection
                 },
                 outputItem: Items.TwigPickaxe
             ),
+            new Recipe
+            (
+                name: "Cooked Rabbit Flesh",
+                ingredients: new Dictionary<Items, int>
+                {
+                    {Items.twigs,2 },
+                    {Items.RabbiFlesh,1 }
+                },
+                outputItem: Items.CookedRabbitFlesh
+
+
+            ),
 
             new Recipe
             (
@@ -52,7 +64,7 @@ namespace Recource_Collection
                 },
                 outputItem: Items.Rock
             ),
-            new Recipe 
+            new Recipe
             (
                 name: "Rock Pickaxe",
                 ingredients: new Dictionary<Items, int>

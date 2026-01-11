@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/coin.png</SourceFile>
-  <SourceTime>2026-01-03T13:49:29.0305346+00:00</SourceTime>
+  <SourceTime>2026-01-08T14:07:29.9027769+00:00</SourceTime>
   <DestFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/coin.xnb</DestFile>
-  <DestTime>2026-01-05T21:25:44.5352962+00:00</DestTime>
+  <DestTime>2026-01-11T16:43:20.6718905+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Recource_Collection
 {
@@ -21,10 +19,12 @@ namespace Recource_Collection
         private SpriteFont _font;
         private KeyboardState previousState;
         private Texture2D pixel;
-
-        private List<Enemy> enemies = new List<Enemy>();
-        private SpawningEnemies _spawningEnemies;
-        private Texture2D enemyTexture;
+        
+        private SpawningEnemies _spawning;
+        private SpawningEnemies _spawningEvilRabbits;
+        private Texture2D EvilRabbitTexture;
+        private Texture2D GoblinTexture;
+        List<Enemy> enemies = new List<Enemy>();
 
         public GameScene(ContentManager content)
         {
@@ -54,9 +54,13 @@ namespace Recource_Collection
             _worldItems = new WorldItems(Globals.SpriteBatch);
             _worldItems.LoadContent(content);
 
-            enemyTexture = content.Load<Texture2D>("FinalEnemy");
-            _spawningEnemies = new SpawningEnemies(enemyTexture);
-            _spawningEnemies.Difficulty = Difficulty.Hard;
+            GoblinTexture = content.Load<Texture2D>("FinalEnemy");
+            EvilRabbitTexture = content.Load<Texture2D>("EvilRabbit");
+            _spawning = new SpawningEnemies(GoblinTexture,EvilRabbitTexture);
+            _spawning.Difficulty = Difficulty.Hard;
+
+            _spawning.AddType(EnemyType.Goblin);
+            _spawning.AddType(EnemyType.Rabbit);
 
             pixel = new Texture2D(Globals.SpriteBatch.GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
@@ -71,13 +75,28 @@ namespace Recource_Collection
         {
             _hero.Update(_tileMap);
             _worldItems.Update(_hero);
-            previousState = Keyboard.GetState();
             OpenInventory();
             OpenMenu();
-            _spawningEnemies.Update(_tileMap, _hero, enemies);
-            for(int i = 0; i < enemies.Count; i++)
+            previousState = Keyboard.GetState();
+            _spawning.Update(_tileMap, _hero,enemies);
+            for (int i = enemies.Count - 1; i >= 0; i--)
             {
-                enemies[i].Update(_tileMap, _hero);
+                Enemy enemy = enemies[i];
+
+                enemy.Update(_tileMap, _hero);
+                _hero.DealDamage(enemy);
+
+                if (enemy.CurrentHealth <= 0)
+                {
+                    // Rabbit drops
+                    if (enemy is EvilRabbit)
+                    {
+                        _worldItems.SpawnItem(Items.RabbitHide,new Vector2(enemy.Position.X, enemy.Position.Y+20), new Vector2(48, 48));
+                        _worldItems.SpawnItem(Items.RabbiFlesh,new Vector2(enemy.Position.X, enemy.Position.Y-10), new Vector2(48, 48));
+                    }
+
+                    enemies.RemoveAt(i);
+                }
             }
 
             _camera = Matrix.CreateTranslation(
@@ -128,6 +147,7 @@ namespace Recource_Collection
             {
                 enemies[j].Draw();
             }
+
             int i = 0;
             foreach (var item in _hero.Inventory)
             {
