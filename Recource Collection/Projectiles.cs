@@ -8,7 +8,7 @@ namespace Recource_Collection
         public Vector2 Velocity { get; set; }
 
         public Rectangle HitBox => new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
-        public int Damage { get; set; }
+        public int Damage = 10;
 
         public Projectiles(Texture2D texture, Vector2 position) : base(texture, position)
         {

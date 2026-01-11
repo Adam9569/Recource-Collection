@@ -2,12 +2,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Recource_Collection
 {
     public class Boss
     {
-        public int Health { get; set; }
+        public int CurrentHealth { get; set; }
+        public int Health = 500;
         public Texture2D SpriteSheet { get; private set; }
         public Vector2 Position { get; set; }
         public AnimationManager AnimationManager { get; private set; }
@@ -15,8 +17,10 @@ namespace Recource_Collection
         
         public int Damage = 25;
 
-        int counter;
-        int smashCooldown = 240;
+        int sCounter;
+        int smashCooldown = 600;
+        int hCounter;
+        int hCooldown = 300;
         public BossProjectiles _bossProjectiles;
         public List<BossProjectiles> Projectiles = new List<BossProjectiles>();
         public Texture2D projectileTexture;
@@ -24,12 +28,12 @@ namespace Recource_Collection
         
 
 
-        public Boss(Texture2D spriteSheet, Vector2 position, int health)
+        public Boss(int Maxhealth, Texture2D spriteSheet, Vector2 position)
         {
-            Health = health;
+            CurrentHealth = Maxhealth;
             SpriteSheet = spriteSheet;
             Position = position;
-            counter = 0;
+            sCounter = 0;
 
             var bossAnimations = new Dictionary<AnimationManager.BossAnimations, Animation>
             {
@@ -51,23 +55,28 @@ namespace Recource_Collection
         public void LoadContent(ContentManager Content)
         {
             projectileTexture = Content.Load<Texture2D>("WoodenSword");
+            Projectiles.Clear();
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 30; i++)
             {
-                _bossProjectiles = new BossProjectiles(projectileTexture, new Vector2(0, 0));
-                Projectiles.Add(_bossProjectiles);
+                Projectiles.Add(new BossProjectiles(projectileTexture,Position));
             }
             
         }
-        public void Update()
+        public void Update(Hero hero)
         {
-           
 
-            counter++;
-            if (counter >= smashCooldown)
+            hCounter++;
+            sCounter++;
+            if(hCounter == hCooldown)
+            {
+                FireDiagonal();
+            }
+            if (sCounter >= smashCooldown )
             {
                 AnimationManager.Play(AnimationManager.BossAnimations.smashAttack);
-                counter = 0;
+                FireSpiral();
+                sCounter = 0;
             }
             else if (AnimationManager.current == AnimationManager.BossAnimations.smashAttack && AnimationManager.finishedAnimation)
             {
@@ -78,9 +87,51 @@ namespace Recource_Collection
             foreach (BossProjectiles projectile in Projectiles)
             {
                 projectile.Update();
+
+
+                if (projectile.HitBox.Intersects(hero.HitBox))
+                {
+                    hero.TakeDamage(projectile.Damage);
+                    projectile.Deactivate();
+                }
             }
            
             
+        }
+
+        public void FireSpiral()
+        {
+            Vector2 center = Position;
+
+            float startRadius = 500f;
+            float horizontalSpeed = 120f;
+            float angularSpeed = 6f;
+            int pCount = 9;
+
+            for (int i = 0; i < pCount; i++)
+            {
+                float angle = MathHelper.TwoPi * (i / (float)Projectiles.Count);
+                float r = startRadius + i * 6f;
+
+                Projectiles[i].SpawnSpiral(center, r, angle, angularSpeed, horizontalSpeed);
+            }
+        }
+
+        public void FireDiagonal()
+        {
+            Vector2 velocity = new Vector2(350f, 350f);
+            int meteors = 6;
+
+            for (int i = 0; i < meteors; i++)
+            {
+                BossProjectiles projectile = Projectiles.Find(x => !x.Active);
+                if (projectile == null) break;
+
+                float y = 40f + i * 50f;
+                Vector2 start = new Vector2(-100f, y);
+
+                projectile.SpawnMeteor(start, velocity);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -91,15 +142,9 @@ namespace Recource_Collection
             spriteBatch.Draw(SpriteSheet, destRectangle, sourceRectangle, Color.White);
             foreach (BossProjectiles projectile in Projectiles)
             {
-                float rotation = 0f;
-                spriteBatch.Draw(projectileTexture,
-                    new Rectangle((int)projectile.Position.X, (int)projectile.Position.Y, projectileTexture.Width, projectileTexture.Height), 
-                    null, 
-                    Color.White, 
-                    rotation, 
-                    new Vector2(projectileTexture.Width / 2, projectileTexture.Height / 2), 
-                    SpriteEffects.None, 
-                    1.0f);
+                if (!projectile.Active) continue;
+
+                spriteBatch.Draw( projectileTexture, projectile.Position, null, Color.White, 0f, new Vector2(projectileTexture.Width / 2f, projectileTexture.Height / 2f), 0.1f, SpriteEffects.None, 1f);
             }
 
 

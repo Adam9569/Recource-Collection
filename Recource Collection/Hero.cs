@@ -42,7 +42,7 @@ namespace Recource_Collection
         {
             if (IsAttacking && !attackHasHit && AttackHitbox.Intersects(enemy.Hitbox))
             {
-                enemy.Health -= heroDamage;
+                enemy.CurrentHealth -= heroDamage;
                 attackHasHit = true;
             }
             if (Keyboard.GetState().IsKeyUp(Keys.Space))

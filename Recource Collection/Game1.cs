@@ -53,8 +53,8 @@ namespace Recource_Collection
             heroTexture = Content.Load<Texture2D>("hero");
             bossFont = Content.Load<SpriteFont>("Fonts/bossHp");
             _hero = new Hero(100, heroTexture, new Vector2(100, 100));
-            _boss = new Boss(spriteSheet, new Vector2(200, 200),300);
-
+            _boss = new Boss(500,spriteSheet, new Vector2(200, 200));
+            _boss.LoadContent(Content);
 
             pixel = new Texture2D(GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
@@ -69,14 +69,14 @@ namespace Recource_Collection
             TranslationCalc();
             InputManager.Update();
             _hero.Update();
-            _boss.Update();
+            _boss.Update(_hero);
 
             Debug.WriteLine(_hero.CurrentHealth);
 
 
             base.Update(gameTime);
 
-            if (_boss.Health != 0 && _boss.AnimationManager.current == AnimationManager.BossAnimations.smashAttack && _hero.HitBox.Intersects(_boss.Hitbox) && _hero.CurrentHealth > 0)
+            if (_boss.CurrentHealth != 0 && _boss.AnimationManager.current == AnimationManager.BossAnimations.smashAttack && _hero.HitBox.Intersects(_boss.Hitbox) && _hero.CurrentHealth > 0)
             {
                 _hero.TakeDamage(_boss.Damage);
             }
@@ -86,9 +86,9 @@ namespace Recource_Collection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin(transformMatrix: _translation);
-            if (_boss.Health > 0)
+            if (_boss.CurrentHealth > 0)
             {
-                _spriteBatch.DrawString(bossFont, "EVIL TREEANT HEALTH : " + _boss.Health, new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
+                _spriteBatch.DrawString(bossFont, "EVIL TREEANT HEALTH : " + _boss.CurrentHealth, new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
                 _hero.DealDamage(_boss);
                 _boss.Draw(_spriteBatch);
             }
