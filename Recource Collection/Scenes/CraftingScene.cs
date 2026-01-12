@@ -148,7 +148,6 @@ namespace Recource_Collection
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(_pixel, new Rectangle(0, 0, Globals.WindowSize.X, Globals.WindowSize.Y), Color.Black * 0.75f);
-            _spriteBatch.DrawString(_font, "CRAFTING", new Vector2(40, 20), Color.White);
             _spriteBatch.DrawString(_font, "c = place in crafting table , q = drop item from inv", new Vector2(40, 90), Color.White);
             _spriteBatch.DrawString(_font, "Selected: " + (selectedItem?.ToString() ?? "None"), new Vector2(40, 120), Color.White);
 
@@ -177,37 +176,25 @@ namespace Recource_Collection
         {
             invBoxes.Clear();
 
-            int leftX = 40;
-            int topY = 170;
-            int boxW = 300;
-            int boxH = 58;
-            int gap = 8;
-
-            int outSize = 90;
-            int gap2 = 14;
 
             int gridLeft = craftSlots[0].X;
             int gridRight = craftSlots[2].Right;
             int gridBottom = craftSlots[8].Bottom;
-            int outX = gridLeft + ((gridRight - gridLeft) / 2) - (outSize / 2);
-            int outY = gridBottom + gap2;
-            CraftViewBox = new Rectangle(outX, outY, outSize, outSize);
+            int outX = gridLeft + ((gridRight - gridLeft) / 2) - (90 / 2);
+
+            CraftViewBox = new Rectangle(gridLeft + ((gridRight - gridLeft) / 2) - (90 / 2), gridBottom + 15, 90, 90);
 
             int rows = 12;
             for (int i = 0; i < rows; i++)
-                invBoxes.Add(new Rectangle(leftX, topY + i * (boxH + gap), boxW, boxH));
+                invBoxes.Add(new Rectangle(50, 180 + i * (60 + 10), 300, 60));
 
             int gridStartX = Globals.WindowSize.X - 420;
             int gridStartY = 220;
             int slotSize = 90;
-            int slotGap = 10;
 
             for (int i = 0; i < 9; i++)
             {
-                int gx = i % 3;
-                int gy = i / 3;
-
-                craftSlots[i] = new Rectangle(gridStartX + gx * (slotSize + slotGap),gridStartY + gy * (slotSize + slotGap),slotSize,slotSize);
+                craftSlots[i] = new Rectangle(gridStartX + i % 3 * (slotSize + 10),gridStartY + i / 3 * (slotSize + 10),slotSize,slotSize);
             }
         }
 
@@ -297,18 +284,18 @@ namespace Recource_Collection
 
             for (int i = 0; i < invBoxes.Count; i++)
             {
-                Rectangle r = invBoxes[i];
+                Rectangle rectangle = invBoxes[i];
                 bool selected = (i == selectedInvNum);
 
-                _spritebatch.Draw(_pixel, r, selected ? Color.Green : Color.Black * 0.6f);
+                _spritebatch.Draw(_pixel, rectangle, selected ? Color.Green : Color.Black * 0.6f);
 
                 if (i < invView.Count)
                 {
                     var (item, count) = invView[i];
                     Texture2D icon = CollectableItems.itemTextures[item];
 
-                    _spritebatch.Draw(icon, new Rectangle(r.X + 6, r.Y + 6, 46, 46), Color.White);
-                    _spritebatch.DrawString(_font, $"{item}  x{count}", new Vector2(r.X + 62, r.Y + 16), Color.White);
+                    _spritebatch.Draw(icon, new Rectangle(rectangle.X + 6, rectangle.Y + 6, 46, 46), Color.White);
+                    _spritebatch.DrawString(_font, $"{item}  x{count}", new Vector2(rectangle.X + 62, rectangle.Y + 16), Color.White);
                 }
             }
         }
@@ -319,27 +306,23 @@ namespace Recource_Collection
 
             for (int i = 0; i < 9; i++)
             {
-                Rectangle r = craftSlots[i];
+                Rectangle rectangle = craftSlots[i];
 
-                _spritebatch.Draw(_pixel, r, Color.Black);
-                _spritebatch.DrawString(_font, (i + 1).ToString(), new Vector2(r.X + 6, r.Y + 4), Color.Gray);
+                _spritebatch.Draw(_pixel, rectangle, Color.Black);
+                _spritebatch.DrawString(_font, (i + 1).ToString(), new Vector2(rectangle.X + 6, rectangle.Y + 4), Color.Gray);
 
                 if (craftItems[i].HasValue)
                 {
                     Items it = craftItems[i].Value;
                     Texture2D icon = CollectableItems.itemTextures[it];
-                    _spritebatch.Draw(icon, new Rectangle(r.X + 18, r.Y + 18, r.Width - 36, r.Height - 36), Color.White);
+                    _spritebatch.Draw(icon, new Rectangle(rectangle.X + 18, rectangle.Y + 18, rectangle.Width - 36, rectangle.Height - 36), Color.White);
                 }
             }
         }
 
         private void RefreshInventoryView()
         {
-            invView = _hero.Inventory
-                .Where(kv => kv.Value > 0)
-                .OrderBy(kv => kv.Key.ToString())
-                .Select(kv => (kv.Key, kv.Value))
-                .ToList();
+            invView = _hero.Inventory.Where(keyValue => keyValue.Value > 0).OrderBy(kv => kv.Key.ToString()).Select(kv => (kv.Key, kv.Value)).ToList();
         }
 
         private void ValidateSelection()
@@ -389,9 +372,7 @@ namespace Recource_Collection
         private void DropSelectedFromInventory()
         {
             if (!selectedItem.HasValue) return;
-
             Items item = selectedItem.Value;
-
             if (!_hero.Inventory.TryGetValue(item, out int count) || count <= 0) return;
 
             // spawn in world in lil bit
@@ -420,8 +401,6 @@ namespace Recource_Collection
             {
                 craftItems[i] = null;
             }
-                
-
             RefreshInventoryView();
             ValidateSelection();
         }

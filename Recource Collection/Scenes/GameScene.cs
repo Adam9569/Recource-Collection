@@ -122,7 +122,6 @@ namespace Recource_Collection
             }
         }
 
-
         public override void Draw()
         {
             _spriteBatch = Globals.SpriteBatch;
