@@ -121,6 +121,8 @@ namespace Recource_Collection
                     }
                     totalKills++;
                     enemies.RemoveAt(i);
+                    SceneManager.SwitchScene(SceneName.Question);
+                    return;
                 }
             }
 

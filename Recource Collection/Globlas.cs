@@ -12,6 +12,7 @@ namespace Recource_Collection
         public static ContentManager Content { get; set; }
         public static SpriteBatch SpriteBatch { get; set; }
         public static Point WindowSize { get; set; }
+        public static GameWindow Window { get; set; }
 
         public static string selectedHero = "Hero2";
         public static Hero hero;
