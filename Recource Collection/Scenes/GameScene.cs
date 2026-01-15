@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Linq;
+using System.Text.Json;
 
 namespace Recource_Collection
 {
@@ -26,10 +28,15 @@ namespace Recource_Collection
         private Texture2D GoblinTexture;
         List<Enemy> enemies = new List<Enemy>();
 
+
+        private int totalKills = 0;
+
+
+
         public GameScene(ContentManager content)
         {
             _font = content.Load<SpriteFont>("Font");
-            _noise = new NoiseGen(seed: 44321);
+            _noise = new NoiseGen(seed: 6767);
             var tileTextures = new Dictionary<TileMap.TileType, Texture2D>
             {
                 {TileMap.TileType.grass, content.Load<Texture2D>("grass")},
@@ -71,6 +78,24 @@ namespace Recource_Collection
             Texture2D newTexture = _content.Load<Texture2D>(Globals.selectedHero);
             _hero.Texture = newTexture;
         }
+
+        private void SaveGame()
+        {
+            StoringData save = new StoringData
+            {
+                WorldSeed = 6767,
+                HeroX = _hero.Position.X,
+                HeroY = _hero.Position.Y,
+                EnemiesKilled = totalKills,
+                CurrentHealth = _hero.CurrentHealth,
+                CurrentHunger = _hero.CurrentHunger,
+                CurrentThirst = _hero.CurrentThirst,
+                Inventory = _hero.Inventory.ToDictionary(i => i.Key.ToString(),i => i.Value)
+            };
+            string json = JsonSerializer.Serialize(save,new JsonSerializerOptions { WriteIndented = true });
+
+            FileManager.SaveData("Saves", "save1.json", json);
+        }
         public override void Update()
         {
             _hero.Update(_tileMap);
@@ -88,22 +113,18 @@ namespace Recource_Collection
 
                 if (enemy.CurrentHealth <= 0)
                 {
-                    // Rabbit drops
+
                     if (enemy is EvilRabbit)
                     {
                         _worldItems.SpawnItem(Items.RabbitHide,new Vector2(enemy.Position.X, enemy.Position.Y+20), new Vector2(48, 48));
                         _worldItems.SpawnItem(Items.RabbiFlesh,new Vector2(enemy.Position.X, enemy.Position.Y-10), new Vector2(48, 48));
                     }
-
+                    totalKills++;
                     enemies.RemoveAt(i);
                 }
             }
 
-            _camera = Matrix.CreateTranslation(
-                -_hero.Position.X + Globals.WindowSize.X / 2,
-                -_hero.Position.Y + Globals.WindowSize.Y / 2,
-                0f
-            );
+            _camera = Matrix.CreateTranslation(-_hero.Position.X + Globals.WindowSize.X / 2,-_hero.Position.Y + Globals.WindowSize.Y / 2,0f);
 
                 
         }
@@ -119,6 +140,7 @@ namespace Recource_Collection
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && previousState.IsKeyDown(Keys.Escape))
             {
                 SceneManager.SwitchScene(SceneName.MainMenu);
+                SaveGame();
             }
         }
 
