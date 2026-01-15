@@ -33,8 +33,6 @@ namespace Recource_Collection
         public static MouseState mouseState;
         private QuestionCreator _questionCreator;
         
-        private int qOffset = 50;
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);

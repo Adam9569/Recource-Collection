@@ -24,6 +24,9 @@ namespace Recource_Collection
         private string answer;
         private bool drawQuestionBox = false;
         KeyboardState previousKeyBoardState;
+        private string previousQ= "";
+        private string previousA = "";
+        private bool ShowPreviousAns = false;
 
         public List<Question> _questions;
 
@@ -109,15 +112,14 @@ namespace Recource_Collection
                 case '\n':
                     answer = _inputBuilder.ToString();
                     _inputBuilder.Length = 0;
-                    if (answer.Equals(_currentQuestion.AnswerTxt))
+                    previousA = _currentQuestion.AnswerTxt;
+                    previousQ = _currentQuestion.QuestionsTxt; 
+
+                    if (answer != _currentQuestion.QuestionsTxt)
                     {
-                        Debug.WriteLine("Correct , sigma!");
-                        NextQuestion();
+                        ShowPreviousAns = true;
                     }
-                    else
-                    {
-                        Debug.WriteLine("Wrong , diddy blud!");
-                    }
+                    NextQuestion();
                     break;
                 default:
                     _inputBuilder.Append(c);
@@ -190,6 +192,11 @@ namespace Recource_Collection
                 spriteBatch.DrawString(_font, $"Focus: {_hasFocus}", new Vector2(_textBoxRect.X, _textBoxRect.Y - 30), Color.Yellow);
                 spriteBatch.Draw(_cursorTexture, new Rectangle((int)HandleCursorPos() + _textBoxRect.X + offset, (int)_cursorPostion.Y, 4, 30), Color.Black);
                 spriteBatch.DrawString(_font, _inputBuilder.ToString(), new Vector2(_textBoxRect.X + 10, _textBoxRect.Y + 10), Color.Red);
+                if (ShowPreviousAns)
+                {
+                    spriteBatch.DrawString(_font,"The answer to the previous question was: " + previousA,new Vector2(50, 160),Color.White);
+                }
+
             }
             
         }
