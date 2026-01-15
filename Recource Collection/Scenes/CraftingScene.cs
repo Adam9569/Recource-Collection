@@ -40,7 +40,7 @@ namespace Recource_Collection
             _pixel.SetData(new[] { Color.White });
 
             Layout();
-            RefreshInventoryView();
+            RefreshInv();
         }
 
         
@@ -49,9 +49,9 @@ namespace Recource_Collection
             previousKeyboardState = Keyboard.GetState();
             previousMouseState = Mouse.GetState();
 
-            RefreshInventoryView();
+            RefreshInv();
             Layout();
-            ValidateSelection();
+            Validate();
             UpdateOutput();
         }
         public void CloseInventory()
@@ -72,7 +72,7 @@ namespace Recource_Collection
             var mouse = Mouse.GetState();
             Point m = mouse.Position;
             CloseInventory();
-            RefreshInventoryView();
+            RefreshInv();
             UpdateOutput();
 
             if (keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape))
@@ -151,7 +151,7 @@ namespace Recource_Collection
             _spriteBatch.DrawString(_font, "c = place in crafting table , q = drop item from inv", new Vector2(40, 90), Color.White);
             _spriteBatch.DrawString(_font, "Selected: " + (selectedItem?.ToString() ?? "None"), new Vector2(40, 120), Color.White);
 
-            DrawInventoryPanel(_spriteBatch);
+            DrawInv(_spriteBatch);
             DrawCraftGrid(_spriteBatch);
             DrawOutputBox(_spriteBatch);
 
@@ -274,11 +274,11 @@ namespace Recource_Collection
             for (int i = 0; i < craftItems.Length; i++)
                 craftItems[i] = null;
 
-            RefreshInventoryView();
-            ValidateSelection();
+            RefreshInv();
+            Validate();
             UpdateOutput();
         }
-        private void DrawInventoryPanel(SpriteBatch _spritebatch)
+        private void DrawInv(SpriteBatch _spritebatch)
         {
             _spritebatch.DrawString(_font, "Inventory", new Vector2(invBoxes[0].X, invBoxes[0].Y - 30), Color.White);
 
@@ -320,12 +320,12 @@ namespace Recource_Collection
             }
         }
 
-        private void RefreshInventoryView()
+        private void RefreshInv()
         {
             invView = _hero.Inventory.Where(keyValue => keyValue.Value > 0).OrderBy(kv => kv.Key.ToString()).Select(kv => (kv.Key, kv.Value)).ToList();
         }
 
-        private void ValidateSelection()
+        private void Validate()
         {
             if (!selectedItem.HasValue) return;
 
@@ -365,8 +365,8 @@ namespace Recource_Collection
             _hero.removeFromInv(item);
             craftItems[slot] = item;
 
-            RefreshInventoryView();
-            ValidateSelection();
+            RefreshInv();
+            Validate();
         }
 
         private void DropSelectedFromInventory()
@@ -378,8 +378,8 @@ namespace Recource_Collection
             // spawn in world in lil bit
             _hero.removeFromInv(item);
 
-            RefreshInventoryView();
-            ValidateSelection();
+            RefreshInv();
+            Validate();
         }
 
 
@@ -401,8 +401,8 @@ namespace Recource_Collection
             {
                 craftItems[i] = null;
             }
-            RefreshInventoryView();
-            ValidateSelection();
+            RefreshInv();
+            Validate();
         }
 
     }
