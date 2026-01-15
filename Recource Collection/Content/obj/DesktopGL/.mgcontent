@@ -28,10 +28,12 @@
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/sword.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/tree1.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/tree2.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/treeantSpriteSheet1.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/twig.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/TwigPickaxe.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/Void.png</File>
     <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/water.png</File>
+    <File>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/WoodenSword.png</File>
   </SourceFiles>
   <DestFiles>
     <File>bush1.png</File>
@@ -61,6 +63,8 @@
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File>waterBottle.png</File>
+    <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>

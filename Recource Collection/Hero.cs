@@ -90,6 +90,18 @@ namespace Recource_Collection
             }   
                 
         }
+        public void DealBossDamage(Boss boss)
+        {
+            if (IsAttacking && !attackHasHit && AttackHitBox.Intersects(boss.Hitbox))
+            {
+                boss.CurrentHealth -= heroDamage;
+                attackHasHit = true;
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.Space))
+            {
+                attackHasHit = false;
+            }
+        }
 
         public void Heal(int healAmount)
         {

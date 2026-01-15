@@ -26,6 +26,10 @@ namespace Recource_Collection
         private SpawningEnemies _spawningEvilRabbits;
         private Texture2D EvilRabbitTexture;
         private Texture2D GoblinTexture;
+
+        public Boss _boss;
+        Texture2D spriteSheet;
+
         List<Enemy> enemies = new List<Enemy>();
 
 
@@ -55,7 +59,7 @@ namespace Recource_Collection
             WorldGen.MapCreation(_tileMap, _noise);
 
             heroTexture = content.Load<Texture2D>(Globals.selectedHero);
-            _hero = new Hero(100,heroTexture, new Vector2(100, 100));
+            _hero = new Hero(100,heroTexture, new Vector2(6000, 6000));
             Globals.hero = _hero;
 
             _worldItems = new WorldItems(Globals.SpriteBatch);
@@ -66,6 +70,9 @@ namespace Recource_Collection
             _spawning = new SpawningEnemies(GoblinTexture,EvilRabbitTexture);
             _spawning.Difficulty = Difficulty.Hard;
 
+            spriteSheet = content.Load<Texture2D>("treeantSpriteSheet1");
+            _boss = new Boss(500, spriteSheet, new Vector2(6000, 6000));
+            _boss.LoadContent(content);
             _spawning.AddType(EnemyType.Goblin);
             _spawning.AddType(EnemyType.Rabbit);
 
@@ -102,6 +109,11 @@ namespace Recource_Collection
             _worldItems.Update(_hero);
             OpenInventory();
             OpenMenu();
+            _boss.Update(_hero);
+            if (_boss.CurrentHealth != 0 && _boss.AnimationManager.current == AnimationManager.BossAnimations.smashAttack && _hero.HitBox.Intersects(_boss.Hitbox) && _hero.CurrentHealth > 0)
+            {
+                _hero.TakeDamage(_boss.Damage);
+            }
             previousState = Keyboard.GetState();
             _spawning.Update(_tileMap, _hero,enemies);
             for (int i = enemies.Count - 1; i >= 0; i--)
@@ -163,7 +175,12 @@ namespace Recource_Collection
                     _spriteBatch.Draw(tex,new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),Color.White);
                 }
             }
-            
+            if (_boss.CurrentHealth > 0)
+            {
+                _spriteBatch.DrawString(_font, "EVIL TREEANT HEALTH : " + _boss.CurrentHealth, new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
+                _hero.DealBossDamage(_boss);
+                _boss.Draw(_spriteBatch);
+            }
             _worldItems.Draw();
             _hero.Draw();
             for (int j = 0; j < enemies.Count; j++)

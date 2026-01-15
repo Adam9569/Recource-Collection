@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/apple.png</SourceFile>
-  <SourceTime>2026-01-08T14:07:29.8037004+00:00</SourceTime>
+  <SourceTime>2026-01-15T21:19:09.7039459+00:00</SourceTime>
   <DestFile>C:/Users/adams/source/repos/Recource Collection/Recource Collection/Content/bin/DesktopGL/apple.xnb</DestFile>
-  <DestTime>2026-01-11T16:43:20.6246531+00:00</DestTime>
+  <DestTime>2026-01-15T21:24:48.0465289+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T12:44:56+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
