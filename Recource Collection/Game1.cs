@@ -104,6 +104,7 @@ namespace Recource_Collection
             {
                 _spriteBatch.Draw(pixel, _hero.AttackHitbox, Color.Red * 0.5f);
             }
+            _spriteBatch.Draw(pixel, _boss.Hitbox, Color.Green * 0.5f);
 
             _spriteBatch.End();
 

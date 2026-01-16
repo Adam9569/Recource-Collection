@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace Recource_Collection
 {
@@ -48,7 +47,7 @@ namespace Recource_Collection
             get
             { 
                 Vector2 size = AnimationManager.GetSize();
-                return new Rectangle((int)Position.X,(int)Position.Y,(int)size.X,(int)size.Y);
+                return new Rectangle((int)Position.X -100 ,(int)Position.Y - 100 ,(int)size.X +80,(int)size.Y + 80);
             }
         }
 
@@ -133,7 +132,7 @@ namespace Recource_Collection
                 projectile.SpawnMeteor(start, velocity);
             }
         }
-
+        
         public void Draw(SpriteBatch spriteBatch)
         {
             Rectangle sourceRectangle = AnimationManager.GetSourceRect(33, 33);
