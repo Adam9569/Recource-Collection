@@ -13,10 +13,12 @@ namespace Recource_Collection
         public Texture2D SpriteSheet { get; private set; }
         public Vector2 Position { get; set; }
         public AnimationManager AnimationManager { get; private set; }
+        public float AggroRange { get; set; } = 700f;
+        public bool IsAggro { get; private set; } = false;
 
 
         public int Damage = 25;
-
+        private readonly int _maxHealth;
         int sCounter;
         int smashCooldown = 600;
         int hCounter;
@@ -33,6 +35,7 @@ namespace Recource_Collection
             CurrentHealth = Maxhealth;
             SpriteSheet = spriteSheet;
             Position = position;
+            _maxHealth = Maxhealth;
             sCounter = 0;
             hCounter = 0;
 
@@ -52,7 +55,18 @@ namespace Recource_Collection
                 return new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y);
             }
         }
-
+        private void ResetBoss()
+        {
+            CurrentHealth = _maxHealth;
+            sCounter = 0;
+            hCounter = 0;
+            AnimationManager.Play(AnimationManager.BossAnimations.idle);
+            foreach (var p in Projectiles)
+            {
+                p.Deactivate();
+            }
+                
+        }
         public void LoadContent(ContentManager Content)
         {
             projectileTexture = Content.Load<Texture2D>("WoodenSword");
@@ -66,15 +80,16 @@ namespace Recource_Collection
         }
         public void Update(Hero hero)
         {
-
+            float dist = Vector2.Distance(Position, hero.Position);
+            bool ShouldAggro = dist <= AggroRange;
             hCounter++;
             sCounter++;
-            if (hCounter == hCooldown)
+            if (hCounter == hCooldown && IsAggro)
             {
                 FireDiagonal();
                 hCounter = 0;
             }
-            if (sCounter >= smashCooldown)
+            if (sCounter >= smashCooldown && IsAggro)
             {
                 AnimationManager.Play(AnimationManager.BossAnimations.smashAttack);
                 FireSpiral();
@@ -96,6 +111,22 @@ namespace Recource_Collection
                     hero.TakeDamage(projectile.Damage);
                     projectile.Deactivate();
                 }
+            }
+            if (IsAggro && !ShouldAggro)
+            {
+                IsAggro = false;
+                ResetBoss();
+                return;
+            }
+            if (!IsAggro && ShouldAggro)
+            {
+                IsAggro = true;
+            }
+            if (!IsAggro)
+            {
+                AnimationManager.Play(AnimationManager.BossAnimations.idle);
+                AnimationManager.Update();
+                return;
             }
 
 
