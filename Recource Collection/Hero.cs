@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
+using Recource_Collection.Scenes;
 
 
 
@@ -45,7 +46,7 @@ namespace Recource_Collection
         private string farmTileKey;
         private float farmProgress;
         private float timeNeeded;
-
+        private MainMenuScene menu;
 
         public Dictionary<Items, int> Inventory { get; set; } = new Dictionary<Items, int>();
 
@@ -230,6 +231,15 @@ namespace Recource_Collection
             IsAttacking = false;
             if (damageTimer > 0)
                 damageTimer--;
+
+            if(CurrentHealth <= 0)
+            {
+                Inventory.Clear();
+                Position = new Vector2(100,100);
+                CurrentHunger = 50;
+                CurrentThirst = 50;
+                CurrentHealth = MaxHealth;
+            }
 
             if (Isfarming)
             {

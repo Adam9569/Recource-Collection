@@ -15,7 +15,8 @@ namespace Recource_Collection.Scenes
         private Texture2D _pixel;
         private KeyboardState previousState;
 
-        private string[] _buttons =
+
+        public  string[] _buttons =
         {
             "Load Game",
             "Settings",
@@ -24,7 +25,7 @@ namespace Recource_Collection.Scenes
             "Quit",
             "New Game"
         };
-        private int buttonSelected = 0;
+        public int buttonSelected = 0;
 
         public MainMenuScene(ContentManager content)
         {
@@ -38,7 +39,7 @@ namespace Recource_Collection.Scenes
             previousState = Keyboard.GetState();
             buttonSelected = 0;
         }
-        private void DeleteSave()
+        public void DeleteSave()
         {
             const string savePath = "Saves/save1.json";
 
@@ -61,21 +62,18 @@ namespace Recource_Collection.Scenes
         public override void Update()
         {
             var keyboardState = Keyboard.GetState();
-            bool upPressed = keyboardState.IsKeyDown(Keys.Up) && !previousState.IsKeyDown(Keys.Up);
-            bool downPressed = keyboardState.IsKeyDown(Keys.Down) && !previousState.IsKeyDown(Keys.Down);
-            bool enterPressed = keyboardState.IsKeyDown(Keys.Enter) && !previousState.IsKeyDown(Keys.Enter);
-            
 
-            if (upPressed)
+            if (keyboardState.IsKeyDown(Keys.Up) && !previousState.IsKeyDown(Keys.Up))
                 buttonSelected = Math.Max(0, buttonSelected - 1);
 
-            if (downPressed)
+            if (keyboardState.IsKeyDown(Keys.Down) && !previousState.IsKeyDown(Keys.Down))
                 buttonSelected = Math.Min(_buttons.Length - 1, buttonSelected + 1);
 
-            if (enterPressed)
+            if (keyboardState.IsKeyDown(Keys.Enter) && !previousState.IsKeyDown(Keys.Enter))
                 ActivateButton();
 
             previousState = keyboardState;
+
         }
 
         private void ActivateButton()

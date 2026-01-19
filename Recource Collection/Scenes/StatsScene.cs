@@ -88,7 +88,8 @@ namespace Recource_Collection.Scenes
                 spritebatch.End();
                 return;
             }
-
+            spritebatch.DrawString(_font, "Questions wrong: " + _save.QuestionsIncorrect, new Vector2(60, 200), Color.White);
+            spritebatch.DrawString(_font, "Days survived: " + _save.DayCount, new Vector2(60, 240), Color.White);
             spritebatch.DrawString(_font, "Enemies killed: " + _save.EnemiesKilled, new Vector2(60, 120), Color.White);
             spritebatch.DrawString(_font, "Questions correct: " + _save.QuestionsCorrect, new Vector2(60, 160), Color.White);
             spritebatch.DrawString(_font, "Questions wrong: " + _save.QuestionsIncorrect, new Vector2(60, 200), Color.White);

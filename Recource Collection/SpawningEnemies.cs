@@ -31,22 +31,24 @@ namespace Recource_Collection
             switch (Difficulty)
             {
                 case Difficulty.Easy:
-                    MaxEnemies = 3;
+                    baseMaxEnemies = 3;
                     break;
                 case Difficulty.Medium:
-                    MaxEnemies = 7;
+                    baseMaxEnemies = 5;
                     break;
                 case Difficulty.Hard:
-                    MaxEnemies = 12;
+                    baseMaxEnemies = 7;
                     break;
             }
+
+            MaxEnemies = baseMaxEnemies;
         }
 
         public int MaxEnemies { get; private set; } = 3;
+        private int baseMaxEnemies = 3;
+        public int NightMultiplier { get; set; } = 2;
 
         public float Rad { get; set; } = TileMap.tilesize * 8f;
-
-        //public float RespawnDelaySeconds { get; set; } = 10f;
 
         private bool hasSpawned = false;
         private float respawnTimer = 0f;
@@ -102,6 +104,17 @@ namespace Recource_Collection
         {
             hasSpawned = false;
             respawnTimer = 0f;
+        }
+        public void OnNightStarted()
+        {
+            MaxEnemies = baseMaxEnemies * NightMultiplier;
+            ForceRespawn();
+        }
+
+        public void OnDayStarted()
+        {
+            MaxEnemies = baseMaxEnemies;
+            ForceRespawn();
         }
         private Enemy CreateEnemy(Vector2 position)
         {

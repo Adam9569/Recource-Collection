@@ -23,7 +23,9 @@ namespace Recource_Collection
         private SpriteFont _font;
         private KeyboardState previousState;
         private Texture2D pixel;
-        
+        private DayNightCycle _dayNight;
+
+
         private SpawningEnemies _spawning;
         private SpawningEnemies _spawningEvilRabbits;
         private Texture2D EvilRabbitTexture;
@@ -42,6 +44,7 @@ namespace Recource_Collection
         {
             System.Diagnostics.Debug.WriteLine("GameScene ctor start");
 
+            _dayNight = new DayNightCycle();
             _font = content.Load<SpriteFont>("Font");
             _worldSeed = 6767;
             _noise = new NoiseGen(seed: _worldSeed);
@@ -79,6 +82,8 @@ namespace Recource_Collection
             _boss.LoadContent(content);
             _spawning.AddType(EnemyType.Goblin);
             _spawning.AddType(EnemyType.Rabbit);
+
+            _dayNight = new DayNightCycle();
 
             pixel = new Texture2D(Globals.SpriteBatch.GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
@@ -122,7 +127,7 @@ namespace Recource_Collection
                         _hero.Inventory[item] = kv.Value;
                 }
             }
-
+            _dayNight = new DayNightCycle();
             totalKills = save.EnemiesKilled;
             _hero.QuestionsCorrect = save.QuestionsCorrect;
             _hero.QuestionsIncorrect = save.QuestionsIncorrect;
@@ -148,6 +153,8 @@ namespace Recource_Collection
                 CurrentHealth = _hero.CurrentHealth,
                 CurrentHunger = _hero.CurrentHunger,
                 CurrentThirst = _hero.CurrentThirst,
+                DayCount = _dayNight.DayCount,
+                TimeOfDay = _dayNight.CurrentTime,
 
                 Inventory = _hero.Inventory.ToDictionary(k => k.Key.ToString(), v => v.Value)
                 
@@ -178,6 +185,14 @@ namespace Recource_Collection
         }
         public override void Update()
         {
+            _dayNight.Update((float)Globals.Time);
+
+            if (_dayNight.JustTurnedNight)
+                _spawning.OnNightStarted();
+
+            if (_dayNight.JustTurnedDay)
+                _spawning.OnDayStarted();
+
             _hero.Update(_tileMap);
             _worldItems.Update(_hero);
             OpenInventory();

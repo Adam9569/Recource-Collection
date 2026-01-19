@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Recource_Collection
 {
     public class StoringData
     {
         public int WorldSeed { get; set; }
+        public int DayCount { get; set; }
+        public TimeOfDay TimeOfDay { get; set; }
 
         public float HeroX { get; set; }
         public float HeroY { get; set; }
