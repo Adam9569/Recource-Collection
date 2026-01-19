@@ -60,6 +60,14 @@ namespace Recource_Collection
         public bool staminaUsed = false;
         public int staminaUsedTimer = 0;
 
+        public int HealthBarSub;
+        public int HungerBarSub;
+        public int ThirstBarSub;
+        public int BarHeight = 30;
+        public Rectangle HealthBar;
+        public Rectangle HungerBar;
+        public Rectangle ThirstBar;
+
         public enum Actions
         {
             hit,
@@ -220,6 +228,19 @@ namespace Recource_Collection
             Inventory[itemtype]--;
         }
 
+        public void UpdateEssentialBars()
+        {
+            int barX = (int)Position.X + Globals.WindowSize.X / 2 - 120;
+            int barY = (int)Position.Y - Globals.WindowSize.Y / 2 + 300;
+
+            HealthBar = new Rectangle(barX, barY, (int)(float)(CurrentHealth / MaxHealth) * 100, BarHeight);
+
+            HungerBar = new Rectangle(barX, barY - 40, CurrentHunger * 2, BarHeight);
+
+            ThirstBar = new Rectangle(barX, barY - 80, CurrentThirst * 2, BarHeight);
+        }
+
+
 
         public void removeFromInv(Items itemtype)
         {
@@ -290,7 +311,7 @@ namespace Recource_Collection
             var keyboardState = Keyboard.GetState();
             bool fDown = keyboardState.IsKeyDown(Keys.F);
             bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
-
+            UpdateEssentialBars();
             Sprint(keyboardState);
 
             if (CurrentStamina < MaxStamina)

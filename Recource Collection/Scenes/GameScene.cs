@@ -251,6 +251,10 @@ namespace Recource_Collection
             _spriteBatch = Globals.SpriteBatch;
             _spriteBatch.Begin(transformMatrix: _camera);
 
+            _spriteBatch.Draw(pixel, _hero.HealthBar, Color.Red);
+            _spriteBatch.Draw(pixel, _hero.HungerBar, Color.Brown * 0.9f);
+            _spriteBatch.Draw(pixel, _hero.ThirstBar, Color.Purple * 0.9f);
+
             for (int x = 0; x < TileMap.Width; x++)
             {
                 for (int y = 0; y < TileMap.Height; y++)
