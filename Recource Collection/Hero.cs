@@ -48,13 +48,38 @@ namespace Recource_Collection
         private float timeNeeded;
         private MainMenuScene menu;
 
+
+        private float SPEED = 500;
+        public int MaxStamina { get; set; }
+        public int CurrentStamina { get; set; }
+
+        public int sprintTimer = 0;
+        public int sprintCooldown = 45;
+        public int recoveryTimer = 0;
+        public int recoveryCooldown = 30;
+        public bool staminaUsed = false;
+        public int staminaUsedTimer = 0;
+
+        public enum Actions
+        {
+            hit,
+            swing,
+            sprint
+        }
+        public static Dictionary<Actions, int> StaminaVal = new Dictionary<Actions, int>()
+        {
+            {Actions.hit,4 },
+            {Actions.swing,8},
+            {Actions.sprint,6}
+        };
+
         public Dictionary<Items, int> Inventory { get; set; } = new Dictionary<Items, int>();
 
         public Hero(int MaxHealth, Texture2D texture, Vector2 position) : base(texture, position)
         {
             HitBox = new Rectangle((int)position.X - Texture.Width /2 , (int)position.Y - Texture.Height /2 , Texture.Width, Texture.Height);
             AttackHitBox = new Rectangle((int)position.X - Texture.Width / 2, (int)position.Y - Texture.Height / 2, Texture.Width * (int)1.5, Texture.Height * (int)1.5);
-            Speed = 500;
+            SPEED = 500;
             CurrentHunger = MaxHunger;
             CurrentThirst = MaxThirst;
             CurrentHealth = MaxHealth;
@@ -75,6 +100,42 @@ namespace Recource_Collection
                 Weight += CollectableItems.Weight[itemtype];
             }
         }
+
+        public void Recovery()
+        {
+
+            if (staminaUsed == false && CurrentStamina != MaxStamina)
+            {
+                staminaUsedTimer++;
+                if (staminaUsedTimer >= 60)
+                {
+                    CurrentStamina += 10;
+                    staminaUsedTimer = 0;
+                }
+            }
+        }
+
+        public void Sprint(KeyboardState keyboardState)
+        {
+
+            if (SPEED <= 1000 && keyboardState.IsKeyDown(Keys.LeftShift) && CurrentStamina > StaminaVal[Actions.sprint])
+            {
+                staminaUsed = true;
+                SPEED += 2;
+                if (sprintTimer >= sprintCooldown)
+                {
+                    CurrentStamina -= StaminaVal[Actions.sprint];
+                    sprintTimer = 0;
+                }
+            }
+            else
+            {
+                SPEED = 500;
+                staminaUsed = false;
+            }
+
+        }
+
         public void TakeDamage(int damageDealt)
         {
             if (damageTimer > 0) return;
@@ -141,7 +202,7 @@ namespace Recource_Collection
         {
             if(CurrentThirst < 25 || CurrentHunger < 25)
             {
-                Speed = 250;
+                SPEED = 250;
             }
         }
         public void Eating(Items itemtype)
@@ -228,6 +289,19 @@ namespace Recource_Collection
             bool fDown = keyboardState.IsKeyDown(Keys.F);
             bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
 
+            Sprint(keyboardState);
+
+            if (CurrentStamina < MaxStamina)
+            {
+                Recovery();
+
+            }
+            else
+            {
+                CurrentStamina = MaxStamina;
+            }
+
+
             IsAttacking = false;
             if (damageTimer > 0)
                 damageTimer--;
@@ -273,7 +347,7 @@ namespace Recource_Collection
                 previousState = keyboardState;
                 return;
             }
-            Velocity = Speed * InputManager.Direction;
+            Velocity = SPEED * InputManager.Direction;
             Position += Velocity * (float)Globals.Time;
 
             HitBox = new Rectangle((int)Position.X - Texture.Width / 2,(int)Position.Y - Texture.Height / 2,Texture.Width, Texture.Height);
