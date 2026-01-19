@@ -231,7 +231,10 @@ namespace Recource_Collection
             IsAttacking = false;
             if (damageTimer > 0)
                 damageTimer--;
-
+            if(keyboardState.IsKeyDown(Keys.H) && !previousState.IsKeyDown(Keys.H) && CurrentHealth != MaxHealth)
+            {
+                CurrentHealth = CurrentHealth + 2;
+            }
             if(CurrentHealth <= 0)
             {
                 Inventory.Clear();
