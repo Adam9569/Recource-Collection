@@ -8,18 +8,20 @@ namespace Recource_Collection
 {
     public class StoringData
     {
-        public int WorldSeed;
-        public float HeroX;
-        public float HeroY;
+        public int WorldSeed { get; set; }
 
-        public int EnemiesKilled;
+        public float HeroX { get; set; }
+        public float HeroY { get; set; }
 
-        public int CurrentHealth;
-        public int CurrentHunger;
-        public int QuestionsCorrect;
-        public int QuestionsIncorrect;
-        public int CurrentThirst;
+        public int EnemiesKilled { get; set; }
 
-        public Dictionary<string, int> Inventory;
+        public int QuestionsCorrect { get; set; }
+        public int QuestionsIncorrect { get; set; }
+
+        public int CurrentHealth { get; set; }
+        public int CurrentHunger { get; set; }
+        public int CurrentThirst { get; set; }
+
+        public Dictionary<string, int> Inventory { get; set; } = new Dictionary<string, int>();
     }
 }

@@ -18,8 +18,8 @@ namespace Recource_Collection
         public int heroDamage = 100;
 
         public int Weight { get; set; }
-        public int CurrentHunger = 50;
-        public int CurrentThirst = 50;
+        public int CurrentHunger;
+        public int CurrentThirst;
 
         public int MaxWeight = 100;     
         public int MaxHunger = 100;
@@ -51,6 +51,8 @@ namespace Recource_Collection
             HitBox = new Rectangle((int)position.X - Texture.Width /2 , (int)position.Y - Texture.Height /2 , Texture.Width, Texture.Height);
             AttackHitBox = new Rectangle((int)position.X - Texture.Width / 2, (int)position.Y - Texture.Height / 2, Texture.Width * (int)1.5, Texture.Height * (int)1.5);
             Speed = 500;
+            CurrentHunger = MaxHunger;
+            CurrentThirst = MaxThirst;
             CurrentHealth = MaxHealth;
         }
 
@@ -206,12 +208,23 @@ namespace Recource_Collection
             }
             return false;
         }
+        public void SetStats(int health, int hunger, int thirst)
+        {
+            CurrentHealth = Math.Clamp(health, 0, MaxHealth);
+            CurrentHunger = Math.Clamp(hunger, 0, MaxHunger);
+            CurrentThirst = Math.Clamp(thirst, 0, MaxThirst);
+        }
+        public void SetPosition(Vector2 pos)
+        {
+            Position = pos;
+            HitBox = new Rectangle((int)Position.X - Texture.Width / 2,(int)Position.Y - Texture.Height / 2,Texture.Width,Texture.Height);
+        }
         public void Update(TileMap map)
         {
             var keyboardState = Keyboard.GetState();
             bool fDown = keyboardState.IsKeyDown(Keys.F);
             bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
-            Death();
+
             IsAttacking = false;
 
             if (Isfarming)

@@ -21,7 +21,7 @@ namespace Recource_Collection
     {
         private static SceneName CurrentSceneName = SceneName.MainMenu;
         private static SceneName? PreviousSceneName = null;
-
+        private static ContentManager content;
         public static Scene CurrentScene => Scenes[CurrentSceneName];
 
         private static Dictionary<SceneName, Scene> Scenes = new Dictionary<SceneName, Scene>();
@@ -37,7 +37,7 @@ namespace Recource_Collection
             Scenes.Add(SceneName.CraftingAndInv, new CraftingScene(Content, Globals.hero));
             Scenes.Add(SceneName.Recipes, new RecipeScene(Content));
             Scenes.Add(SceneName.Question, new QuestionScene(Content));
-
+            content = Content;
             CurrentSceneName = SceneName.MainMenu;
             CurrentScene.OnSwitch();
         }
@@ -67,7 +67,14 @@ namespace Recource_Collection
             if (PreviousSceneName == null) return;
             SwitchScene((SceneName)PreviousSceneName);
         }
+
+        public static void RebuildGame()
+        {
+            Scenes[SceneName.Game] = new GameScene(content);
+            Scenes[SceneName.CraftingAndInv] = new CraftingScene(content, Globals.hero);
+        }
     }
+
 
     public abstract class Scene
     {

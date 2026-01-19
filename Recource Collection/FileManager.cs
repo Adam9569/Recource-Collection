@@ -6,7 +6,7 @@ namespace Recource_Collection
 {
     internal static class FileManager
     {
-        private static string BasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DungeonGame", "Data");
+        private static string BasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Recource_Collection", "Data");
 
         public static bool FileExists(string path)
         {

@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
 using System.Text.Json;
+using System;
+using System.Diagnostics;
 
 namespace Recource_Collection
 {
@@ -27,20 +29,24 @@ namespace Recource_Collection
         private Texture2D EvilRabbitTexture;
         private Texture2D GoblinTexture;
 
+        private int _worldSeed = 6767;
+        private int totalKills = 0;
+        private int questionsCorrect = 0;
+        private int questionsIncorrect = 0;
+        private const string SaveFilePath = "Saves/save1.json";
+
         public Boss _boss;
         Texture2D spriteSheet;
 
         List<Enemy> enemies = new List<Enemy>();
 
-
-        private int totalKills = 0;
-
-
-
         public GameScene(ContentManager content)
         {
+            System.Diagnostics.Debug.WriteLine("GameScene ctor start");
+
             _font = content.Load<SpriteFont>("Font");
-            _noise = new NoiseGen(seed: 6767);
+            _worldSeed = 6767;
+            _noise = new NoiseGen(seed: _worldSeed);
             var tileTextures = new Dictionary<TileMap.TileType, Texture2D>
             {
                 {TileMap.TileType.grass, content.Load<Texture2D>("grass")},
@@ -59,9 +65,9 @@ namespace Recource_Collection
             WorldGen.MapCreation(_tileMap, _noise);
 
             heroTexture = content.Load<Texture2D>(Globals.selectedHero);
-            _hero = new Hero(100,heroTexture, new Vector2(6000, 6000));
+            _hero = new Hero(100, heroTexture, new Vector2(TileMap.Width * TileMap.tilesize / 2f,TileMap.Height * TileMap.tilesize / 2f));
             Globals.hero = _hero;
-
+            
             _worldItems = new WorldItems(Globals.SpriteBatch);
             _worldItems.LoadContent(content);
 
@@ -78,8 +84,53 @@ namespace Recource_Collection
 
             pixel = new Texture2D(Globals.SpriteBatch.GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
+            if (FileManager.FileExists("Saves/save1.json"))
+            {
+                LoadGame();
+            }
+            else
+            {
+                NewWorld();
+            }
         }
+        private bool LoadGame()
+        {
+            if (!FileManager.FileExists(SaveFilePath))
+                return false;
 
+            string json = FileManager.ReadData(SaveFilePath);
+            StoringData save = JsonSerializer.Deserialize<StoringData>(json);
+            if (save == null) return false;
+
+            _worldSeed = save.WorldSeed;
+            _noise = new NoiseGen(seed: _worldSeed);
+            WorldGen.MapCreation(_tileMap, _noise);
+
+            if (save.HeroX != 0 || save.HeroY != 0)
+            {
+                _hero.SetPosition(new Vector2(save.HeroX, save.HeroY));
+            }
+            int h = save.CurrentHunger <= 0 ? _hero.MaxHunger : save.CurrentHunger;
+            int t = save.CurrentThirst <= 0 ? _hero.MaxThirst : save.CurrentThirst;
+
+            _hero.SetStats(save.CurrentHealth, h, t);
+
+            _hero.Inventory.Clear();
+            if (save.Inventory != null)
+            {
+                foreach (var kv in save.Inventory)
+                {
+                    if (Enum.TryParse<Items>(kv.Key, out var item))
+                        _hero.Inventory[item] = kv.Value;
+                }
+            }
+
+            totalKills = save.EnemiesKilled;
+            questionsCorrect = save.QuestionsCorrect;
+            questionsIncorrect = save.QuestionsIncorrect;
+
+            return true;
+        }
         public override void OnSwitch()
         {
             Texture2D newTexture = _content.Load<Texture2D>(Globals.selectedHero);
@@ -90,18 +141,41 @@ namespace Recource_Collection
         {
             StoringData save = new StoringData
             {
-                WorldSeed = 6767,
+                WorldSeed = _worldSeed,
                 HeroX = _hero.Position.X,
                 HeroY = _hero.Position.Y,
                 EnemiesKilled = totalKills,
+                QuestionsCorrect = questionsCorrect,
+                QuestionsIncorrect = questionsIncorrect,
                 CurrentHealth = _hero.CurrentHealth,
                 CurrentHunger = _hero.CurrentHunger,
                 CurrentThirst = _hero.CurrentThirst,
-                Inventory = _hero.Inventory.ToDictionary(i => i.Key.ToString(),i => i.Value)
-            };
-            string json = JsonSerializer.Serialize(save,new JsonSerializerOptions { WriteIndented = true });
 
+                Inventory = _hero.Inventory.ToDictionary(k => k.Key.ToString(), v => v.Value)
+            };
+            string json = JsonSerializer.Serialize(save, new JsonSerializerOptions { WriteIndented = true });
             FileManager.SaveData("Saves", "save1.json", json);
+
+        }
+
+        private void NewWorld()
+        {
+            _worldSeed = Random.Shared.Next(1, 10000);
+
+            _noise = new NoiseGen(seed: _worldSeed);
+            WorldGen.MapCreation(_tileMap, _noise);
+
+            Vector2 spawn = new Vector2(
+                TileMap.Width * TileMap.tilesize / 2f,
+                TileMap.Height * TileMap.tilesize / 2f
+            );
+            _hero.SetPosition(spawn);
+
+            totalKills = 0;
+            questionsCorrect = 0;
+            questionsIncorrect = 0;
+            _hero.SetStats(_hero.MaxHealth, _hero.MaxHunger, _hero.MaxThirst);
+            _hero.Inventory.Clear();
         }
         public override void Update()
         {
@@ -144,17 +218,17 @@ namespace Recource_Collection
         }
         public void OpenInventory()
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.P) && previousState.IsKeyDown(Keys.P))
+            if(Keyboard.GetState().IsKeyDown(Keys.P) && !previousState.IsKeyDown(Keys.P))
             {
                 SceneManager.SwitchScene(SceneName.CraftingAndInv);
             }
         }
         public void OpenMenu()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && previousState.IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !previousState.IsKeyDown(Keys.Escape))
             {
-                SceneManager.SwitchScene(SceneName.MainMenu);
                 SaveGame();
+                SceneManager.SwitchScene(SceneName.MainMenu);
             }
         }
 

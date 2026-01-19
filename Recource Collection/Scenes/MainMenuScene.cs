@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
+
 
 namespace Recource_Collection.Scenes
 {
@@ -19,7 +21,8 @@ namespace Recource_Collection.Scenes
             "Settings",
             "stats",
             "Recipies",
-            "Quit"
+            "Quit",
+            "New Game"
         };
         private int buttonSelected = 0;
 
@@ -35,6 +38,25 @@ namespace Recource_Collection.Scenes
             previousState = Keyboard.GetState();
             buttonSelected = 0;
         }
+        private void DeleteSave()
+        {
+            const string savePath = "Saves/save1.json";
+
+            if (!FileManager.FileExists(savePath))
+            {
+                System.Diagnostics.Debug.WriteLine("NO SAVE TO DELETE");
+                return;
+
+            }
+
+            string fullPath = FileManager.GetDirectory(savePath); 
+            if (!string.IsNullOrEmpty(fullPath))
+            {
+                File.Delete(fullPath);
+                System.Diagnostics.Debug.WriteLine("SAVE DELETED");
+
+            }
+        }
 
         public override void Update()
         {
@@ -44,10 +66,6 @@ namespace Recource_Collection.Scenes
             bool enterPressed = keyboardState.IsKeyDown(Keys.Enter) && !previousState.IsKeyDown(Keys.Enter);
             
 
-            if (enterPressed)
-            {
-                SceneManager.SwitchScene(SceneName.Game);
-            }
             if (upPressed)
                 buttonSelected = Math.Max(0, buttonSelected - 1);
 
@@ -82,6 +100,11 @@ namespace Recource_Collection.Scenes
                     break;
                 case 4:
                     Globals.QuitGame.Invoke();
+                    break;
+                case 5:
+                    DeleteSave();
+                    SceneManager.RebuildGame();
+                    SceneManager.SwitchScene(SceneName.Game);
                     break;
             }
         }
