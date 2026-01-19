@@ -103,6 +103,7 @@ namespace Recource_Collection
             if (ShowPreviousAns)
             {
                 _spritebatch.DrawString(_font, "Answer to the previous question was : " + previousAns, new Vector2(50, 340), Color.Black);
+
             }
 
             _spritebatch.End();
@@ -129,11 +130,13 @@ namespace Recource_Collection
                     if (correct)
                     {
                         UnregisterTextInput();
+                        Globals.hero.QuestionsCorrect++;
                         SceneManager.SwitchScene(SceneName.Game);
                         return;
                     }
                     else
                     {
+                        Globals.hero.QuestionsIncorrect++;
                         previousAns = _currentQuestion.AnswerTxt;
                         ShowPreviousAns = true;
                         _inputBuilder.Clear();

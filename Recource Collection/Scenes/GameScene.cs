@@ -31,8 +31,6 @@ namespace Recource_Collection
 
         private int _worldSeed = 6767;
         private int totalKills = 0;
-        private int questionsCorrect = 0;
-        private int questionsIncorrect = 0;
         private const string SaveFilePath = "Saves/save1.json";
 
         public Boss _boss;
@@ -126,8 +124,8 @@ namespace Recource_Collection
             }
 
             totalKills = save.EnemiesKilled;
-            questionsCorrect = save.QuestionsCorrect;
-            questionsIncorrect = save.QuestionsIncorrect;
+            _hero.QuestionsCorrect = save.QuestionsCorrect;
+            _hero.QuestionsIncorrect = save.QuestionsIncorrect;
 
             return true;
         }
@@ -145,13 +143,14 @@ namespace Recource_Collection
                 HeroX = _hero.Position.X,
                 HeroY = _hero.Position.Y,
                 EnemiesKilled = totalKills,
-                QuestionsCorrect = questionsCorrect,
-                QuestionsIncorrect = questionsIncorrect,
+                QuestionsCorrect = _hero.QuestionsCorrect,
+                QuestionsIncorrect = _hero.QuestionsIncorrect,
                 CurrentHealth = _hero.CurrentHealth,
                 CurrentHunger = _hero.CurrentHunger,
                 CurrentThirst = _hero.CurrentThirst,
 
                 Inventory = _hero.Inventory.ToDictionary(k => k.Key.ToString(), v => v.Value)
+                
             };
             string json = JsonSerializer.Serialize(save, new JsonSerializerOptions { WriteIndented = true });
             FileManager.SaveData("Saves", "save1.json", json);
@@ -172,8 +171,8 @@ namespace Recource_Collection
             _hero.SetPosition(spawn);
 
             totalKills = 0;
-            questionsCorrect = 0;
-            questionsIncorrect = 0;
+            _hero.QuestionsCorrect = 0;
+            _hero.QuestionsIncorrect = 0;
             _hero.SetStats(_hero.MaxHealth, _hero.MaxHunger, _hero.MaxThirst);
             _hero.Inventory.Clear();
         }
@@ -235,7 +234,6 @@ namespace Recource_Collection
         public override void Draw()
         {
             _spriteBatch = Globals.SpriteBatch;
-
             _spriteBatch.Begin(transformMatrix: _camera);
 
             for (int x = 0; x < TileMap.Width; x++)

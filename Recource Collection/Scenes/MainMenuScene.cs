@@ -92,7 +92,7 @@ namespace Recource_Collection.Scenes
                     break;
 
                 case 2:
-                    // SceneManager.SwitchScene(SceneName.Stats);
+                    SceneManager.SwitchScene(SceneName.stats);
                     Console.WriteLine("Stats selected");
                     break;
                 case 3:

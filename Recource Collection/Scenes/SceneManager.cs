@@ -14,7 +14,8 @@ namespace Recource_Collection
         CharacterSelection,
         Settings,
         Recipes,
-        Question
+        Question,
+        stats
     }
 
     public static class SceneManager
@@ -37,6 +38,7 @@ namespace Recource_Collection
             Scenes.Add(SceneName.CraftingAndInv, new CraftingScene(Content, Globals.hero));
             Scenes.Add(SceneName.Recipes, new RecipeScene(Content));
             Scenes.Add(SceneName.Question, new QuestionScene(Content));
+            Scenes.Add(SceneName.stats, new StatsScene(Content));
             content = Content;
             CurrentSceneName = SceneName.MainMenu;
             CurrentScene.OnSwitch();

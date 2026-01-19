@@ -14,8 +14,11 @@ namespace Recource_Collection
  
         public Rectangle HitBox { get; private set; }
         public Rectangle AttackHitBox { get; private set; }
+        public int QuestionsCorrect { get; set; }
+        public int QuestionsIncorrect { get; set; }
+
         public bool IsAttacking { get; set; }
-        public int heroDamage = 100;
+        public int heroDamage = 10;
 
         public int Weight { get; set; }
         public int CurrentHunger;
@@ -73,11 +76,10 @@ namespace Recource_Collection
         }
         public void TakeDamage(int damageDealt)
         {
-            if (damageTimer >= damageCooldown)
-            {
-                CurrentHealth -= damageDealt;
-                damageTimer = 0;
-            }
+            if (damageTimer > 0) return;
+
+            CurrentHealth -= damageDealt;
+            damageTimer = damageCooldown;
         }
         public void DealDamage(Enemy enemy)
         {
@@ -226,6 +228,8 @@ namespace Recource_Collection
             bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
 
             IsAttacking = false;
+            if (damageTimer > 0)
+                damageTimer--;
 
             if (Isfarming)
             {
