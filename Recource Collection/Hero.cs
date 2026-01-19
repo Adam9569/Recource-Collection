@@ -75,7 +75,7 @@ namespace Recource_Collection
 
         public Dictionary<Items, int> Inventory { get; set; } = new Dictionary<Items, int>();
 
-        public Hero(int MaxHealth, Texture2D texture, Vector2 position) : base(texture, position)
+        public Hero(int maxstamina,int MaxHealth, Texture2D texture, Vector2 position) : base(texture, position)
         {
             HitBox = new Rectangle((int)position.X - Texture.Width /2 , (int)position.Y - Texture.Height /2 , Texture.Width, Texture.Height);
             AttackHitBox = new Rectangle((int)position.X - Texture.Width / 2, (int)position.Y - Texture.Height / 2, Texture.Width * (int)1.5, Texture.Height * (int)1.5);
@@ -83,6 +83,8 @@ namespace Recource_Collection
             CurrentHunger = MaxHunger;
             CurrentThirst = MaxThirst;
             CurrentHealth = MaxHealth;
+            MaxStamina = maxstamina;
+            CurrentStamina = MaxStamina;
         }
 
         public void addToInv(Items itemtype)
