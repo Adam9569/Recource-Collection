@@ -24,8 +24,8 @@ namespace Recource_Collection
 
         public const int Chunksize = 320;
         public const int tilesize = 64;
-        public const int Width = 175;
-        public const int Height = 175;
+        public const int Width = 100;
+        public const int Height = 100;
 
 
         public HashSet<TileType> SolidTiles = new HashSet<TileType>();

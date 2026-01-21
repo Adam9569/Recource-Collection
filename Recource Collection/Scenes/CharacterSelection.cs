@@ -17,6 +17,7 @@ namespace Recource_Collection
         private class CharacterOption
         {
             public string TextureName;
+            public Difficulty Difficulty;
             public Texture2D Texture;
         }
 
@@ -38,14 +39,26 @@ namespace Recource_Collection
                 "hero3"
             };
 
-            foreach (var name in characterTextureNames)
+            options.Add(new CharacterOption
             {
-                options.Add(new CharacterOption
-                {
-                    TextureName = name,
-                    Texture = content.Load<Texture2D>(name)
-                });
-            }
+                TextureName = "hero",
+                Texture = content.Load<Texture2D>("hero"),
+                Difficulty = Difficulty.Easy
+            });
+
+            options.Add(new CharacterOption
+            {
+                TextureName = "Hero2",
+                Texture = content.Load<Texture2D>("Hero2"),
+                Difficulty = Difficulty.Medium
+            });
+
+            options.Add(new CharacterOption
+            {
+                TextureName = "hero3",
+                Texture = content.Load<Texture2D>("hero3"),
+                Difficulty = Difficulty.Hard
+            });
         }
 
         public override void OnSwitch()
@@ -60,33 +73,24 @@ namespace Recource_Collection
         {
             var keyboardState = Keyboard.GetState();
 
-            bool leftPressed = keyboardState.IsKeyDown(Keys.Left) && !previousState.IsKeyDown(Keys.Left);
-            bool rightPressed = keyboardState.IsKeyDown(Keys.Right) && !previousState.IsKeyDown(Keys.Right);
-
-            bool selectPressed =
-                (keyboardState.IsKeyDown(Keys.Enter) || keyboardState.IsKeyDown(Keys.Space)) &&
-                !(previousState.IsKeyDown(Keys.Enter) || previousState.IsKeyDown(Keys.Space));
-
-            bool backPressed =
-                keyboardState.IsKeyDown(Keys.Back) && !previousState.IsKeyDown(Keys.Back);
-
-            if (leftPressed)
+            if (keyboardState.IsKeyDown(Keys.Left) && !previousState.IsKeyDown(Keys.Left))
             {
                 characterSelected = Math.Max(0, characterSelected - 1);
             }
 
-            if (rightPressed)
+            if (keyboardState.IsKeyDown(Keys.Right) && !previousState.IsKeyDown(Keys.Right))
             {
                 characterSelected = Math.Min(options.Count - 1, characterSelected + 1);
             }
 
-            if (selectPressed)
+            if ((keyboardState.IsKeyDown(Keys.Enter) || keyboardState.IsKeyDown(Keys.Space)) && !(previousState.IsKeyDown(Keys.Enter) || previousState.IsKeyDown(Keys.Space)))
             {
                 Globals.selectedHero = options[characterSelected].TextureName;
+                Globals.SelectedDifficulty = options[characterSelected].Difficulty;
                 SceneManager.SwitchScene(SceneName.Game);
             }
 
-            if (backPressed)
+            if (keyboardState.IsKeyDown(Keys.Back) && !previousState.IsKeyDown(Keys.Back))
             {
                 SceneManager.BackScene();
             }

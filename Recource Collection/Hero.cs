@@ -5,6 +5,7 @@ using System;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
 using Recource_Collection.Scenes;
+using System.Diagnostics;
 
 
 
@@ -145,6 +146,13 @@ namespace Recource_Collection
             }
 
         }
+        public void Hit(KeyboardState keyboardState)
+        {
+            if(keyboardState.IsKeyDown(Keys.Space) && !previousState.IsKeyDown(Keys.Space))
+            {
+                CurrentStamina -= StaminaVal[Actions.hit];
+            }
+        }
 
         public void TakeDamage(int damageDealt)
         {
@@ -155,7 +163,7 @@ namespace Recource_Collection
         }
         public void DealDamage(Enemy enemy)
         {
-            if (IsAttacking && !attackHasHit && AttackHitBox.Intersects(enemy.enemyHitBox))
+            if (IsAttacking && !attackHasHit && AttackHitBox.Intersects(enemy.enemyHitBox) && CurrentStamina > 10)
             {
                 enemy.CurrentHealth -= heroDamage;
                 attackHasHit = true;
@@ -163,7 +171,8 @@ namespace Recource_Collection
             if (Keyboard.GetState().IsKeyUp(Keys.Space))
             {
                 attackHasHit = false;
-            }   
+            }
+            Debug.WriteLine(CurrentStamina);
                 
         }
         public void DealBossDamage(Boss boss)
@@ -271,13 +280,6 @@ namespace Recource_Collection
 
             return new List<string>(set);
         }
-        public void Death()
-        {
-            if (CurrentHealth <= 0)
-            {
-                Globals.QuitGame();
-            }
-        }
         private bool Farming(TileMap map)
         {
             foreach (var key in CornerTiles(map))
@@ -312,12 +314,12 @@ namespace Recource_Collection
             bool fDown = keyboardState.IsKeyDown(Keys.F);
             bool fPressed = fDown && !previousState.IsKeyDown(Keys.F);
             UpdateEssentialBars();
+            Hit(keyboardState);
             Sprint(keyboardState);
 
             if (CurrentStamina < MaxStamina)
             {
                 Recovery();
-
             }
             else
             {
@@ -327,7 +329,9 @@ namespace Recource_Collection
 
             IsAttacking = false;
             if (damageTimer > 0)
+            {
                 damageTimer--;
+            }
             if(keyboardState.IsKeyDown(Keys.H) && !previousState.IsKeyDown(Keys.H) && CurrentHealth != MaxHealth)
             {
                 CurrentHealth = CurrentHealth + 2;

@@ -14,7 +14,9 @@ namespace Recource_Collection
         public static Point WindowSize { get; set; }
         public static GameWindow Window { get; set; }
 
-        public static string selectedHero = "Hero2";
+        public static Difficulty SelectedDifficulty;
+
+        public static string selectedHero = "hero";
         public static Hero hero;
         public static Action QuitGame;
         public static void Update(GameTime gt)

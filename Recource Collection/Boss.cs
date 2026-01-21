@@ -14,6 +14,7 @@ namespace Recource_Collection
         public AnimationManager AnimationManager { get; private set; }
         public float AggroRange { get; set; } = 700f;
         public bool IsAggro { get; private set; } = false;
+        public bool IsDead { get; set; } = false;
 
 
         public int Damage = 25;
@@ -80,6 +81,7 @@ namespace Recource_Collection
         public void Update(Hero hero)
         {
             float dist = Vector2.Distance(Position, hero.Position);
+            Death();
             bool ShouldAggro = dist <= AggroRange;
             hCounter++;
             sCounter++;
@@ -163,6 +165,13 @@ namespace Recource_Collection
                 Vector2 start = sb + new Vector2(0f, i * 80f);
 
                 projectile.SpawnMeteor(start, velocity);
+            }
+        }
+        public void Death()
+        {
+            if(CurrentHealth <=0)
+            {
+                IsDead = true;
             }
         }
 

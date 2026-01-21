@@ -75,15 +75,13 @@ namespace Recource_Collection
             GoblinTexture = content.Load<Texture2D>("FinalEnemy");
             EvilRabbitTexture = content.Load<Texture2D>("EvilRabbit");
             _spawning = new SpawningEnemies(GoblinTexture,EvilRabbitTexture);
-            _spawning.Difficulty = Difficulty.Hard;
+            _spawning.Difficulty = Globals.SelectedDifficulty;
 
             spriteSheet = content.Load<Texture2D>("treeantSpriteSheet1");
             _boss = new Boss(500, spriteSheet, new Vector2(6000, 6000));
             _boss.LoadContent(content);
             _spawning.AddType(EnemyType.Goblin);
             _spawning.AddType(EnemyType.Rabbit);
-
-            _dayNight = new DayNightCycle();
 
             pixel = new Texture2D(Globals.SpriteBatch.GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
@@ -127,7 +125,6 @@ namespace Recource_Collection
                         _hero.Inventory[item] = kv.Value;
                 }
             }
-            _dayNight = new DayNightCycle();
             totalKills = save.EnemiesKilled;
             _hero.QuestionsCorrect = save.QuestionsCorrect;
             _hero.QuestionsIncorrect = save.QuestionsIncorrect;
@@ -171,10 +168,7 @@ namespace Recource_Collection
             _noise = new NoiseGen(seed: _worldSeed);
             WorldGen.MapCreation(_tileMap, _noise);
 
-            Vector2 spawn = new Vector2(
-                TileMap.Width * TileMap.tilesize / 2f,
-                TileMap.Height * TileMap.tilesize / 2f
-            );
+            Vector2 spawn = new Vector2(TileMap.Width * TileMap.tilesize / 2f,TileMap.Height * TileMap.tilesize / 2f);
             _hero.SetPosition(spawn);
 
             totalKills = 0;
