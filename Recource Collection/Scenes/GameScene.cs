@@ -245,10 +245,10 @@ namespace Recource_Collection
             _spriteBatch.Begin(transformMatrix: _camera);
 
 
-            int startX = (int)((_hero.Position.X - Globals.WindowSize.X / 2) / TileMap.tilesize) - 4;
-            int endX = (int)((_hero.Position.X + Globals.WindowSize.X / 2) / TileMap.tilesize) + 4;
-            int startY = (int)((_hero.Position.Y - Globals.WindowSize.Y / 2) / TileMap.tilesize) - 4;
-            int endY = (int)((_hero.Position.Y + Globals.WindowSize.Y / 2) / TileMap.tilesize) + 4;
+            int startX = (int)((_hero.Position.X - Globals.WindowSize.X / 2) / TileMap.tilesize) - 10;
+            int endX = (int)((_hero.Position.X + Globals.WindowSize.X / 2) / TileMap.tilesize) + 10;
+            int startY = (int)((_hero.Position.Y - Globals.WindowSize.Y / 2) / TileMap.tilesize) - 10;
+            int endY = (int)((_hero.Position.Y + Globals.WindowSize.Y / 2) / TileMap.tilesize) + 10;
 
             if (startX < 0) startX = 0;
             if (startY < 0) startY = 0;
