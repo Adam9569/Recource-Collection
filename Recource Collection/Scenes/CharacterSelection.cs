@@ -106,7 +106,8 @@ namespace Recource_Collection
 
             _spriteBatch.Draw(_pixel, new Rectangle(0, 0, Globals.WindowSize.X, Globals.WindowSize.Y), Color.Black * 0.75f);
 
-            _spriteBatch.DrawString(_font, "Left/Right to choose, Enter to select,", new Vector2(60, 90), Color.White);
+            _spriteBatch.DrawString(_font, "Left/Right to choose, Enter to select,", new Vector2(50, 80), Color.White);
+            _spriteBatch.DrawString(_font, "hero1 = easy , hero2 = medium , hero3 = hard", new Vector2(100, 100), Color.White);
 
             int startX = 100;
             int y = 200;

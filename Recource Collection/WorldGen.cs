@@ -31,9 +31,10 @@ namespace Recource_Collection
                 for (int y = 1; y < TileMap.Height -1;y++)
                 {
                     string pos = $"{x};{y}";
-
                     if (map.GetTile(pos) == TileType.grass && NearWater(map, x, y))
+                    {
                         map.SetTile(pos, TileType.sand1);
+                    }
                 }
             }
             for (int x = 0; x < TileMap.Width;x++)
@@ -80,7 +81,6 @@ namespace Recource_Collection
                     if (map.GetTile(pos) == TileType.grass)
                     {
                         float b = noise.Sample(x + 3000, y + 3000);
-
                         if (b > 0.7f) 
                         {
                             for (int dx = -1; dx <= 1; dx++)
@@ -92,7 +92,9 @@ namespace Recource_Collection
                                     {
                                         float place = noise.Sample(x + dx + 3100, y + dy + 3100);
                                         if (place > 0.65f)
+                                        {
                                             map.SetTile(p2, TileType.bush1);
+                                        }
                                     }
                                 }
                             }
@@ -108,8 +110,7 @@ namespace Recource_Collection
                 for (int dy = -1; dy <= 1;dy++)
                 {
                     var t = map.GetTile($"{x + dx};{y + dy}");
-                    if (t == TileType.Water1 || t == TileType.Water2)
-                        return true;
+                    if (t == TileType.Water1 || t == TileType.Water2) return true;
                 }
             }
             return false;

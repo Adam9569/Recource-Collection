@@ -186,15 +186,13 @@ namespace Recource_Collection
 
             int rows = 12;
             for (int i = 0; i < rows; i++)
-                invBoxes.Add(new Rectangle(50, 180 + i * (60 + 10), 300, 60));
-
-            int gridStartX = Globals.WindowSize.X - 420;
-            int gridStartY = 220;
-            int slotSize = 90;
+            {
+                invBoxes.Add(new Rectangle(50, 180 + i * (50 + 10), 300, 50));
+            }
 
             for (int i = 0; i < 9; i++)
             {
-                craftSlots[i] = new Rectangle(gridStartX + i % 3 * (slotSize + 10),gridStartY + i / 3 * (slotSize + 10),slotSize,slotSize);
+                craftSlots[i] = new Rectangle(Globals.WindowSize.X - 400 + i % 3 * (100),220 + i / 3 * (100),90,90);
             }
         }
 

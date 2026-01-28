@@ -61,9 +61,9 @@ namespace Recource_Collection
             sCounter = 0;
             hCounter = 0;
             AnimationManager.Play(AnimationManager.BossAnimations.idle);
-            foreach (var p in Projectiles)
+            foreach (var projectile in Projectiles)
             {
-                p.Deactivate();
+                projectile.Deactivate();
             }
                 
         }

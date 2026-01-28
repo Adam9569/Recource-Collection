@@ -16,9 +16,11 @@
 
         public bool JustTurnedNight { get; private set; }
         public bool JustTurnedDay { get; private set; }
+        public Difficulty Difficulty;
 
         public void Update(float deltaTime)
         {
+            ProgressDifficulty();
             JustTurnedNight = false;
             JustTurnedDay = false;
 
@@ -39,6 +41,17 @@
                     DayCount++;
                     JustTurnedDay = true;
                 }
+            }
+        }
+        public void ProgressDifficulty()
+        {
+            if (DayCount < 20 && DayCount > 10 && Difficulty != Difficulty.Hard)
+            {
+                Difficulty = Difficulty.Medium;
+            }
+            if (DayCount > 20 && Difficulty != Difficulty.Hard)
+            {
+                Difficulty = Difficulty.Hard;
             }
         }
     }

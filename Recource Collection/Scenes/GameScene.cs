@@ -42,8 +42,7 @@ namespace Recource_Collection
 
         public GameScene(ContentManager content)
         {
-            System.Diagnostics.Debug.WriteLine("GameScene ctor start");
-
+          
             _dayNight = new DayNightCycle();
             _font = content.Load<SpriteFont>("Font");
             _worldSeed = 6767;
@@ -78,7 +77,7 @@ namespace Recource_Collection
             _spawning.Difficulty = Globals.SelectedDifficulty;
 
             spriteSheet = content.Load<Texture2D>("treeantSpriteSheet1");
-            _boss = new Boss(500, spriteSheet, new Vector2(6000, 6000));
+            _boss = new Boss(500, spriteSheet, new Vector2(5000, 5000));
             _boss.LoadContent(content);
             _spawning.AddType(EnemyType.Goblin);
             _spawning.AddType(EnemyType.Rabbit);
@@ -245,21 +244,25 @@ namespace Recource_Collection
             _spriteBatch = Globals.SpriteBatch;
             _spriteBatch.Begin(transformMatrix: _camera);
 
-            _spriteBatch.Draw(pixel, _hero.HealthBar, Color.Red);
-            _spriteBatch.Draw(pixel, _hero.HungerBar, Color.Brown * 0.9f);
-            _spriteBatch.Draw(pixel, _hero.ThirstBar, Color.Purple * 0.9f);
 
-            for (int x = 0; x < TileMap.Width; x++)
+            int startX = (int)((_hero.Position.X - Globals.WindowSize.X / 2) / TileMap.tilesize) - 4;
+            int endX = (int)((_hero.Position.X + Globals.WindowSize.X / 2) / TileMap.tilesize) + 4;
+            int startY = (int)((_hero.Position.Y - Globals.WindowSize.Y / 2) / TileMap.tilesize) - 4;
+            int endY = (int)((_hero.Position.Y + Globals.WindowSize.Y / 2) / TileMap.tilesize) + 4;
+
+            if (startX < 0) startX = 0;
+            if (startY < 0) startY = 0;
+            if (endX > TileMap.Width - 1) endX = TileMap.Width - 1;
+            if (endY > TileMap.Height - 1) endY = TileMap.Height - 1;
+
+            for (int x = startX; x <= endX; x++)
             {
-                for (int y = 0; y < TileMap.Height; y++)
+                for (int y = startY; y <= endY; y++)
                 {
-                    string pos = $"{x};{y}";
-                    var type = _tileMap.GetTile(pos);
-                    var tex = _tileMap.Assets[type];
-
-                    _spriteBatch.Draw(tex,new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),Color.White);
+                    _spriteBatch.Draw(_tileMap.Assets[_tileMap.GetTile($"{x};{y}")], new Rectangle(x * TileMap.tilesize,y * TileMap.tilesize,TileMap.tilesize,TileMap.tilesize),Color.White);
                 }
             }
+
             if (_boss.CurrentHealth > 0)
             {
                 _spriteBatch.DrawString(_font, "EVIL TREEANT HEALTH : " + _boss.CurrentHealth, new Vector2(_boss.Position.X - 150, _boss.Position.Y - 200), Color.Red);
@@ -273,6 +276,10 @@ namespace Recource_Collection
                 enemies[j].Draw();
             }
 
+            _spriteBatch.Draw(pixel, _hero.HealthBar, Color.Red);
+            _spriteBatch.Draw(pixel, _hero.HungerBar, Color.Brown * 0.9f);
+            _spriteBatch.Draw(pixel, _hero.ThirstBar, Color.Purple * 0.9f);
+
             int i = 0;
             foreach (var item in _hero.Inventory)
             {
@@ -283,9 +290,11 @@ namespace Recource_Collection
             {
                 _spriteBatch.Draw(pixel, _hero.AttackHitBox, Color.Red * 0.2f);
             }
+            
 
             _spriteBatch.End();
         }
+        
     }
 
 }

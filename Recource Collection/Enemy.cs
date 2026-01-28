@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using System;
 
 namespace Recource_Collection
 {
@@ -20,6 +21,7 @@ namespace Recource_Collection
         public int CurrentHealth { get; set; }
         public Rectangle enemyHitBox { get; set; }
         private int DamageCooldown = 60;
+
 
 
         public Enemy(int maxHealth, int damage, float aggroRange, Texture2D texture, Vector2 position)
@@ -59,7 +61,7 @@ namespace Recource_Collection
                 return;
             }
             PathTimer(tileMap, hero);
-            Move(tileMap, 200f);
+            Move(tileMap, 300f);
             pathCounter++;
         }
 
@@ -70,7 +72,6 @@ namespace Recource_Collection
                 Counter = 0;
                 Path = Pathfind(tileMap, hero);
                 pathCounter = 0;
-                Debug.WriteLine($"Counter : {Counter}");
             }   
             if (Path == null || Path.Count == 0)
             {
@@ -78,21 +79,29 @@ namespace Recource_Collection
                 Path = Pathfind(tileMap, hero);
             }
         }
+        float Heuristic(string a, string b)
+        {
+            int[] A = Array.ConvertAll(a.Split(';'), int.Parse);
+            int[] B = Array.ConvertAll(b.Split(';'), int.Parse);
+
+            return MathF.Abs(A[0] - B[0]) + MathF.Abs(A[1] - B[1]);
+        }
 
         public List<string> Pathfind(TileMap tileMap, Hero hero)
         {
             List<string> path = new List<string>();
             Dictionary<string, string> visited = new Dictionary<string, string>();
-            Queue<string> unvisited = new Queue<string>();
+            Dictionary<string, float> distanceFromStart = new Dictionary<string, float>();
+            PriorityQueue<string, float> unvisited = new PriorityQueue<string, float>();
 
             string target = tileMap.VectorToPosition(hero.Position);
             string start = tileMap.VectorToPosition(Position);
 
-            if (!tileMap.InTileMap(start) || !tileMap.InTileMap(target))
-                return path;
+            if (!tileMap.InTileMap(start) || !tileMap.InTileMap(target)) return path;
 
-            unvisited.Enqueue(start);
             visited[start] = null;
+            distanceFromStart[start] = 0;
+            unvisited.Enqueue(start, 0);
 
             bool targetFound = false;
 
@@ -109,10 +118,15 @@ namespace Recource_Collection
 
                 foreach (string neighbour in tileMap.GetNeighbours(currentTile, true))
                 {
-                    if (!visited.ContainsKey(neighbour))
+                    float newDistance = distanceFromStart[currentTile] + 1;
+
+                    if (!distanceFromStart.ContainsKey(neighbour) || newDistance < distanceFromStart[neighbour])
                     {
                         visited[neighbour] = currentTile;
-                        unvisited.Enqueue(neighbour);
+                        distanceFromStart[neighbour] = newDistance;
+
+                        float priority = newDistance + Heuristic(neighbour, target);
+                        unvisited.Enqueue(neighbour, priority);
                     }
                 }
             }

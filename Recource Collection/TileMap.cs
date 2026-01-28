@@ -24,8 +24,8 @@ namespace Recource_Collection
 
         public const int Chunksize = 320;
         public const int tilesize = 64;
-        public const int Width = 100;
-        public const int Height = 100;
+        public const int Width = 1000;
+        public const int Height = 1000;
 
 
         public HashSet<TileType> SolidTiles = new HashSet<TileType>();
@@ -42,10 +42,7 @@ namespace Recource_Collection
         {
             Assets = assets;
 
-            SolidTiles.Add(TileType.Water1);
-            SolidTiles.Add(TileType.Rock1);
-            SolidTiles.Add(TileType.Water2);
-            SolidTiles.Add(TileType.Rock2);
+           
 
             FarmTime[TileType.bush1] = 1f;
             FarmTime[TileType.Tree1] = 1f;

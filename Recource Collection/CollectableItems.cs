@@ -59,7 +59,8 @@ namespace Recource_Collection
         public static Dictionary<Items, int> Drink = new Dictionary<Items, int>()
         {
             {Items.waterBottle , 25},
-            {Items.berry , 5 }
+            {Items.berry , 5 },
+            {Items.CookedRabbitFlesh,15 }
         };
         public static Dictionary<Items, Texture2D> itemTextures = new Dictionary<Items, Texture2D>();
 

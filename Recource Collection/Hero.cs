@@ -172,7 +172,8 @@ namespace Recource_Collection
             {
                 attackHasHit = false;
             }
-            Debug.WriteLine(CurrentStamina);
+            //Debug.WriteLine(CurrentStamina);
+            //Debug.WriteLine(CurrentHealth);
                 
         }
         public void DealBossDamage(Boss boss)
@@ -242,11 +243,11 @@ namespace Recource_Collection
             int barX = (int)Position.X + Globals.WindowSize.X / 2 - 120;
             int barY = (int)Position.Y - Globals.WindowSize.Y / 2 + 300;
 
-            HealthBar = new Rectangle(barX, barY, (int)(float)(CurrentHealth / MaxHealth) * 100, BarHeight);
+            HealthBar = new Rectangle(barX, barY, (int)(((float)CurrentHealth / (float)MaxHealth) * 100), BarHeight);
 
-            HungerBar = new Rectangle(barX, barY - 40, CurrentHunger * 2, BarHeight);
+            HungerBar = new Rectangle(barX, barY - 40, (int)(((float)CurrentHunger / (float)MaxHunger) * 100), BarHeight);
 
-            ThirstBar = new Rectangle(barX, barY - 80, CurrentThirst * 2, BarHeight);
+            ThirstBar = new Rectangle(barX, barY - 80, (int)(((float)CurrentThirst / (float)MaxThirst) * 100), BarHeight);
         }
 
 
@@ -308,6 +309,7 @@ namespace Recource_Collection
             Position = pos;
             HitBox = new Rectangle((int)Position.X - Texture.Width / 2,(int)Position.Y - Texture.Height / 2,Texture.Width,Texture.Height);
         }
+
         public void Update(TileMap map)
         {
             var keyboardState = Keyboard.GetState();
@@ -316,7 +318,15 @@ namespace Recource_Collection
             UpdateEssentialBars();
             Hit(keyboardState);
             Sprint(keyboardState);
-
+            if (keyboardState.IsKeyDown(Keys.H) && previousState.IsKeyDown(Keys.H))
+            {
+                recoveryTimer++;
+                if(recoveryTimer > recoveryCooldown)
+                {
+                    Heal(2);
+                    recoveryTimer = 0;
+                }
+            }    
             if (CurrentStamina < MaxStamina)
             {
                 Recovery();
@@ -332,10 +342,7 @@ namespace Recource_Collection
             {
                 damageTimer--;
             }
-            if(keyboardState.IsKeyDown(Keys.H) && !previousState.IsKeyDown(Keys.H) && CurrentHealth != MaxHealth)
-            {
-                CurrentHealth = CurrentHealth + 2;
-            }
+            
             if(CurrentHealth <= 0)
             {
                 Inventory.Clear();

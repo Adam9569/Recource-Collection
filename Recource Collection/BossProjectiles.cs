@@ -12,7 +12,7 @@ namespace Recource_Collection
 
     public class BossProjectiles : Projectiles
     {
-        public ProjectilePattern Pattern { get; set; }
+        public ProjectilePattern Pattern { get; set; }  
 
         public float Radius;
         public float Angle;
@@ -25,8 +25,8 @@ namespace Recource_Collection
         public Vector2 End;
 
         public bool Active { get; private set; } = false;
-        public float LifeTime { get; private set; } = 0f;
-        public float MaxLifeSpan { get; set; } = 12f;
+        public float Time { get; private set; } = 0f;
+        public float MaxTime { get; set; } = 10f;
 
         public Rectangle HitBox
         {
@@ -52,7 +52,7 @@ namespace Recource_Collection
             RadiusSpeed = radiusSpeed;
 
             Active = true;
-            LifeTime = 0f;
+            Time = 0f;
             Position = Center + new Vector2((float)(Radius * Math.Cos(Angle)), (float)(Radius * Math.Sin(Angle)));
         }
 
@@ -63,7 +63,7 @@ namespace Recource_Collection
             Velocity = velocity;
 
             Active = true;
-            LifeTime = 0f;
+            Time = 0f;
 
             Position = Start;
         }
@@ -77,8 +77,8 @@ namespace Recource_Collection
         {
             if (!Active) return;
 
-            LifeTime += Globals.Time;
-            if (LifeTime >= MaxLifeSpan)
+            Time += Globals.Time;
+            if (Time >= MaxTime)
             {
                 Active = false;
                 return;
