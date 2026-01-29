@@ -126,15 +126,7 @@ namespace Recource_Collection
             {
                 for (int y = 0; y < TileMap.Height; y++)
                 {
-                    string pos = $"{x};{y}";
-                    TileType type = tileMap.GetTile(pos);
-                    Texture2D tex = tileMap.Assets[type];
-
-                    _spriteBatch.Draw(
-                        tex,
-                        new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),
-                        Color.White
-                    );
+                    _spriteBatch.Draw(tileMap.Assets[tileMap.GetTile($"{x};{y}")],new Rectangle(x * TileMap.tilesize, y * TileMap.tilesize, TileMap.tilesize, TileMap.tilesize),Color.White);
                 }
             }
             _hero.Draw();
